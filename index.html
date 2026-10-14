@@ -94,6 +94,9 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .ricon{width:140px;height:140px;margin:0 0 6px -10px;background:#fcfcfb;position:relative}
 .rcap{margin:0 0 18px;font-size:12.5px;letter-spacing:.14em;color:#6b92ac}
 .ctafoot{background:#1f2a48;box-shadow:0 0 0 100vmax #1f2a48;clip-path:inset(0 -100vmax)}
+.fab{transition:transform .4s cubic-bezier(.3,1.5,.5,1),box-shadow .3s ease,background .3s ease}
+@media (hover:hover){.fab:hover{transform:scale(1.1);background:#1f2a48;box-shadow:0 0 0 1px rgba(252,252,251,.6),0 0 0 6px #e09e5e,0 18px 32px -10px rgba(31,42,72,.45)}}
+@media (prefers-reduced-motion:reduce){.fab{transition:none}}
 .mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
 .cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
 .fvimg{background:url(img/torii-sea.jpg) center/cover no-repeat}
