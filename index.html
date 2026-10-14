@@ -78,7 +78,7 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 @keyframes framesettle{from{transform:rotate(4deg) scale(1)}to{transform:rotate(0) scale(1.12)}}
 .openframe .ofl{animation:ofl linear both;animation-timeline:--op;animation-range:contain 14% contain 34%}
 @keyframes ofl{from{stroke:#1f2a48}to{stroke:#fcfcfb}}
-.odab{position:absolute;display:block;animation:decogone linear both;animation-timeline:--op;animation-range:contain 4% contain 24%}
+.odab{position:absolute;display:block}
 @keyframes decogone{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
 @keyframes openzoom{from{transform:scale(1.3)}to{transform:scale(1)}}
 .depth{box-shadow:0 2px 4px rgba(31,42,72,.08),0 18px 34px -12px rgba(31,42,72,.30),0 44px 80px -32px rgba(31,42,72,.36)}
@@ -95,6 +95,8 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .openmsg .en{display:block;font-family:Allura,cursive;font-size:34px;letter-spacing:.02em;margin-bottom:4px;opacity:.95}
 .openmsg .jp{display:block;font-family:"Klee One",serif;font-size:32px;font-weight:600;letter-spacing:.1em;line-height:1.75}
 @keyframes msgin{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.js .framein{opacity:0;transform:scale(.72) rotate(-14deg);transition:opacity .5s ease,transform 1.1s cubic-bezier(.3,1.35,.45,1)}
+.js .framein.in{opacity:1;transform:none}
 .mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
 .cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
 .fvimg{background:url(img/torii-sea.jpg) center/cover no-repeat}
@@ -171,7 +173,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 .ctagrid{grid-template-columns:minmax(0,1fr) !important;row-gap:40px !important}.footgrid{grid-template-columns:minmax(0,1fr) !important;row-gap:32px !important}.ctagrid>:nth-child(3){order:1}.ctagrid>:nth-child(2){order:2}.ctagrid>:nth-child(4){order:3}.ctafoot{margin-top:120px !important;padding-bottom:120px !important}.ctacurve{left:30% !important;width:200px !important;height:40px !important}
 .info{left:24px !important;right:24px;bottom:24px !important;font-size:12px !important}
 }
-@media (prefers-reduced-motion:reduce){.openmsg{animation:none}.js .rise,.js .h,.js .tiltin,.js .place{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important;animation:none!important}.js .draw{stroke-dashoffset:0!important}.flowtxt,.h,.tiltin,.rollby{animation:none}.openph,.openimg{animation:none}.odab{display:none}.place,.drift,.rise,.draw,.clearing{animation:none}.s1,.s2{animation:none;stroke-dashoffset:0}.d1,.photoin{animation:none;opacity:1}.draw{stroke-dasharray:none}}
+@media (prefers-reduced-motion:reduce){.openmsg{animation:none}.js .framein,.js .rise,.js .h,.js .tiltin,.js .place{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important;animation:none!important}.js .draw{stroke-dashoffset:0!important}.flowtxt,.h,.tiltin,.rollby{animation:none}.openph,.openimg{animation:none}.odab{display:none}.place,.drift,.rise,.draw,.clearing{animation:none}.s1,.s2{animation:none;stroke-dashoffset:0}.d1,.photoin{animation:none;opacity:1}.draw{stroke-dasharray:none}}
 </style>
 
 </head>
@@ -193,13 +195,13 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 
 <section id="top" style="position: relative; min-height: 940px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px">
 <div class="fvlogo" style="position: relative; width: 520px; height: 520px; transform: rotate(-3deg)">
-<svg viewBox="0 0 64 64" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" role="img" aria-label="Career Design Canvas"><path class="s1" pathLength="1" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width=".26" style="vector-effect: none"></path><path class="s2" pathLength="1" d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width=".26" stroke-linecap="round" style="vector-effect: none"></path><circle class="d1" cx="44" cy="20" r="1.7" fill="#e09e5e"></circle></svg>
+<svg class="framein" viewBox="0 0 64 64" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" role="img" aria-label="Career Design Canvas"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width=".26" style="vector-effect: none"></path><path class="s2" pathLength="1" d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width=".26" stroke-linecap="round" style="vector-effect: none"></path><circle class="d1" cx="44" cy="20" r="1.7" fill="#e09e5e"></circle></svg>
 <svg class="dab place" style="left: -110px; top: 30%; width: 78px" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg><svg class="dab place" style="right: -80px; bottom: 14%; width: 56px" viewBox="0 0 100 70" aria-hidden="true"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg><svg class="dab place" style="right: 10%; top: -60px; width: 38px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg><svg class="dab place" style="left: 18%; bottom: -50px; width: 26px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#b2b1ae"></path></svg></div>
 <p class="d1 fvname" style="margin: 0; text-align: center; line-height: 1.6"><span class="en" style="display: block; font-size: 22px; letter-spacing: .32em; font-weight: 500">CAREER DESIGN CANVAS</span><span style="display: block; font-size: 11px; letter-spacing: .5em; color: #5f6b82; margin-top: 6px">キャリアデザインキャンバス</span></p>
 <a class="info" href="#consult" style="position: absolute; left: 40px; bottom: 48px; display: flex; align-items: center; gap: 14px; text-decoration: none; font-size: 13px; border-bottom: 1px solid #1f2a48; padding-bottom: 8px"><span class="en" style="letter-spacing: .08em; white-space: nowrap">( INFO )</span>無料相談（オンライン60分）を受け付けています<span aria-hidden="true">→</span></a>
 </section>
 
-<section id="about" class="opener" role="img" aria-label="霧の山道"><div class="openstick"><div class="openwrap"><div class="openph"><div class="openimg mistlayer"></div></div></div><p class="openmsg"><span class="en">Open the door within.</span><span class="jp">霧の中で、<br>内省の扉を開く。</span></p><div class="opendeco" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
+<section id="about" class="opener" role="img" aria-label="霧の山道"><div class="openstick"><div class="openwrap"><div class="openph"><div class="openimg mistlayer"></div></div></div><p class="openmsg"><span class="en">Open the door within.</span><span class="jp">霧の中で、<br>内省の扉を開く。</span></p><div class="opendeco framein" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
 
 <section style="position: relative; padding: 144px 0 120px">
 <svg class="dab drift" style="left: 6%; top: 200px; width: 90px" viewBox="0 0 100 70" aria-hidden="true"><path d="M8 30C10 8 44 0 66 8s30 34 10 50-48 8-60-6S6 44 8 30z" fill="#e09e5e"></path></svg>
@@ -221,7 +223,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 <section class="alt" style="padding: 104px 0 144px">
 <div class="wrap two">
 <div class="rise" style="position: relative; padding: 56px 48px; transform: rotate(-3deg)">
-<svg viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
+<svg class="framein" viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
 <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; transform: rotate(3deg); font-size: 13px; line-height: 1.6; text-align: center">
 <div><img src="img/day1.svg" alt="" style="width: 100%; height: 110px; object-fit: contain"><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY1</span><br>悩みの根源がわかる</p></div>
 <div><img src="img/day2.svg" alt="" style="width: 100%; height: 110px; object-fit: contain"><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY2</span><br>本当に大事にしたいものがわかる</p></div>
@@ -249,7 +251,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 
 <section id="program" style="position: relative; height: 440px; display: flex; align-items: center; justify-content: center">
 <div class="rise" style="position: relative; width: min(560px, 80%); height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(5deg)">
-<svg viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
+<svg class="framein" viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
 <p class="lbl" style="margin: 0 0 8px; transform: rotate(-5deg)">( PROGRAM )</p>
 <p class="rrr" style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: .14em; transform: rotate(-5deg); text-align: center">Reflect · Re-Sketch · Realize</p>
 <svg class="dab place" style="left: -26px; bottom: -20px; width: 56px" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg>
@@ -353,7 +355,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 </div>
 </section>
 
-<section class="opener" role="img" aria-label="夜明けの海と岩"><div class="openstick"><div class="openwrap"><div class="openph"><div class="openimg bgdawn"></div></div></div><p class="openmsg"><span class="en">Notice your own light.</span><span class="jp">夜明けのように、<br>自分のエネルギーに気づく。</span></p><div class="opendeco" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
+<section class="opener" role="img" aria-label="夜明けの海と岩"><div class="openstick"><div class="openwrap"><div class="openph"><div class="openimg bgdawn"></div></div></div><p class="openmsg"><span class="en">Notice your own light.</span><span class="jp">夜明けのように、<br>自分のエネルギーに気づく。</span></p><div class="opendeco framein" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
 
 <section id="profile" style="position: relative; padding: 0 0 144px">
 <div class="wrap">
@@ -430,7 +432,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 var q=[],t=null;
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){q.push(e.target);io.unobserve(e.target);}});
 if(!t){t=setTimeout(function(){q.forEach(function(el,i){var dl=(Math.min(i,6)*0.09)+'s';el.style.transitionDelay=dl;el.style.animationDelay=dl;el.classList.add('in');});q=[];t=null;},30);}},{rootMargin:'0px 0px -10% 0px'});
-document.querySelectorAll('.rise,.h,.place,.tiltin,.draw').forEach(function(el){io.observe(el);});})();
+document.querySelectorAll('.rise,.h,.place,.tiltin,.draw,.framein').forEach(function(el){io.observe(el);});})();
 
 </script>
 </body>
