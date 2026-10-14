@@ -61,8 +61,8 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .openwrap{position:absolute;inset:0;filter:drop-shadow(0 28px 36px rgba(31,42,72,.26)) drop-shadow(0 6px 10px rgba(31,42,72,.14))}
 .openph{position:absolute;inset:0;overflow:hidden;animation:open linear both;animation-timeline:--op;animation-range:contain 12% contain 60%}
 .openimg{position:absolute;inset:0;animation:openzoom linear both;animation-timeline:--op;animation-range:contain 0% contain 55%}
-@keyframes open{from{clip-path:inset(calc(50% - 170px) calc(50% - 170px) calc(50% - 170px) calc(50% - 170px));transform:rotate(-4deg)}to{clip-path:inset(0 0 0 0);transform:none}}
-@keyframes opensp{from{clip-path:inset(calc(50% - 115px) calc(50% - 115px) calc(50% - 115px) calc(50% - 115px));transform:rotate(-4deg)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes open{from{clip-path:polygon(calc(50% - 170px) calc(50% - 170px), 50% calc(50% - 170px), calc(50% + 170px) calc(50% - 170px), calc(50% + 170px) calc(50% + 170px), 50% calc(50% + 170px), calc(50% - 170px) calc(50% + 170px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
+@keyframes opensp{from{clip-path:polygon(calc(50% - 115px) calc(50% - 115px), 50% calc(50% - 115px), calc(50% + 115px) calc(50% - 115px), calc(50% + 115px) calc(50% + 115px), 50% calc(50% + 115px), calc(50% - 115px) calc(50% + 115px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
 .opendeco{position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;pointer-events:none}
 .openframe{position:absolute;left:-14%;top:-14%;width:128%;height:128%;overflow:visible;animation:framesettle linear both;animation-timeline:--op;animation-range:contain 8% contain 55%}
 @keyframes framesettle{from{transform:rotate(4deg) scale(1)}to{transform:rotate(0) scale(1.12)}}
