@@ -549,7 +549,7 @@ if(svg&&svg.getScreenCTM){
       var cx=r.left+r.width/2,cy=r.top+r.height/2,rad=Math.max(r.width,r.height)/2+6;
       if(Math.hypot(e.clientX-cx,e.clientY-cy)<rad){
         if(now-o.last<250)return;o.last=now;o.hits++;
-        {o.el.style.opacity='1';o.el.style.animation='none';o.el.classList.remove('wob');void o.el.offsetWidth;o.el.classList.add('wob');}
+        {o.el.style.opacity='1';o.el.style.animation='none';o.el.classList.remove('wob');o.el.getBoundingClientRect();o.el.classList.add('wob');}
       }});
   });
 })();
