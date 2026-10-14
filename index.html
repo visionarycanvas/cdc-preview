@@ -499,26 +499,6 @@ document.querySelectorAll('.rise,.h,.place,.tiltin,.draw,.framein,.mframe,.drift
 (function(){
 var hdr=document.querySelector(".hdr");if(hdr){var on=function(){hdr.classList.toggle("scrolled",window.scrollY>40);};on();window.addEventListener("scroll",on,{passive:true});}
 
-var top=document.getElementById('top');
-if(top){
-  var cv=document.createElement('canvas');cv.setAttribute('aria-hidden','true');
-  cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1';
-  top.insertBefore(cv,top.firstChild);top.style.touchAction='pan-y';
-  var ctx=cv.getContext('2d'),dpr=Math.min(window.devicePixelRatio||1,2),W=0,H=0,pts=[],last=null,raf=null;
-  function size(){var r=top.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
-  size();window.addEventListener('resize',size);
-  top.addEventListener('pointermove',function(e){
-    if(e.target.closest&&e.target.closest('a,button'))return;
-    var r=top.getBoundingClientRect(),p={x:e.clientX-r.left,y:e.clientY-r.top,t:performance.now()};
-    if(last&&Math.hypot(p.x-last.x,p.y-last.y)>80)last=null;
-    pts.push({a:last,b:p,t:p.t});last=p;if(!raf)raf=requestAnimationFrame(draw);
-  });
-  top.addEventListener('pointerleave',function(){last=null;});
-  function draw(){var now=performance.now(),life=1600;ctx.clearRect(0,0,W,H);ctx.lineCap='round';
-    pts=pts.filter(function(s){return now-s.t<life;});
-    pts.forEach(function(s){if(!s.a)return;var k=1-(now-s.t)/life;ctx.strokeStyle='rgba(107,146,172,'+(0.9*k).toFixed(3)+')';ctx.lineWidth=1.5+1.5*k;ctx.beginPath();ctx.moveTo(s.a.x,s.a.y);ctx.lineTo(s.b.x,s.b.y);ctx.stroke();});
-    raf=pts.length?requestAnimationFrame(draw):null;}
-}
 var svg=document.querySelector('#journey svg.chart');
 if(svg&&svg.getScreenCTM){
   var NS='http://www.w3.org/2000/svg';
@@ -556,7 +536,7 @@ if(svg&&svg.getScreenCTM){
   svg.addEventListener('pointerenter',function(){band.setAttribute('opacity','.12');});
 }
 
-/* 一番上：描いた線が石に触れるたびに、何度か揺れて止まる */
+/* 一番上：カーソルが石に触れるたびに、何度か揺れて止まる */
 (function(){var top=document.getElementById('top');if(!top)return;
   var dabs=[].slice.call(top.querySelectorAll('.dab'));if(!dabs.length)return;
   var st=dabs.map(function(el){return {el:el,hits:0,x:0,y:0,vx:0,vy:0,rot:0,fall:false,done:false,last:0};});
