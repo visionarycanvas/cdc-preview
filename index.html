@@ -103,6 +103,7 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .ctagrid .vt{margin:0 !important;justify-self:start}
 .jinfo{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1fr);gap:32px;margin-top:28px;padding:18px 0;border-top:1px solid #1f2a48;border-bottom:1px solid rgba(31,42,72,.14);min-height:64px}
 .jinfo p{margin:0;transition:opacity .2s}.jinfo .k{display:block;font-size:11px;letter-spacing:.14em;color:#6b92ac;margin-bottom:2px}
+@media (hover:hover){.cap{transition:translate .35s cubic-bezier(.3,1.4,.5,1),scale .35s cubic-bezier(.3,1.4,.5,1),box-shadow .3s ease,opacity .3s ease;cursor:default}.flowin:has(.cap:hover) .cap{opacity:.45}.flowin:has(.cap:hover) .cap:hover{opacity:1;translate:0 -5px;scale:1.04;box-shadow:0 2px 4px rgba(31,42,72,.08),0 16px 28px -10px rgba(31,42,72,.35);z-index:2;position:relative}.flowin:has(.cap:hover) .lane:has(.cap:hover) > p{color:#6b92ac}}
 .mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
 .cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
 .fvimg{background:url(img/torii-sea.jpg) center/cover no-repeat}
@@ -131,7 +132,7 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .you{border:1px solid #1f2a48;background:#fcfcfb;font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;text-align:center;padding:0 18px}
 .you + .you{position:relative}
 .you + .you:before{content:"";position:absolute;left:-9px;top:50%;width:10px;border-top:1px solid #1f2a48}
-@keyframes grow{from{clip-path:inset(0 100% 0 0 round 999px)}to{clip-path:inset(0 0 0 0 round 999px)}}
+@keyframes grow{from{clip-path:inset(-40px 100% -40px -40px round 999px)}to{clip-path:inset(-40px -40px -40px -40px round 999px)}}
 .daytabs{display:grid;grid-template-columns:270px minmax(0,1fr);gap:48px;margin-top:72px}
 .daytabs input{position:absolute;opacity:0;pointer-events:none}
 .dlist{display:flex;flex-direction:column;border-top:1px solid #1f2a48}
