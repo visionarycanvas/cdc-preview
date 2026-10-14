@@ -193,16 +193,22 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 </style>
 
 <style>
-.kf{position:relative;--bg:#fcfcfb}
-.kf::before{content:"";position:absolute;inset:0;border:1px solid #1f2a48;pointer-events:none;z-index:2}
-.kf::after{content:"";position:absolute;top:-2px;left:24%;width:40%;height:5px;background:var(--bg);pointer-events:none;z-index:3}
-.pfwrap.kf{padding:12px}
+/* B：額装（穂垂亭ふう）— 細い紺の線＋白いマット、マットの角だけ丸める。上辺にロゴの切れ目 */
+.kf{position:relative;isolation:isolate;--bg:#fcfcfb;--gap-l:24%;--gap-r:64%}
+.kf::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:linear-gradient(90deg,#1f2a48 var(--gap-l),transparent var(--gap-l) var(--gap-r),#1f2a48 var(--gap-r)) top/100% 1px no-repeat,
+ linear-gradient(#1f2a48,#1f2a48) 0 1px/100% calc(100% - 1px) no-repeat}
+.kf::after{content:"";position:absolute;inset:1px;z-index:-1;background:#fff;border-radius:4px;pointer-events:none}
+.pfwrap.kf{padding:11px}
 .pfwrap.kf img{transform:none !important;box-shadow:none !important}
 .kfbox{padding:56px 48px !important}
-.kfbtn{border-radius:0 !important;outline:1px solid #1f2a48;outline-offset:6px;margin:8px}
-.kfbtn::before{inset:-7px;}
-.kfbtn::after{top:-9px;background:#fcfcfb}
-.kfbtn{outline:none}
+/* まっすぐにする */
+.ricon{transform:none !important}
+.js .tiltin.in,.tiltin.in{transform:none !important}
+.framein{transform:scale(.9)}
+@keyframes open{from{clip-path:polygon(calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) - 170px), var(--fx, 50%) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) + 170px), var(--fx, 50%) calc(var(--fy, 50%) + 170px), calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) + 170px))}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%)}}
+@keyframes opensp{from{clip-path:polygon(calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) - 115px), var(--fx, 50%) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) + 115px), var(--fx, 50%) calc(var(--fy, 50%) + 115px), calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) + 115px))}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%)}}
+@keyframes framesettle{from{transform:scale(1)}to{transform:scale(1.12)}}
 </style></head>
 <body>
 
@@ -221,8 +227,8 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 <a class="fab" href="#consult">無料相談<small>FREE · 60MIN</small></a>
 
 <section id="top" style="position: relative; min-height: 940px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px">
-<div class="fvlogo" style="position: relative; width: 520px; height: 520px; transform: rotate(-3deg)">
-<svg class="framein" viewBox="0 0 64 64" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" role="img" aria-label="Career Design Canvas"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width=".26" style="vector-effect: none"></path><path class="s2" pathLength="1" d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width=".26" stroke-linecap="round" style="vector-effect: none"></path><circle class="d1" cx="44" cy="20" r="1.7" fill="#1f2a48"></circle></svg>
+<div class="fvlogo" style="position: relative; width: 520px; height: 520px">
+<svg class="framein" viewBox="0 0 64 64" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" role="img" aria-label="Career Design Canvas"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width=".125" style="vector-effect: none"></path><path class="s2" pathLength="1" d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width=".125" stroke-linecap="round" style="vector-effect: none"></path><circle class="d1" cx="44" cy="20" r="1.7" fill="#1f2a48"></circle></svg>
 <svg class="dab place" style="left: -110px; top: 30%; width: 78px" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg><svg class="dab place" style="right: -80px; bottom: 14%; width: 56px" viewBox="0 0 100 70" aria-hidden="true"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg><svg class="dab place" style="right: 10%; top: -60px; width: 38px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg><svg class="dab place" style="left: 18%; bottom: -50px; width: 26px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#b2b1ae"></path></svg></div>
 <p class="d1 fvname" style="margin: 0; text-align: center; line-height: 1.6"><span class="en" style="display: block; font-size: 22px; letter-spacing: .32em; font-weight: 500">CAREER DESIGN CANVAS</span><span style="display: block; font-size: 11px; letter-spacing: .5em; color: #5f6b82; margin-top: 6px">キャリアデザインキャンバス</span></p>
 <a class="info" href="#consult" style="position: absolute; left: 40px; bottom: 48px; display: flex; align-items: center; gap: 14px; text-decoration: none; font-size: 13px; border-bottom: 1px solid #1f2a48; padding-bottom: 8px"><span class="en" style="letter-spacing: .08em; white-space: nowrap">( INFO )</span>無料相談（オンライン60分）を受け付けています<span aria-hidden="true">→</span></a>
@@ -275,10 +281,10 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 
 <section id="program" style="position: relative; isolation: isolate; padding: 120px 0 144px">
 <div style="position: relative; height: 320px; display: flex; align-items: center; justify-content: center">
-<div class="rise" style="position: relative; width: min(560px, 80%); height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(5deg)">
-<svg class="framein" viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
-<p class="lbl" style="margin: 0 0 8px; transform: rotate(-5deg)">( PROGRAM )</p>
-<p class="rrr" style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: .14em; transform: rotate(-5deg); text-align: center">Reflect · Re-Sketch · Realize</p>
+<div class="rise" style="position: relative; width: min(560px, 80%); height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<svg class="framein" viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1" vector-effect="non-scaling-stroke"></path></svg>
+<p class="lbl" style="margin: 0 0 8px">( PROGRAM )</p>
+<p class="rrr" style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: .14em; text-align: center">Reflect · Re-Sketch · Realize</p>
 <svg class="dab place" style="left: -26px; bottom: -20px; width: 56px" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg>
 <svg class="dab place" style="right: 18%; top: -16px; width: 30px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg>
 </div>
@@ -440,7 +446,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 </div>
 <p style="margin: 0; font-size: 15px; max-width: 440px; align-self: end"><span style="word-break: keep-all; overflow-wrap: anywhere;">宮﨑が、​オンラインで​60分、​フラットに​お話を​伺います。​求人を​紹介する​場では​ありません。​CDCを​無理に​お勧めする​こともありません。​CDCが​合うか​どうかも、​そこで​一緒に​確かめましょう。</span></p>
 <div style="align-self: end">
-<a class="ctabtn kf kfbtn" href="#consult"><span>無料相談の日程を選ぶ</span><span class="ctago" aria-hidden="true">→</span></a>
+<a class="ctabtn" href="#consult"><span>無料相談の日程を選ぶ</span><span class="ctago" aria-hidden="true">→</span></a>
 <p style="margin: 14px 0 0; font-size: 12.5px; color: #5b6478; text-align: center"><span style="word-break: keep-all; overflow-wrap: anywhere;">予約ページで、​空いている​日時から​お選びいただけます</span></p>
 </div>
 </div>
