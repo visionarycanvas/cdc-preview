@@ -108,7 +108,7 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .hdr{transition:padding .35s ease,background .35s ease,box-shadow .35s ease}.hdr.scrolled{padding-top:14px !important;padding-bottom:14px !important;background:rgba(252,252,251,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(31,42,72,.08)}
 @media (max-width:760px){.mframe{display:none !important}}
 .mframe{position:absolute;pointer-events:none;z-index:-1;overflow:visible;transform:rotate(var(--r));}@keyframes mfloat{from{transform:translate(calc(var(--k,1) * -70px),80px) rotate(calc(var(--r) - var(--k,1) * 70deg))}to{transform:translate(calc(var(--k,1) * 70px),-80px) rotate(calc(var(--r) + var(--k,1) * 70deg))}}@media (max-width:760px){.mframe{width:calc(var(--s,1) * 45%) !important;height:auto !important;aspect-ratio:1}}@media (prefers-reduced-motion:reduce){.mframe{animation:none}}
-@keyframes wob{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg) translateY(-2px)}45%{transform:rotate(11deg)}70%{transform:rotate(-6deg)}85%{transform:rotate(3deg)}}.dab.wob{animation:wob .55s ease both !important}
+@keyframes wob{0%,100%{transform:rotate(0)}8%{transform:rotate(-16deg) translateY(-3px)}18%{transform:rotate(14deg)}29%{transform:rotate(-12deg) translateY(-1px)}40%{transform:rotate(10deg)}51%{transform:rotate(-8deg)}62%{transform:rotate(6deg)}73%{transform:rotate(-4deg)}84%{transform:rotate(2.5deg)}93%{transform:rotate(-1deg)}}.dab.wob{animation:wob 1.6s ease-in-out both !important}
 @keyframes droproll{0%{opacity:0;transform:translate(calc(var(--k,1) * -140px),-180px) rotate(calc(var(--r,0deg) - var(--k,1) * 200deg))}45%{opacity:1;transform:translate(calc(var(--k,1) * 12px),6px) rotate(calc(var(--r,0deg) + var(--k,1) * 16deg))}62%{transform:translate(calc(var(--k,1) * -6px),-14px) rotate(calc(var(--r,0deg) - var(--k,1) * 6deg))}78%{transform:translate(calc(var(--k,1) * 3px),2px) rotate(calc(var(--r,0deg) + var(--k,1) * 3deg))}100%{opacity:1;transform:translate(0,0) rotate(var(--r,0deg))}}.js .mframe,.js .drift,.js .rollby{visibility:hidden}.js .mframe.in,.js .drift.in,.js .rollby.in{visibility:visible;animation:droproll 1.5s cubic-bezier(.33,.0,.3,1) both}
 .mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
 .cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
@@ -517,7 +517,7 @@ if(svg&&svg.getScreenCTM){
   svg.addEventListener('pointerenter',function(){band.setAttribute('opacity','.12');});
 }
 
-/* 一番上：描いた線が石（絵の具のかけら）に触れると、ふるえる。もう一度触れるか、勢いよく触れると、転がり落ちる */
+/* 一番上：描いた線が石に触れるたびに、何度か揺れて止まる */
 (function(){var top=document.getElementById('top');if(!top)return;
   var dabs=[].slice.call(top.querySelectorAll('.dab'));if(!dabs.length)return;
   var st=dabs.map(function(el){return {el:el,hits:0,x:0,y:0,vx:0,vy:0,rot:0,fall:false,done:false,last:0};});
@@ -546,7 +546,7 @@ if(svg&&svg.getScreenCTM){
     st.forEach(function(o){if(o.fall)return;var r=o.el.getBoundingClientRect();
       var cx=r.left+r.width/2,cy=r.top+r.height/2,rad=Math.max(r.width,r.height)/2+6;
       if(Math.hypot(e.clientX-cx,e.clientY-cy)<rad){
-        if(now-o.last<400)return;o.last=now;o.hits++;
+        if(now-o.last<250)return;o.last=now;o.hits++;
         {o.el.style.opacity='1';o.el.style.animation='none';o.el.classList.remove('wob');void o.el.offsetWidth;o.el.classList.add('wob');}
       }});
   });
