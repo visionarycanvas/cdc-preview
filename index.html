@@ -108,6 +108,7 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .jbox{max-width:min(100%,calc((100vh - 300px) * 1.6));margin:0 auto}@media (min-width:761px){.jbox .ji-steps span{padding:10px 4px 9px}.jbox .ji-body{padding:18px 0 0;gap:40px}.jinfo{margin-top:16px}}
 .hdr{transition:padding .35s ease,background .35s ease,box-shadow .35s ease}.hdr.scrolled{padding-top:14px !important;padding-bottom:14px !important;background:rgba(252,252,251,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(31,42,72,.08)}
 .mframe{position:absolute;pointer-events:none;z-index:-1;overflow:visible;transform:rotate(var(--r));animation:mfloat linear both;animation-timeline:view()}@keyframes mfloat{from{transform:translate(calc(var(--k,1) * -70px),80px) rotate(calc(var(--r) - var(--k,1) * 70deg))}to{transform:translate(calc(var(--k,1) * 70px),-80px) rotate(calc(var(--r) + var(--k,1) * 70deg))}}@media (max-width:760px){.mframe{width:calc(var(--s,1) * 45%) !important;height:auto !important;aspect-ratio:1}}@media (prefers-reduced-motion:reduce){.mframe{animation:none}}
+@keyframes wob{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg) translateY(-2px)}45%{transform:rotate(11deg)}70%{transform:rotate(-6deg)}85%{transform:rotate(3deg)}}.dab.wob{animation:wob .55s ease both !important}
 .mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
 .cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
 .fvimg{background:url(img/torii-sea.jpg) center/cover no-repeat}
@@ -514,8 +515,40 @@ if(svg&&svg.getScreenCTM){
   setStage(0,true);band.setAttribute('opacity','0');
   svg.addEventListener('pointerenter',function(){band.setAttribute('opacity','.12');});
 }
-})();
 
+/* 一番上：描いた線が石（絵の具のかけら）に触れると、ふるえる。もう一度触れるか、勢いよく触れると、転がり落ちる */
+(function(){var top=document.getElementById('top');if(!top)return;
+  var dabs=[].slice.call(top.querySelectorAll('.dab'));if(!dabs.length)return;
+  var st=dabs.map(function(el){return {el:el,hits:0,x:0,y:0,vx:0,vy:0,rot:0,fall:false,done:false,last:0};});
+  var lx=null,ly=null,lt=0,raf=null;
+  function fall(o,dir,sp){o.fall=true;o.el.classList.remove('wob');o.el.style.animation='none';o.el.style.opacity='1';o.el.style.transform='none';
+    o.b=o.el.getBoundingClientRect();o.t=top.getBoundingClientRect();o.vx=dir*Math.min(9,2+sp*6);o.vy=-3;if(!raf)raf=requestAnimationFrame(step);}
+  function step(){var busy=false;
+    st.forEach(function(o){if(!o.fall||o.done)return;busy=true;
+      var w=o.b.width/2;o.vy+=0.7;o.x+=o.vx;o.y+=o.vy;
+      var maxY=(o.t.bottom-70)-o.b.bottom;
+      if(o.y>=maxY){o.y=maxY;o.vy*=-0.38;o.vx*=0.9;if(Math.abs(o.vy)<1.2)o.vy=0;}
+      if(o.b.left+o.x<o.t.left+10){o.x=o.t.left+10-o.b.left;o.vx=Math.abs(o.vx)*0.6;}
+      if(o.b.right+o.x>o.t.right-10){o.x=o.t.right-10-o.b.right;o.vx=-Math.abs(o.vx)*0.6;}
+      o.rot+=o.vx/Math.max(8,w)*57.3;
+      o.el.style.transform='translate('+o.x.toFixed(1)+'px,'+o.y.toFixed(1)+'px) rotate('+o.rot.toFixed(1)+'deg)';
+      if(o.vy===0&&Math.abs(o.vx)<0.08){o.done=true;}
+    });
+    raf=busy?requestAnimationFrame(step):null;}
+  top.addEventListener('pointermove',function(e){
+    var now=performance.now(),sp=0,dir=1;
+    if(lx!==null){var dt=Math.max(16,now-lt);sp=Math.hypot(e.clientX-lx,e.clientY-ly)/dt;dir=e.clientX>=lx?1:-1;}
+    lx=e.clientX;ly=e.clientY;lt=now;
+    st.forEach(function(o){if(o.fall)return;var r=o.el.getBoundingClientRect();
+      var cx=r.left+r.width/2,cy=r.top+r.height/2,rad=Math.max(r.width,r.height)/2+6;
+      if(Math.hypot(e.clientX-cx,e.clientY-cy)<rad){
+        if(now-o.last<400)return;o.last=now;o.hits++;
+        if(o.hits>=2||sp>1.4){fall(o,dir,sp);}
+        else{o.el.style.opacity='1';o.el.style.animation='none';o.el.classList.remove('wob');void o.el.offsetWidth;o.el.classList.add('wob');}
+      }});
+  });
+})();
+})();
 </script>
 </body>
 </html>
