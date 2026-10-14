@@ -56,17 +56,17 @@ a{color:#1f2a48}a:hover{color:#6b92ac}
 .ctabtn:hover{background:#2c3a60}
 .ctago{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#e09e5e;color:#1f2a48;font-size:15px;transition:transform .3s}
 .ctabtn:hover .ctago{transform:translateX(4px)}
-.opener{position:relative;margin-bottom:120px;height:calc(min(100vh,900px) * 2.1);view-timeline:--op}
+.opener{position:relative;margin-bottom:120px;height:calc(min(100vh,900px) * 3);view-timeline:--op}
 .openstick{position:sticky;top:0;height:min(100vh,900px);overflow:hidden}
 .openwrap{position:absolute;inset:0;filter:drop-shadow(0 28px 36px rgba(31,42,72,.26)) drop-shadow(0 6px 10px rgba(31,42,72,.14))}
-.openph{position:absolute;inset:0;overflow:hidden;animation:open linear both;animation-timeline:--op;animation-range:contain 12% contain 60%}
-.openimg{position:absolute;inset:0;animation:openzoom linear both;animation-timeline:--op;animation-range:contain 0% contain 55%}
+.openph{position:absolute;inset:0;overflow:hidden;animation:open linear both;animation-timeline:--op;animation-range:contain 8% contain 45%}
+.openimg{position:absolute;inset:0;animation:openzoom linear both;animation-timeline:--op;animation-range:contain 0% contain 45%}
 @keyframes open{from{clip-path:polygon(calc(50% - 170px) calc(50% - 170px), 50% calc(50% - 170px), calc(50% + 170px) calc(50% - 170px), calc(50% + 170px) calc(50% + 170px), 50% calc(50% + 170px), calc(50% - 170px) calc(50% + 170px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
 @keyframes opensp{from{clip-path:polygon(calc(50% - 115px) calc(50% - 115px), 50% calc(50% - 115px), calc(50% + 115px) calc(50% - 115px), calc(50% + 115px) calc(50% + 115px), 50% calc(50% + 115px), calc(50% - 115px) calc(50% + 115px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
 .opendeco{position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;pointer-events:none}
-.openframe{position:absolute;left:-14%;top:-14%;width:128%;height:128%;overflow:visible;animation:framesettle linear both;animation-timeline:--op;animation-range:contain 8% contain 55%}
+.openframe{position:absolute;left:-14%;top:-14%;width:128%;height:128%;overflow:visible;animation:framesettle linear both;animation-timeline:--op;animation-range:contain 6% contain 42%}
 @keyframes framesettle{from{transform:rotate(4deg) scale(1)}to{transform:rotate(0) scale(1.12)}}
-.openframe .ofl{animation:ofl linear both;animation-timeline:--op;animation-range:contain 14% contain 34%}
+.openframe .ofl{animation:ofl linear both;animation-timeline:--op;animation-range:contain 10% contain 26%}
 @keyframes ofl{from{stroke:#1f2a48}to{stroke:#fcfcfb}}
 .odab{position:absolute;display:block}
 @keyframes decogone{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
