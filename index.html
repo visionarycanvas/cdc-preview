@@ -244,6 +244,7 @@ td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical
 .role{margin:0 0 8px;font-size:13px;letter-spacing:.14em;color:#6b92ac}
 .dl{font-family:inherit !important;letter-spacing:.14em !important;font-size:12.5px !important}
 .infodot{position:relative;width:7px;height:7px;border-radius:50%;background:#6b92ac;flex:none}.infodot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid #6b92ac;opacity:0;animation:infoping 2.4s ease-out infinite}@keyframes infoping{0%{transform:scale(.4);opacity:.8}100%{transform:scale(1.4);opacity:0}}@media (prefers-reduced-motion:reduce){.infodot::after{animation:none}}
+@media (min-width:761px) and (hover:hover){table.cmp tbody tr{position:relative;transition:transform .4s cubic-bezier(.3,1.3,.5,1),box-shadow .35s ease,background .35s ease,opacity .35s ease}table.cmp tbody tr:hover{transform:translateY(-6px) scale(1.01);background:#fff;box-shadow:0 2px 4px rgba(31,42,72,.06),0 22px 40px -14px rgba(31,42,72,.30);z-index:2}table.cmp tbody tr:hover>th,table.cmp tbody tr:hover>td{border-bottom-color:transparent !important}table.cmp tbody:has(tr:hover) tr:not(:hover){opacity:.5}}
 </style>
 
 </head>
