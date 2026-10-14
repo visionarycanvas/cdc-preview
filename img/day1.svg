@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+<circle vector-effect="non-scaling-stroke" stroke-width="1.2" cx="72" cy="70" r="58" fill="#eef2f6" stroke="#9fb2c6"/>
+<circle vector-effect="non-scaling-stroke" stroke-width="1.5" cx="128" cy="70" r="58" stroke="#1f2a48"/>
+<circle vector-effect="non-scaling-stroke" stroke-width="1.2" cx="56" cy="70" r="28" fill="#d6e0ea" stroke="#6b92ac"/>
+<circle vector-effect="non-scaling-stroke" stroke-width="1.5" cx="146" cy="70" r="28" fill="#fcfcfb" stroke="#1f2a48"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M88 70 L91 70" stroke="#1f2a48"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M111 70 H118" stroke="#1f2a48" stroke-dasharray="2 2"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M91 70 Q100 61 109 70 Q100 79 91 70 Z" fill="#fcfcfb" stroke="#1f2a48"/>
+<circle cx="100" cy="70" r="2.6" fill="#1f2a48"/>
+</svg>

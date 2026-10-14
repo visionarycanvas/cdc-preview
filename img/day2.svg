@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M100 20 L38 128 H162 Z" fill="#eef2f6" stroke="#1f2a48" stroke-linejoin="round"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.5" cx="100" cy="128" rx="62" ry="7" fill="#eef2f6" stroke="#1f2a48"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="102" rx="47" ry="5.5" fill="#d6e0ea" stroke="#6b92ac"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="76" rx="32" ry="4.2" fill="#d6e0ea" stroke="#6b92ac"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="50" rx="17" ry="3" fill="#d6e0ea" stroke="#6b92ac"/>
+<path d="M100 2 L102.4 9.6 L110 12 L102.4 14.4 L100 22 L97.6 14.4 L90 12 L97.6 9.6 Z" fill="#e09e5e"/>
+</svg>

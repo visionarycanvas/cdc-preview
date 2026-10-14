@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140" fill="none">
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="70" rx="88" ry="38" fill="#eef2f6" stroke="#c9d6e2"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="70" rx="60" ry="24" fill="#e3eaf1" stroke="#b9c8d8"/>
+<ellipse vector-effect="non-scaling-stroke" stroke-width="1.2" cx="100" cy="70" rx="32" ry="12" fill="#fcfcfb" stroke="#9fb2c6"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M100 20 V58 M100 82 V120" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="88" y="10" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="88" y="120" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M14 70 H160" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="8" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="40" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="84" y="64" width="32" height="12" rx="6" fill="#d6e0ea" stroke="#1f2a48"/>
+<rect vector-effect="non-scaling-stroke" stroke-width="1.5" x="136" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/>
+<path vector-effect="non-scaling-stroke" stroke-width="1.5" d="M160 70 L194 56 M160 70 H196 M160 70 L194 84" stroke="#1f2a48"/>
+<circle cx="196" cy="70" r="2.4" fill="#e09e5e"/>
+</svg>
