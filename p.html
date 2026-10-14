@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="ja">
+<head><meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDC トップ試作</title>
+<style>
+@font-face{font-family:"Noto Sans JP";font-weight:400;font-display:swap;src:url(fonts/noto-sans-jp-japanese-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:500;font-display:swap;src:url(fonts/noto-sans-jp-japanese-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:700;font-display:swap;src:url(fonts/noto-sans-jp-japanese-700-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(fonts/jost-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(fonts/jost-latin-500-normal.woff2) format("woff2")}
+.phead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:64px;align-items:end;padding-bottom:56px;margin-bottom:8px}
+.phead+.rgrid{margin-top:48px !important}
+.phead h2{white-space:nowrap}
+@media (max-width:760px){.phead h2{white-space:normal}.phead{grid-template-columns:1fr;gap:24px;padding-bottom:24px}.phead h2{font-size:21px !important}}
+</style>
+
+<style>
+body{margin:0;background:#fcfcfb}
+a{color:#1f2a48}a:hover{color:#6b92ac}
+.cdc{font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;color:#1f2a48;font-size:15px;line-height:2.1;letter-spacing:.06em;word-break:auto-phrase;-webkit-font-smoothing:antialiased;background:#fcfcfb;overflow-x:clip}
+.en{font-family:Jost,Futura,sans-serif}
+.lbl{font-family:Jost,Futura,sans-serif;font-size:15px;letter-spacing:.06em;margin:0 0 20px;text-transform:uppercase}
+.wrap{max-width:1180px;margin:0 auto;padding:0 64px;box-sizing:border-box}
+.center{text-align:center}
+.h{font-size:34px;font-weight:700;letter-spacing:.16em;line-height:1.6;margin:0 0 36px;text-wrap:balance}
+.lines p{margin:0 0 18px}
+.alt{background:#eef0f3}
+.roof{display:block;width:100%;height:auto;margin-bottom:-2px}
+.fab{position:fixed;right:36px;bottom:36px;width:128px;height:128px;border-radius:50%;background:#1f2a48;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:17px;font-weight:700;line-height:1.5;text-decoration:none;z-index:40;letter-spacing:.08em}
+.fab:hover{color:#fff;background:#2c3a60}
+
+.fab small{font-family:Jost,sans-serif;font-size:11px;font-weight:400;letter-spacing:.2em;color:#b9c6d6}
+.nav a{text-decoration:none;font-family:Jost,sans-serif;font-size:13px;letter-spacing:.12em}
+.dab{position:absolute;pointer-events:none}
+.js .place{opacity:0}.js .place.in{animation:place 1.1s cubic-bezier(.3,1.2,.5,1) both;animation-delay:inherit}
+@keyframes place{0%{opacity:0;transform:translate(-120px,-40px) rotate(-320deg)}55%{opacity:1;transform:translate(10px,4px) rotate(18deg)}75%{transform:translate(-4px,0) rotate(-6deg)}100%{opacity:1;transform:none}}
+.drift{--r:0deg;--k:1}
+@keyframes drift{from{transform:translate(-120px,70px) rotate(-240deg)}to{transform:translate(120px,-70px) rotate(200deg)}}
+.js .rise{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}.js .rise.in{opacity:1;transform:none}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.s1{stroke-dasharray:1;stroke-dashoffset:1;animation:once 1.6s cubic-bezier(.45,.05,.55,.95) .3s forwards}
+.s2{stroke-dasharray:1;stroke-dashoffset:1;animation:once 1.1s cubic-bezier(.45,.05,.55,.95) 1.7s forwards}
+.d1{opacity:0;animation:fade .6s ease 2.7s forwards}
+.photoin{opacity:0;animation:fade 1.2s ease .2s forwards}
+@keyframes once{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+.js .draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.45,.05,.55,.95)}.js .draw.in{stroke-dashoffset:0}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.clearing{animation:clearing linear both;animation-timeline:--about;animation-range:cover 20% cover 60%}
+@keyframes clearing{from{opacity:1}to{opacity:0}}
+.bgfog{background:url(img/fog-road.jpg) center/cover no-repeat}
+.bgopen{background:url(img/clouds-sky.jpg) center/cover no-repeat}
+.bgdawn{background:url(img/dawn-full.jpg) center 55%/cover no-repeat}
+.ctagrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:112px;row-gap:56px;align-items:start}
+.footgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:112px;align-items:center}
+.ctabtn{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px;padding:0 10px 0 30px;border-radius:999px;background:#1f2a48;color:#fcfcfb;text-decoration:none;font-size:15px;font-weight:500;letter-spacing:.12em;transition:background .3s}
+.ctabtn:hover{background:#2c3a60}
+.ctago{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#e09e5e;color:#1f2a48;font-size:15px;transition:transform .3s}
+.ctabtn:hover .ctago{transform:translateX(4px)}
+.ophead{position:absolute;z-index:3;margin:0;writing-mode:vertical-rl;font-size:34px;font-weight:700;letter-spacing:.22em;line-height:2;color:#1f2a48;text-shadow:0 0 18px rgba(252,252,251,.75),0 0 2px rgba(252,252,251,.6);pointer-events:none;animation:ophead linear both;animation-timeline:--op;animation-range:contain 40% contain 54%}@keyframes ophead{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}@media (max-width:760px){.ophead{font-size:22px;right:8% !important;top:12% !important}}
+.opener{position:relative;margin-bottom:120px;height:calc(min(100vh,900px) * 3);view-timeline:--op}
+.openstick{position:sticky;top:0;height:min(100vh,900px);overflow:hidden}
+.openwrap{position:absolute;inset:0;filter:drop-shadow(0 28px 36px rgba(31,42,72,.26)) drop-shadow(0 6px 10px rgba(31,42,72,.14))}
+.openph{position:absolute;inset:0;overflow:hidden;transform-origin:var(--fx,50%) var(--fy,50%);animation:open linear both;animation-timeline:--op;animation-range:contain 8% contain 45%}
+.openimg{position:absolute;inset:0;background-position:var(--fx,50%) var(--fy,50%) !important;transform-origin:var(--fx,50%) var(--fy,50%);animation:openzoom linear both;animation-timeline:--op;animation-range:contain 0% contain 45%}
+@keyframes open{from{clip-path:polygon(calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) - 170px), var(--fx, 50%) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) + 170px), var(--fx, 50%) calc(var(--fy, 50%) + 170px), calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) + 170px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
+@keyframes opensp{from{clip-path:polygon(calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) - 115px), var(--fx, 50%) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) + 115px), var(--fx, 50%) calc(var(--fy, 50%) + 115px), calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) + 115px));transform:rotate(-4deg)}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%);transform:none}}
+.opener{--fx:var(--fx0,50%)}@media (max-width:760px){.opener{--fx:clamp(38%,var(--fx0,50%),62%)}}
+.opendeco{position:absolute;left:var(--fx,50%);top:var(--fy,50%);width:340px;height:340px;margin:-170px 0 0 -170px;pointer-events:none}
+.openframe{position:absolute;left:-14%;top:-14%;width:128%;height:128%;overflow:visible;animation:framesettle linear both;animation-timeline:--op;animation-range:contain 6% contain 42%}
+@keyframes framesettle{from{transform:rotate(4deg) scale(1)}to{transform:rotate(0) scale(1.12)}}
+.openframe .ofl{animation:ofl linear both;animation-timeline:--op;animation-range:contain 10% contain 26%}
+@keyframes ofl{from{stroke:#1f2a48}to{stroke:#fcfcfb}}
+.odab{position:absolute;display:block}
+@keyframes decogone{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
+@keyframes openzoom{from{transform:scale(1.3)}to{transform:scale(1)}}
+.depth{box-shadow:0 2px 4px rgba(31,42,72,.08),0 18px 34px -12px rgba(31,42,72,.30),0 44px 80px -32px rgba(31,42,72,.36)}
+.dab{filter:drop-shadow(0 6px 5px rgba(31,42,72,.18))}
+.flowtxt{animation:flowtxt linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+@keyframes flowtxt{from{transform:translate(calc(var(--fx) * -1),calc(var(--fy) * -1));opacity:.2}35%{opacity:1}to{transform:translate(var(--fx),var(--fy));opacity:1}}
+.js .h{clip-path:inset(0 0 100% 0);transform:translateY(24px);transition:clip-path .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}.js .h.in{clip-path:inset(0 0 -20% 0);transform:none}
+@keyframes hin{from{clip-path:inset(0 0 100% 0);transform:translateY(28px)}to{clip-path:inset(0 0 -20% 0);transform:none}}
+.js .tiltin{opacity:0;transform:translateY(60px) rotate(-6deg);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.3,1.25,.5,1)}.js .tiltin.in{opacity:1;transform:rotate(-1.5deg)}
+@keyframes tiltin{from{opacity:0;transform:translateY(60px) rotate(-5deg)}to{opacity:1;transform:rotate(-1.5deg)}}
+.rollby{--r:0deg;--k:-1}
+@keyframes rollby{from{transform:translate(-140px,60px) rotate(-260deg)}to{transform:translate(140px,-60px) rotate(220deg)}}
+.openmsg{position:absolute;left:64px;bottom:72px;color:#fcfcfb;text-shadow:0 2px 18px rgba(31,42,72,.45);animation:msgin linear both;animation-timeline:--op;animation-range:contain 52% contain 68%}
+.openmsg .en{display:block;font-family:Jost,sans-serif;font-size:15px;letter-spacing:.24em;margin-bottom:12px;opacity:.95}
+.openmsg .jp{display:block;font-size:30px;font-weight:500;letter-spacing:.14em;line-height:1.75}
+@keyframes msgin{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.js .framein{opacity:0;transform:scale(.72) rotate(-14deg);transition:opacity .5s ease,transform 1.1s cubic-bezier(.3,1.35,.45,1)}
+.js .framein.in{opacity:1;transform:none}
+.rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:64px;margin-top:88px}
+.rgrid{position:relative}
+.rgrid::before{content:"";position:absolute;left:130px;right:calc((100% - 128px) / 3);top:70px;border-top:1px dashed #b2b1ae}
+.rstep{position:relative}
+.ricon{width:140px;height:140px;margin:0 0 6px -10px;background:#fcfcfb;position:relative;transform:rotate(-3deg)}
+.rcap{margin:0 0 18px;font-size:12.5px;letter-spacing:.14em;color:#6b92ac}
+.ctafoot{background:#1f2a48;box-shadow:0 0 0 100vmax #1f2a48;clip-path:inset(0 -100vmax)}
+.fab{transition:transform .4s cubic-bezier(.3,1.5,.5,1),box-shadow .3s ease,background .3s ease}
+.fab{background:#1f2a48 !important;box-shadow:0 0 0 1px rgba(252,252,251,.5),0 2px 4px rgba(31,42,72,.12),0 14px 24px -8px rgba(31,42,72,.38),0 34px 56px -20px rgba(31,42,72,.4) !important}
+@media (hover:hover){.fab:hover{transform:scale(1.1);box-shadow:0 0 0 1px rgba(252,252,251,.6),0 0 0 6px #e09e5e,0 18px 30px -8px rgba(31,42,72,.42),0 42px 64px -22px rgba(31,42,72,.45) !important}}
+@media (prefers-reduced-motion:reduce){.js .mframe,.js .drift,.js .rollby{visibility:visible !important;animation:none !important}.fab{transition:none}}
+.jmobile{display:none;list-style:none;margin:0;padding:0 0 0 22px;border-left:1.5px solid #1f2a48}.jm-step{position:relative;padding:0 0 36px}.jm-step:before{content:"";position:absolute;left:-28px;top:6px;width:9px;height:9px;border-radius:50%;background:#1f2a48}.jm-step:last-child:before{background:#e09e5e}.jm-n{margin:0;font-size:12px;letter-spacing:.2em;color:#6b92ac}.jm-t{margin:2px 0 4px;font-size:17px;font-weight:700;letter-spacing:.06em;line-height:1.6}.jm-ph{margin:0 0 14px;font-size:12px;color:#5b6478;letter-spacing:.06em}.jm-c,.jm-a{margin:0 0 8px;font-size:14px;line-height:1.9}.jm-c{font-weight:700}.jm-a{color:#8a93a6}.jm-k{display:block;font-size:11px;font-weight:400;letter-spacing:.12em;color:#6b92ac}.jm-a .jm-k{color:#a9b3c3}
+@media (min-width:761px){.vt{writing-mode:vertical-rl;display:inline-block;text-align:start;letter-spacing:.2em;line-height:1.9;margin:8px auto 56px !important}.js .vt{clip-path:inset(0 0 100% 0)}.js .vt.in{clip-path:inset(-10% -20% -10% -20%)}}
+.ctagrid .vt{margin:0 !important;justify-self:start}
+.jinfo{margin-top:28px;border-top:1px solid #1f2a48}.ji-body b{font-size:17px;letter-spacing:.06em}.ji-body .ji-a{font-size:16px;letter-spacing:.04em}.ji-steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid rgba(31,42,72,.14)}.ji-steps span{padding:14px 4px 12px;font-family:Jost,sans-serif;font-size:13px;letter-spacing:.16em;color:#a9b3c3;transition:color .3s}.ji-steps span small{display:block;font-family:"Noto Sans JP",sans-serif;font-size:12px;letter-spacing:.06em;margin-top:2px}.ji-steps span.on{color:#1f2a48}.ji-steps span.on small{font-weight:700}.ji-bar{position:absolute;left:0;bottom:-2px;width:25%;height:3px;background:#6b92ac;transition:transform .45s cubic-bezier(.3,1.3,.5,1)}.ji-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;padding:20px 0 4px}.ji-body.swap{animation:jiswap .45s cubic-bezier(.22,1,.36,1)}@keyframes jiswap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.jinfo p{margin:0;transition:opacity .2s}.jinfo .k{display:block;font-size:11px;letter-spacing:.14em;color:#6b92ac;margin-bottom:2px}
+@media (hover:hover){.cap{transition:translate .35s cubic-bezier(.3,1.4,.5,1),scale .35s cubic-bezier(.3,1.4,.5,1),box-shadow .3s ease,opacity .3s ease;cursor:default}.flowin:has(.cap:hover) .cap{opacity:.45}.flowin:has(.cap:hover) .cap:hover{opacity:1;translate:0 -5px;scale:1.04;box-shadow:0 2px 4px rgba(31,42,72,.08),0 16px 28px -10px rgba(31,42,72,.35);z-index:2;position:relative}.flowin:has(.cap:hover) .lane:has(.cap:hover) > p{color:#6b92ac}}
+@media (min-width:761px){.flow{overflow:visible !important}}
+.jbox{max-width:min(100%,calc((100vh - 300px) * 1.6));margin:0 auto}@media (min-width:761px){.jbox .ji-steps span{padding:10px 4px 9px}.jbox .ji-body{padding:18px 0 0;gap:40px}.jinfo{margin-top:16px}}
+.hdr{transition:padding .35s ease,background .35s ease,box-shadow .35s ease}.hdr.scrolled{padding-top:14px !important;padding-bottom:14px !important;background:rgba(252,252,251,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(31,42,72,.08)}
+@media (max-width:760px){.mframe{display:none !important}}
+.pfwrap{position:relative;isolation:isolate}.pfwrap img{position:relative;z-index:1}.pfr{position:absolute;inset:-7% -6%;width:112%;height:114%;overflow:visible;z-index:0;pointer-events:none;transform:rotate(var(--r));opacity:0;transition:opacity 1s ease .5s,transform 1.4s cubic-bezier(.2,.7,.2,1) .5s}.pfr-r{transform:rotate(var(--r)) translate(26px,-40px)}.pfr-l{transform:rotate(var(--r)) translate(-26px,-40px)}.in .pfr,.pfwrap:has(.in) .pfr{opacity:.7;transform:rotate(var(--r)) translate(var(--dx,14px),-18px)}.pfr-l{--dx:-14px}@media (max-width:760px){.pfr{inset:-5% -4%;width:108%;height:110%}}
+.mframe{position:absolute;pointer-events:none;z-index:-1;overflow:visible;transform:rotate(var(--r));}@keyframes mfloat{from{transform:translate(calc(var(--k,1) * -70px),80px) rotate(calc(var(--r) - var(--k,1) * 70deg))}to{transform:translate(calc(var(--k,1) * 70px),-80px) rotate(calc(var(--r) + var(--k,1) * 70deg))}}@media (max-width:760px){.mframe{width:calc(var(--s,1) * 45%) !important;height:auto !important;aspect-ratio:1}}@media (prefers-reduced-motion:reduce){.mframe{animation:none}}
+@keyframes wob{0%,100%{transform:rotate(0)}8%{transform:rotate(-16deg) translateY(-3px)}18%{transform:rotate(14deg)}29%{transform:rotate(-12deg) translateY(-1px)}40%{transform:rotate(10deg)}51%{transform:rotate(-8deg)}62%{transform:rotate(6deg)}73%{transform:rotate(-4deg)}84%{transform:rotate(2.5deg)}93%{transform:rotate(-1deg)}}.dab.wob{animation:wob 1.6s ease-in-out both !important}
+@keyframes droproll{0%{opacity:0;transform:translate(calc(var(--k,1) * -140px),-180px) rotate(calc(var(--r,0deg) - var(--k,1) * 200deg))}45%{opacity:1;transform:translate(calc(var(--k,1) * 12px),6px) rotate(calc(var(--r,0deg) + var(--k,1) * 16deg))}62%{transform:translate(calc(var(--k,1) * -6px),-14px) rotate(calc(var(--r,0deg) - var(--k,1) * 6deg))}78%{transform:translate(calc(var(--k,1) * 3px),2px) rotate(calc(var(--r,0deg) + var(--k,1) * 3deg))}100%{opacity:1;transform:translate(0,0) rotate(var(--r,0deg))}}.js .mframe,.js .drift,.js .rollby{visibility:hidden}.js .mframe.in,.js .drift.in,.js .rollby.in{visibility:visible;animation:droproll 1.5s cubic-bezier(.33,.0,.3,1) both}
+.mistlayer{background:url(img/fog-road.jpg) 70% 38%/cover no-repeat}
+.cdc svg:not(.logo) path,.cdc svg:not(.logo) line,.cdc svg:not(.logo) circle,.cdc svg:not(.logo) ellipse,.cdc svg:not(.logo) rect{vector-effect:non-scaling-stroke}
+.fvimg{background:url(img/torii-sea.jpg) center/cover no-repeat}
+.bgcape{background:url(img/blue-cape.jpg) center 70%/cover no-repeat}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.menu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px 64px}
+.grp{display:grid;grid-template-columns:96px minmax(0,1fr);gap:20px;align-items:start}
+.badge{position:relative;width:88px;height:72px;display:flex;align-items:center;justify-content:center}
+.badge svg{position:absolute;inset:0;width:100%;height:100%}
+.badge span{position:relative;font-family:Jost,sans-serif;font-size:13px;font-weight:500;letter-spacing:.04em;color:#1f2a48}
+.item{background:#fcfcfb;padding:16px 22px;margin-bottom:6px;display:grid;grid-template-columns:minmax(0,1fr);gap:6px;font-size:15px;line-height:1.7}
+.item small{display:block;font-size:12px;color:#5f6b82;margin-top:2px}
+.item > span:last-child{white-space:normal !important;font-size:13px;font-weight:700;color:#1f2a48}
+.item > span:last-child:before{content:"→ ";color:#e09e5e}
+.flow{padding:0 0 24px}
+.axis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-bottom:1px solid #1f2a48;padding-bottom:14px;margin-bottom:24px;font-size:13px;text-align:center;line-height:1.6}
+.axis small{display:block;font-family:Jost,sans-serif;font-size:11px;letter-spacing:.1em;color:#6b92ac}
+.lane{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center;margin-bottom:14px}
+.lane > p{margin:0;font-size:13px;line-height:1.5;font-weight:700}
+.lane > p small{display:block;font-weight:400;color:#5f6b82;font-size:11px}
+.track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.cap{height:60px;border-radius:999px;display:flex;align-items:center;justify-content:center;transform-origin:left center;animation:grow linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+.cap span{padding:0 16px;font-size:13px;font-weight:700;letter-spacing:.08em;line-height:1.5;text-align:center}
+.cap{height:76px !important}
+.lane{grid-template-columns:130px minmax(0,1fr) !important;margin-bottom:20px !important}
+.you{border:1px solid #1f2a48;background:#fcfcfb;font-size:13px;font-weight:700;letter-spacing:.06em;line-height:1.5;text-align:center;padding:0 18px}
+.you + .you{position:relative}
+.you + .you:before{content:"";position:absolute;left:-9px;top:50%;width:10px;border-top:1px solid #1f2a48}
+@keyframes grow{from{clip-path:inset(-40px 100% -40px -40px round 999px)}to{clip-path:inset(-40px -40px -40px -40px round 999px)}}
+.daytabs{display:grid;grid-template-columns:270px minmax(0,1fr);gap:48px;margin-top:72px}
+.daytabs input{position:absolute;opacity:0;pointer-events:none}
+.dlist{display:flex;flex-direction:column;border-top:1px solid #1f2a48}
+.dlist label{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid #d5dbe4;font-size:14px;cursor:pointer}
+.dlist label b{font-family:Jost,sans-serif;font-weight:500;font-size:12px;letter-spacing:.08em;color:#6b92ac;min-width:78px;flex:none}
+.dlist label:after{content:"";width:8px;height:8px;border-radius:50%;background:transparent}
+.dlist label:hover{color:#6b92ac}
+.pnl{display:none;grid-template-columns:minmax(0,1fr) 220px;align-items:center;border-top:1px solid #1f2a48;border-bottom:1px solid #d5dbe4;padding:48px 8px 48px 8px;gap:56px;min-height:340px;box-sizing:border-box}
+.pnl h3{margin:0 0 6px;font-size:20px;letter-spacing:.1em}
+.pnl .q{margin:0 0 18px;font-size:14px;color:#6b92ac;font-weight:700}
+.pnl .d{margin:0 0 18px;font-size:14px}
+.pnl .r{margin:0;font-size:14px;font-weight:700}
+.pnl .r:before{content:"→ ";color:#e09e5e}
+.pnl img,.pnl .ic{width:100%;height:190px;object-fit:contain}
+#t0:checked ~ .dlist label[for=t0],#t1:checked ~ .dlist label[for=t1],#t2:checked ~ .dlist label[for=t2],#t3:checked ~ .dlist label[for=t3],#t4:checked ~ .dlist label[for=t4],#t5:checked ~ .dlist label[for=t5],#t6:checked ~ .dlist label[for=t6]{font-weight:700}
+#t0:checked ~ .dlist label[for=t0]:after,#t1:checked ~ .dlist label[for=t1]:after,#t2:checked ~ .dlist label[for=t2]:after,#t3:checked ~ .dlist label[for=t3]:after,#t4:checked ~ .dlist label[for=t4]:after,#t5:checked ~ .dlist label[for=t5]:after,#t6:checked ~ .dlist label[for=t6]:after{background:#1f2a48}
+#t0:checked ~ .pnls .p0,#t1:checked ~ .pnls .p1,#t2:checked ~ .pnls .p2,#t3:checked ~ .pnls .p3,#t4:checked ~ .pnls .p4,#t5:checked ~ .pnls .p5,#t6:checked ~ .pnls .p6{display:grid;animation:fade .5s ease}
+.daytabs input:focus-visible ~ .dlist{outline:2px solid #6b92ac;outline-offset:4px}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px}
+table{border-collapse:collapse;width:100%}
+td,th{border-bottom:1px solid #dfe3ea;padding:18px 12px;text-align:left;vertical-align:top;font-weight:400;font-size:14px;line-height:1.8}
+.pill{display:flex;align-items:center;justify-content:space-between;gap:24px;min-width:300px;height:56px;padding:0 28px;border-radius:999px;text-decoration:none;font-weight:700;letter-spacing:.08em;box-sizing:border-box}
+@media (max-width:760px){.jmobile{display:block}.charthint{display:none !important}#journey .chart{display:none}#journey .chartwrap,#journey .jinfo{display:none}.dlist{display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px !important;overflow:visible !important;border-top:1px solid #1f2a48 !important}.dlist label{padding:12px 2px !important;font-size:13px !important;white-space:normal !important;border-radius:0 !important;border:0 !important;border-bottom:1px solid #d5dbe4 !important;background:none !important;flex-direction:column;align-items:flex-start !important;gap:2px !important}.dlist label b{min-width:0 !important}.cdc{font-size:14px;line-height:2}.wrap{padding:0 20px !important}.hdrwm .en{font-size:12px !important;letter-spacing:.18em !important}.hdrwm span:last-child{font-size:8px !important;letter-spacing:.3em !important}.flow{display:none !important}table.cmp{min-width:0 !important}table.cmp thead{display:none}table.cmp,table.cmp tbody,table.cmp tr,table.cmp th,table.cmp td{display:block;width:auto !important}table.cmp tr{padding:20px 0;border-bottom:1px solid rgba(31,42,72,.14)}table.cmp th{padding:0 0 10px !important;border:0 !important;font-size:15px}table.cmp td{padding:6px 0 !important;border:0 !important}table.cmp td::before{display:block;font-size:11px;letter-spacing:.12em;font-weight:400;margin-bottom:2px}table.cmp td:nth-of-type(1)::before{content:"一般的な転職エージェント";color:#8a93a6}table.cmp td:nth-of-type(2)::before{content:"Career Design Canvas";font-family:Jost,sans-serif;color:#6b92ac}table.cmp td div[style*="repeat(4"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}.rgrid{grid-template-columns:minmax(0,1fr);gap:48px;margin-top:56px}.rstep{margin-top:0 !important}.rgrid::before{display:none}.ricon{width:110px;height:110px}.openmsg{left:24px;bottom:96px;right:24px}.openmsg .jp{font-size:22px}.openmsg .en{font-size:12px}.fvlogo{width:72vw !important;height:72vw !important}.fvlogo .dab{transform:scale(.7)}.fvname .en{font-size:15px !important;letter-spacing:.2em !important}.openph{animation-name:opensp}.opendeco{width:230px;height:230px;margin:-115px 0 0 -115px}.odab{transform:scale(.7)}
+.wrap{padding:0 24px}
+.h{font-size:24px}
+.nav{display:none !important}
+.two,.menu{grid-template-columns:minmax(0,1fr);gap:40px}
+.strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.chart{min-width:760px}
+.fab{width:96px;height:96px;font-size:14px;right:16px;bottom:16px}.fab small{font-size:9px;letter-spacing:.1em}
+.fvph{width:78vw !important}
+.pill{min-width:0;width:100%;white-space:nowrap;font-size:14px;padding:0 22px}
+.flow{padding:28px 20px}
+.rrr{font-size:15px !important;letter-spacing:.06em !important}
+.flowin{min-width:720px}
+.daytabs{grid-template-columns:minmax(0,1fr);gap:20px;margin-top:48px}
+.dlist{flex-direction:row;overflow-x:auto;border-top:0;gap:8px}
+.dlist label{flex:none;border:1px solid #d5dbe4;border-radius:999px;padding:6px 14px}
+.dlist label:after{display:none}
+.pnl{grid-template-columns:minmax(0,1fr);padding:28px 22px;gap:20px}
+.pnl img,.pnl .ic{height:140px}
+.h1c{font-size:24px !important;letter-spacing:.1em !important}
+.ctah{font-size:24px !important;letter-spacing:.1em !important}
+.ctabox{padding:72px 36px !important}
+.ctagrid{grid-template-columns:minmax(0,1fr) !important;row-gap:40px !important}.footgrid{grid-template-columns:minmax(0,1fr) !important;row-gap:32px !important}.ctagrid>:nth-child(3){order:1}.ctagrid>:nth-child(2){order:2}.ctagrid>:nth-child(4){order:3}.ctafoot{margin-top:120px !important;padding-bottom:120px !important}.ctacurve{left:30% !important;width:200px !important;height:40px !important}
+.info{left:24px !important;right:24px;bottom:24px !important;font-size:12px !important}
+}
+@media (prefers-reduced-motion:reduce){.openmsg{animation:none}.js .framein,.js .rise,.js .h,.js .tiltin,.js .place{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important;animation:none!important}.js .draw{stroke-dashoffset:0!important}.flowtxt,.h,.tiltin,.rollby{animation:none}.openph,.openimg{animation:none}.odab{display:none}.place,.drift,.rise,.draw,.clearing{animation:none}.s1,.s2{animation:none;stroke-dashoffset:0}.d1,.photoin{animation:none;opacity:1}.draw{stroke-dasharray:none}}
+
+/* B：額装（穂垂亭ふう）— 細い紺の線＋白いマット、マットの角だけ丸める。上辺にロゴの切れ目 */
+.kf{position:relative;isolation:isolate;--bg:#fcfcfb;--gap-l:24%;--gap-r:64%}
+.kf::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:linear-gradient(90deg,#1f2a48 var(--gap-l),transparent var(--gap-l) var(--gap-r),#1f2a48 var(--gap-r)) top/100% 1px no-repeat,
+ linear-gradient(#1f2a48,#1f2a48) 0 1px/100% calc(100% - 1px) no-repeat}
+.kf::after{content:"";position:absolute;inset:1px;z-index:-1;background:#fff;border-radius:4px;pointer-events:none}
+.pfwrap.kf{padding:6px}
+.pfwrap.kf img{transform:none !important;box-shadow:none !important}
+.kfbox{padding:56px 48px !important}
+/* まっすぐにする */
+.ricon{transform:none !important}
+.js .tiltin.in,.tiltin.in{transform:none !important}
+.framein{transform:scale(.9)}
+@keyframes open{from{clip-path:polygon(calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) - 170px), var(--fx, 50%) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) + 170px), var(--fx, 50%) calc(var(--fy, 50%) + 170px), calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) + 170px))}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%)}}
+@keyframes opensp{from{clip-path:polygon(calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) - 115px), var(--fx, 50%) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) + 115px), var(--fx, 50%) calc(var(--fy, 50%) + 115px), calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) + 115px))}to{clip-path:polygon(0% 8%, 60% 0%, 100% 7%, 100% 93%, 38% 100%, 0% 92%)}}
+@keyframes framesettle{from{transform:scale(1)}to{transform:scale(1.12)}}
+
+/* c3: 写真は途中で止め、言葉は紙の上に置く */
+.opener{height:calc(min(100vh,900px) * 1.9) !important;margin-bottom:40px !important}
+.opL{--L:5%;--R:61%;--T:13%;--B:89%;--fy:64% !important}
+.opR{--L:39%;--R:95%;--T:13%;--B:89%}
+@keyframes open{from{clip-path:polygon(calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) - 170px), var(--fx, 50%) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) - 170px), calc(var(--fx, 50%) + 170px) calc(var(--fy, 50%) + 170px), var(--fx, 50%) calc(var(--fy, 50%) + 170px), calc(var(--fx, 50%) - 170px) calc(var(--fy, 50%) + 170px))}to{clip-path:polygon(calc(var(--L) + (var(--R) - var(--L)) * 0) calc(var(--T) + (var(--B) - var(--T)) * 0.08), calc(var(--L) + (var(--R) - var(--L)) * 0.6) calc(var(--T) + (var(--B) - var(--T)) * 0), calc(var(--L) + (var(--R) - var(--L)) * 1) calc(var(--T) + (var(--B) - var(--T)) * 0.07), calc(var(--L) + (var(--R) - var(--L)) * 1) calc(var(--T) + (var(--B) - var(--T)) * 0.93), calc(var(--L) + (var(--R) - var(--L)) * 0.38) calc(var(--T) + (var(--B) - var(--T)) * 1), calc(var(--L) + (var(--R) - var(--L)) * 0) calc(var(--T) + (var(--B) - var(--T)) * 0.92))}}
+@keyframes opensp{from{clip-path:polygon(calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) - 115px), var(--fx, 50%) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) - 115px), calc(var(--fx, 50%) + 115px) calc(var(--fy, 50%) + 115px), var(--fx, 50%) calc(var(--fy, 50%) + 115px), calc(var(--fx, 50%) - 115px) calc(var(--fy, 50%) + 115px))}to{clip-path:polygon(calc(var(--L) + (var(--R) - var(--L)) * 0) calc(var(--T) + (var(--B) - var(--T)) * 0.08), calc(var(--L) + (var(--R) - var(--L)) * 0.6) calc(var(--T) + (var(--B) - var(--T)) * 0), calc(var(--L) + (var(--R) - var(--L)) * 1) calc(var(--T) + (var(--B) - var(--T)) * 0.07), calc(var(--L) + (var(--R) - var(--L)) * 1) calc(var(--T) + (var(--B) - var(--T)) * 0.93), calc(var(--L) + (var(--R) - var(--L)) * 0.38) calc(var(--T) + (var(--B) - var(--T)) * 1), calc(var(--L) + (var(--R) - var(--L)) * 0) calc(var(--T) + (var(--B) - var(--T)) * 0.92))}}
+.openph{animation-range:contain 0% contain 50% !important}
+.ophead{text-shadow:none !important;top:50% !important;bottom:auto !important;margin-top:-6em !important;font-size:32px;animation-range:contain 38% contain 58% !important}
+.opL .ophead{right:calc((100% - 61%) / 2 - 1.2em) !important;left:auto !important}
+.opR .ophead{left:calc(39% / 2 - 1.2em) !important;right:auto !important}
+.opmat{position:absolute;left:var(--L);right:calc(100% - var(--R));top:var(--T);bottom:calc(100% - var(--B));opacity:0;z-index:0}
+.openwrap{z-index:1}
+.opendeco{z-index:2}
+@media (max-width:760px){
+ .opL,.opR{--L:5%;--R:95%;--T:12%;--B:62%;--fx:50% !important;--fy:37% !important}
+ .opL{--fyimg:72%} .opR{--fyimg:60%}
+ .openimg{inset:var(--T) calc(100% - var(--R)) calc(100% - var(--B)) var(--L) !important;background-position:var(--fx0) var(--fyimg) !important;transform:none !important}
+ .ophead,.opR .ophead,.opL .ophead{writing-mode:horizontal-tb;top:calc(62% + 28px) !important;bottom:auto !important;margin:0 !important;font-size:20px;letter-spacing:.12em;line-height:1.9;left:6% !important;right:6% !important}
+}
+.opmat{opacity:1;left:calc(var(--L) - 6px);right:calc(100% - var(--R) - 6px);top:calc(var(--T) - 6px);bottom:calc(100% - var(--B) - 6px);animation:opmat linear both;animation-timeline:--op;animation-range:contain 36% contain 52%;filter:drop-shadow(0 22px 30px rgba(31,42,72,.22)) drop-shadow(0 4px 8px rgba(31,42,72,.10))}
+@keyframes opmat{from{opacity:0}to{opacity:1}}
+.opmat svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.openwrap{filter:none !important}
+</style>
+
+</head>
+<body>
+
+<div class="cdc" style="position: relative">
+
+<header class="hdr" style="position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding: 28px 40px; display: flex; justify-content: space-between; align-items: center">
+<a href="#top" style="display: flex; align-items: center; gap: 12px; text-decoration: none" aria-label="Career Design Canvas トップへ">
+<svg class="logo" style="overflow: visible; shape-rendering: geometricPrecision" width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5" style="vector-effect: non-scaling-stroke"></path><path d="M18 44C26 40 30 26 39 22.4" stroke="#1f2a48" stroke-width="1.5" stroke-linecap="round" style="vector-effect: non-scaling-stroke"></path><circle cx="45" cy="19.6" r="3" fill="#1f2a48"></circle></svg>
+<span class="hdrwm" style="display: flex; flex-direction: column; line-height: 1.3"><span class="en" style="font-size: 16px; letter-spacing: .3em; font-weight: 500">CAREER DESIGN CANVAS</span><span style="font-size: 10px; letter-spacing: .5em; color: #5f6b82">キャリアデザインキャンバス</span></span>
+</a>
+<nav class="nav" style="display: flex; gap: 36px" aria-label="メニュー">
+<a href="#about">ABOUT</a><a href="#program">PROGRAM</a><a href="#journey">JOURNEY</a><a href="#profile">PROFILE</a><a href="#faq">FAQ</a><a href="#consult">CONSULTATION</a>
+</nav>
+</header>
+
+<a class="fab" href="#consult">無料相談<small>FREE · 60MIN</small></a>
+
+<section id="top" style="position: relative; min-height: 940px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px">
+<div class="fvlogo" style="position: relative; width: 520px; height: 520px">
+<svg class="framein" viewBox="0 0 64 64" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" role="img" aria-label="Career Design Canvas"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width=".125" style="vector-effect: none"></path><path class="s2" pathLength="1" d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width=".125" stroke-linecap="round" style="vector-effect: none"></path><circle class="d1" cx="44" cy="20" r="1.7" fill="#1f2a48"></circle></svg>
+<svg class="dab place" style="left: -110px; top: 30%; width: 78px" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg><svg class="dab place" style="right: -80px; bottom: 14%; width: 56px" viewBox="0 0 100 70" aria-hidden="true"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg><svg class="dab place" style="right: 10%; top: -60px; width: 38px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg><svg class="dab place" style="left: 18%; bottom: -50px; width: 26px" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#b2b1ae"></path></svg></div>
+<p class="d1 fvname" style="margin: 0; text-align: center; line-height: 1.6"><span class="en" style="display: block; font-size: 22px; letter-spacing: .32em; font-weight: 500">CAREER DESIGN CANVAS</span><span style="display: block; font-size: 11px; letter-spacing: .5em; color: #5f6b82; margin-top: 6px">キャリアデザインキャンバス</span></p>
+<a class="info" href="#consult" style="position: absolute; left: 40px; bottom: 48px; display: flex; align-items: center; gap: 14px; text-decoration: none; font-size: 13px; border-bottom: 1px solid #1f2a48; padding-bottom: 8px"><span class="en" style="letter-spacing: .08em; white-space: nowrap">( INFO )</span>無料相談（オンライン60分）を受け付けています<span aria-hidden="true">→</span></a>
+</section>
+
+<section id="about" class="opener opL" style="--fx0: 31%; --fy: 72%"><div class="openstick"><div class="opmat" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,8 60,0 100,7 100,93 38,100 0,92" fill="#fff"/><path d="M64 0.7L100 7L100 93L38 100L0 92L0 8L24 4.8" fill="none" stroke="#1f2a48" stroke-width="1" vector-effect="non-scaling-stroke"/></svg></div><h1 class="ophead">「何者か」になるより、<br>あなたの「色」で生きる。</h1><div class="openwrap"><div class="openph"><div role="img" aria-label="霧の山道" class="openimg mistlayer"></div></div></div><div class="opendeco framein" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
+
+<section style="position: relative; isolation: isolate; padding: 144px 0 120px"><svg class="dab drift" style="left: 6%; top: 200px; width: 90px" viewBox="0 0 100 70" aria-hidden="true"><path d="M8 30C10 8 44 0 66 8s30 34 10 50-48 8-60-6S6 44 8 30z" fill="#e09e5e"></path></svg>
+<svg class="dab drift" style="right: 8%; top: 120px; width: 60px" viewBox="0 0 100 70" aria-hidden="true"><path d="M6 40C2 18 30 4 54 8s44 14 38 36-40 26-62 20S8 54 6 40z" fill="#6b92ac"></path></svg>
+<div class="wrap center rise">
+<p class="lbl">( CONCEPT )</p>
+<div class="lines">
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;">なんか​うまく​いかない。​悪くはないけれど、​何か​違う。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;">示された​「正解」に​向かって、​一生懸命頑張ってきた。<br>それなのに、​ふとした​瞬間に​「このままで​いいのかな」と​思う。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;">その​迷いは、​あなたの​内側に<br>「本当は​こう​ありたい」と​いう​願いが​あるから​生まれる​もの。</span></p>
+<p style="margin-top: 36px; font-weight: 700; font-size: 17px"><span style="word-break: keep-all; overflow-wrap: anywhere;">重要な​ことを、​大切に​扱う​キャリア支援。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;">転職するか​どうかを​決める​前に、​あなたが​本当に​満た​したい​ものを、<br>潜在意識まで​含めて​一緒に​描きます。</span></p>
+</div>
+</div>
+</section>
+
+<svg class="roof" viewBox="0 0 1440 150" aria-hidden="true"><path d="M0 150V96L880 18L1440 88V150Z" fill="#eef0f3"></path><path id="rf1" d="M900 30C1000 34 1120 48 1300 72" fill="none"></path><text class="flowtxt" style="--fx: 150px; --fy: 16px" font-family="Jost, sans-serif" font-size="30" fill="#1f2a48" letter-spacing="1"><textPath href="#rf1">Draw your own color.</textPath></text></svg>
+<section class="alt" style="position: relative; isolation: isolate; padding: 104px 0 144px"><div class="wrap two">
+<div class="rise kf kfbox" style="position: relative; padding: 56px 48px; --bg: #eef0f3">
+<svg class="framein" style="display:none" viewBox="0 0 64 64" preserveAspectRatio="none" fill="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible" aria-hidden="true"><path d="M40 2H62V62H2V2H16" stroke="#1f2a48" stroke-width="1.5" vector-effect="non-scaling-stroke"></path></svg>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; font-size: 13px; line-height: 1.6; text-align: center">
+<div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 110px; object-fit: contain" viewBox="0 0 200 140" fill="none"><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="72" cy="70" r="58" fill="#eef2f6" stroke="#9fb2c6"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="128" cy="70" r="58" stroke="#1f2a48"/><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="56" cy="70" r="28" fill="#d6e0ea" stroke="#6b92ac"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="146" cy="70" r="28" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M88 70 L91 70" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M111 70 H118" stroke="#1f2a48" stroke-dasharray="2 2"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M91 70 Q100 61 109 70 Q100 79 91 70 Z" fill="#fcfcfb" stroke="#1f2a48"/><circle cx="100" cy="70" r="2.6" fill="#1f2a48"/></svg><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY1</span><br>悩みの根源がわかる</p></div>
+<div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 110px; object-fit: contain" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 L38 128 H162 Z" fill="#eef2f6" stroke="#1f2a48" stroke-linejoin="round"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="128" rx="62" ry="7" fill="#eef2f6" stroke="#1f2a48"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="102" rx="47" ry="5.5" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="76" rx="32" ry="4.2" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="50" rx="17" ry="3" fill="#d6e0ea" stroke="#6b92ac"/><path d="M100 2 L102.4 9.6 L110 12 L102.4 14.4 L100 22 L97.6 14.4 L90 12 L97.6 9.6 Z" fill="#e09e5e"/></svg><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY2</span><br>本当に大事にしたいものがわかる</p></div>
+<div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 110px; object-fit: contain" viewBox="0 0 200 140" fill="none"><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="88" ry="38" fill="#eef2f6" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="60" ry="24" fill="#e3eaf1" stroke="#b9c8d8"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="32" ry="12" fill="#fcfcfb" stroke="#9fb2c6"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 V58 M100 82 V120" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="10" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="120" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M14 70 H160" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="8" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="40" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="84" y="64" width="32" height="12" rx="6" fill="#d6e0ea" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="136" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M160 70 L194 56 M160 70 H196 M160 70 L194 84" stroke="#1f2a48"/><circle cx="196" cy="70" r="2.4" fill="#e09e5e"/></svg><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY3</span><br>うまくいくパターンが手に入る</p></div>
+<div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 110px; object-fit: contain" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="2" d="M92 80 L58 30 M108 80 L142 30" stroke="#c9d6e2" stroke-linecap="round"/><path vector-effect="non-scaling-stroke" stroke-width=".8" d="M100 76 V40" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="24" rx="72" ry="14" fill="#fcfcfb" stroke="#1f2a48"/><text x="100" y="28" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="10" letter-spacing="1.5" fill="#1f2a48">VISION</text><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="84" rx="40" ry="9" fill="#eef2f6" stroke="#1f2a48"/><text x="100" y="87.5" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="8" letter-spacing="1.2" fill="#1f2a48">MISSION</text><rect vector-effect="non-scaling-stroke" stroke-width="1" x="76" y="104" width="48" height="10" rx="5" fill="#d6e0ea" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 114 V134 M100 120 Q92 126 84 134 M100 120 Q108 126 116 134" stroke="#1f2a48"/></svg><p style="margin: 10px 0 0"><span class="en" style="color: #6b92ac">DAY4</span><br>キャリアの羅針盤が手に入る</p></div>
+</div>
+<svg class="dab place" style="right: -18px; top: -22px; width: 44px" viewBox="0 0 100 70" aria-hidden="true"><path d="M8 30C10 8 44 0 66 8s30 34 10 50-48 8-60-6S6 44 8 30z" fill="#e09e5e"></path></svg>
+</div>
+<div class="rise">
+<p class="lbl">( CDC )</p>
+<h2 class="h" style="font-size: 30px"><span style="word-break: keep-all; overflow-wrap: anywhere;">対話、​そして​図解。</span></h2>
+<div class="lines">
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;">Career Design Canvas は、​自分の​軸を​つくる​ところから、​転職、​そして​入社後の​活躍までを​伴走する​キャリア支援です。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;"><b>入口は、​求人紹介ではなく​「聴く​こと」から。</b><br>まずモヤモヤを、あるが​ままに​聴く​ことから​始めます。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;"><b>診断ではなく、​自分の​手で​構造化する。</b><br>固定観念・欲求・​得意の​仕組みを、​潜在意識まで​含めて​図に​描き、​編集できる​地図と​して​持ち帰ります。</span></p>
+<p><span style="word-break: keep-all; overflow-wrap: anywhere;"><b>転職支援は、​自己理解の​後に​ついてくる。</b><br>羅針盤が​できてから、​キャリアコーチが​その先を​一緒に​描き、​会社に​つなぎます。</span></p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="alt" style="padding: 0 0 0">
+<svg class="roof" viewBox="0 0 1440 150" aria-hidden="true" style="background: #eef0f3"><path d="M0 150V40L520 120L1440 30V150Z" fill="#fcfcfb"></path><path id="rf2" d="M120 40C260 70 380 96 520 104" fill="none"></path><text class="flowtxt" style="--fx: 130px; --fy: 28px" font-family="Jost, sans-serif" font-size="30" fill="#1f2a48" letter-spacing="1"><textPath href="#rf2">One canvas for you.</textPath></text></svg>
+</section>
+
+<section id="program" style="position: relative; isolation: isolate; padding: 120px 0 144px">
+<div class="wrap" style="max-width: 1100px">
+<div class="phead rise"><div><p class="lbl" style="margin: 0 0 14px">( PROGRAM )</p><h2 class="rrr" style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: .12em; line-height: 1.6">Reflect · Re-Sketch · Realize</h2></div><p style="margin: 0; font-size: 16px; line-height: 2.1"><span style="word-break: keep-all; overflow-wrap: anywhere;">CDCは、​キャンバスに​絵を​描くように、<br>キャリアを​描き直すプログラムです。<br>3つの​言葉は、​その​描き方の​順番です。</span></p></div>
+<div class="rgrid">
+<div class="rstep rise"><div class="ricon"><svg class="framein" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="width: 100%; height: 100%; overflow: visible"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1"></path><circle cx="31" cy="31" r="10" stroke="#1f2a48" stroke-width="1"></circle><path d="M38.2 38.2L46 46" stroke="#1f2a48" stroke-width="1" stroke-linecap="round"></path></svg></div><p class="en" style="margin: 0; font-size: 13px; letter-spacing: .2em; color: #6b92ac">01</p><p style="margin: 6px 0 2px; font-family: Jost, sans-serif; font-size: 34px; font-weight: 500; letter-spacing: .04em">Reflect</p><p style="margin: 0 0 18px; font-size: 12.5px; letter-spacing: .2em; color: #5b6478"><span style="word-break: keep-all; overflow-wrap: anywhere;">リフレクト ／ 映す・​見つめる</span></p><p style="margin: 0 0 12px; font-weight: 700; font-size: 16px; border-top: 1px solid #1f2a48; padding-top: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">探求・観察・深く​潜る</span></p><p style="margin: 0; font-size: 14.5px"><span style="word-break: keep-all; overflow-wrap: anywhere;">いまの​キャンバスに​何が​描かれているかを、​鏡に​映すように​見つめます。​悩みの​根っこや、​望まない​現実が​起こる​仕組みを​知る​段階です。</span></p></div><div class="rstep rise"><div class="ricon"><svg class="framein" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="width: 100%; height: 100%; overflow: visible"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1"></path><path d="M18 44C26 40 30 26 39 22.4" stroke="#1f2a48" stroke-width="1" stroke-linecap="round"></path></svg></div><p class="en" style="margin: 0; font-size: 13px; letter-spacing: .2em; color: #6b92ac">02</p><p style="margin: 6px 0 2px; font-family: Jost, sans-serif; font-size: 34px; font-weight: 500; letter-spacing: .04em">Re-Sketch</p><p style="margin: 0 0 18px; font-size: 12.5px; letter-spacing: .2em; color: #5b6478"><span style="word-break: keep-all; overflow-wrap: anywhere;">リスケッチ ／ 下​書きを​描き直す</span></p><p style="margin: 0 0 12px; font-weight: 700; font-size: 16px; border-top: 1px solid #1f2a48; padding-top: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">大事に​したい​ものを​見つける</span></p><p style="margin: 0; font-size: 14.5px"><span style="word-break: keep-all; overflow-wrap: anywhere;">人生を​丁寧に​振り返り、​本当に​大事に​したい​ことと、​自分らしく​活躍できる​形を​見つけて、​下書きを​描き直します。</span></p></div><div class="rstep rise"><div class="ricon"><svg class="framein" viewBox="0 0 64 64" fill="none" aria-hidden="true" style="width: 100%; height: 100%; overflow: visible"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1"></path><path d="M18 44C26 40 30 26 39 22.4" stroke="#1f2a48" stroke-width="1" stroke-linecap="round"></path><circle cx="45" cy="19.6" r="3" fill="#1f2a48"></circle></svg></div><p class="en" style="margin: 0; font-size: 13px; letter-spacing: .2em; color: #6b92ac">03</p><p style="margin: 6px 0 2px; font-family: Jost, sans-serif; font-size: 34px; font-weight: 500; letter-spacing: .04em">Realize</p><p style="margin: 0 0 18px; font-size: 12.5px; letter-spacing: .2em; color: #5b6478"><span style="word-break: keep-all; overflow-wrap: anywhere;">リアライズ ／ 気づく​・かたちに​する</span></p><p style="margin: 0 0 12px; font-weight: 700; font-size: 16px; border-top: 1px solid #1f2a48; padding-top: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">キャリアを​実現する</span></p><p style="margin: 0; font-size: 14.5px"><span style="word-break: keep-all; overflow-wrap: anywhere;">描いた​ものを​統合して​「気づき」に​変え、​キャリアと​して​現実のかたちにします。​Realize には​「気づく」と​「実現する」の​二つの​意味を​込めています。</span></p></div></div>
+</div>
+</section>
+
+<section class="alt" style="position: relative; isolation: isolate; padding: 120px 0 144px"><div class="wrap">
+<div class="flow rise" style="overflow-x: auto">
+<div class="flowin">
+<div class="lane" style="margin-bottom: 0"><span></span>
+<div class="axis"><p style="margin: 0"><span>入口</span></p><p style="margin: 0"><small>Reflect</small>DAY1</p><p style="margin: 0"><span><small>Re-Sketch</small>DAY2・3</span></p><p style="margin: 0"><small>Realize</small>DAY4</p><p style="margin: 0"><small>Realize</small>DAY5</p><p style="margin: 0"><span>入社後</span></p></div></div>
+<div class="lane"><p><span>宮﨑 洋<small>キャリアコーチ</small></span></p>
+<div class="track"><div class="cap" style="grid-column: 1 / 2; background: #f9e1c5"><span>カウンセリング</span></div><div class="cap" style="grid-column: 5 / 7; background: #f9e1c5"><span>その先を描き、会社につなぐ</span></div></div></div>
+<div class="lane"><p><span>石倉 達也<small>ビジョンデザイン</small></span></p>
+<div class="track"><div class="cap" style="grid-column: 2 / 6; background: #c9d9e5"><span>ビジョンデザインプログラム　約1か月</span></div><div class="cap" style="grid-column: 6 / 7; background: #dfe6ee"><span>継続コーチング</span></div></div></div>
+<div class="lane"><p><span>あなた</span></p>
+<div class="track"><div class="cap you" style="grid-column: 1 / 2">モヤモヤを<br>聴いてもらう</div><div class="cap you" style="grid-column: 2 / 5">自分の軸を、図にする</div><div class="cap you" style="grid-column: 5 / 6">自分の軸で<br>選び、語る</div><div class="cap you" style="grid-column: 6 / 7">新しい場で<br>立ち上がる</div></div></div>
+</div>
+</div>
+
+<div class="daytabs rise">
+<input type="radio" name="day" id="t0" checked><input type="radio" name="day" id="t1"><input type="radio" name="day" id="t2"><input type="radio" name="day" id="t3"><input type="radio" name="day" id="t4"><input type="radio" name="day" id="t5"><input type="radio" name="day" id="t6">
+<div class="dlist" role="group" aria-label="プログラムの段階">
+<label for="t0"><b>ENTRANCE</b><span style="flex: 1">キャリアカウンセリング</span></label>
+<label for="t1"><b>DAY1</b><span style="flex: 1">無意識下の構造を知る</span></label>
+<label for="t2"><b>DAY2</b><span style="flex: 1">人生を丁寧に振り返る</span></label>
+<label for="t3"><b>DAY3</b><span style="flex: 1">特性を理解する</span></label>
+<label for="t4"><b>DAY4</b><span style="flex: 1">統合し、編集する</span></label>
+<label for="t5"><b>DAY5</b><span style="flex: 1">キャリアに落とし込む</span></label>
+<label for="t6"><b>AFTER</b><span style="flex: 1">継続コーチング</span></label>
+</div>
+<div class="pnls">
+<div class="pnl p0"><div><h3><span>キャリアカウンセリング</span></h3><p class="q"><span>60分・無料・オンライン｜宮﨑 洋</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">いまの​モヤモヤを、あるが​ままに​伺います。​求人を​紹介する​場では​ありません。​CDCが​合うか​どうかを、​一緒に​確かめます。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">いまの​あなたに​必要な​ことが​見える</span></p></div><svg class="ic" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#1f2a48" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="2" fill="#e09e5e"></circle></svg></div>
+<div class="pnl p1"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">無意識下の​構造を​知る</span></h3><p class="q"><span style="word-break: keep-all; overflow-wrap: anywhere;">何に、​今詰まっているのか？</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">最近​「不本意だな」と​感じた​出来事を​ひとつ手が​かりに、​世界の​見え方の​手前に​ある​前提を、​段階を​追って​掘り下げます。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">悩みの​根源が​わかる</span></p></div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: auto" viewBox="0 0 200 140" fill="none"><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="72" cy="70" r="58" fill="#eef2f6" stroke="#9fb2c6"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="128" cy="70" r="58" stroke="#1f2a48"/><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="56" cy="70" r="28" fill="#d6e0ea" stroke="#6b92ac"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="146" cy="70" r="28" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M88 70 L91 70" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M111 70 H118" stroke="#1f2a48" stroke-dasharray="2 2"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M91 70 Q100 61 109 70 Q100 79 91 70 Z" fill="#fcfcfb" stroke="#1f2a48"/><circle cx="100" cy="70" r="2.6" fill="#1f2a48"/></svg></div>
+<div class="pnl p2"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">人生を​丁寧に​振り返る</span></h3><p class="q"><span style="word-break: keep-all; overflow-wrap: anywhere;">なぜ、​それを​するのか？</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">幼いころの​遊び、​逆境の​乗り越え方、​自分なりの​ルールから​「欲求の​かけら」を​集め、​4つの​層に​整理します。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">本当に​大事に​したい​ものが​わかる</span></p></div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: auto" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 L38 128 H162 Z" fill="#eef2f6" stroke="#1f2a48" stroke-linejoin="round"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="128" rx="62" ry="7" fill="#eef2f6" stroke="#1f2a48"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="102" rx="47" ry="5.5" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="76" rx="32" ry="4.2" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="50" rx="17" ry="3" fill="#d6e0ea" stroke="#6b92ac"/><path d="M100 2 L102.4 9.6 L110 12 L102.4 14.4 L100 22 L97.6 14.4 L90 12 L97.6 9.6 Z" fill="#e09e5e"/></svg></div>
+<div class="pnl p3"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">活躍の​シナリオ・​特性を​理解する</span></h3><p class="q"><span style="word-break: keep-all; overflow-wrap: anywhere;">どう、​自分の​力は​うまく​流れるのか？</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">「もう​一度​やってみたい」​経験を​2つ​分解して、​きっかけ・​取り込む情報・​考え方と​行動の​パターン・生まれる​成果と​いう、​得意の​仕組みを​図にします。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">うまく​いく​パターンが​手に​入る</span></p></div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: auto" viewBox="0 0 200 140" fill="none"><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="88" ry="38" fill="#eef2f6" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="60" ry="24" fill="#e3eaf1" stroke="#b9c8d8"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="32" ry="12" fill="#fcfcfb" stroke="#9fb2c6"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 V58 M100 82 V120" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="10" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="120" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M14 70 H160" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="8" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="40" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="84" y="64" width="32" height="12" rx="6" fill="#d6e0ea" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="136" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M160 70 L194 56 M160 70 H196 M160 70 L194 84" stroke="#1f2a48"/><circle cx="196" cy="70" r="2.4" fill="#e09e5e"/></svg></div>
+<div class="pnl p4"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">統合・​編集し、​TOBEマップへ</span></h3><p class="q"><span style="word-break: keep-all; overflow-wrap: anywhere;">どこから​来て、​どこへ​向かうのか？</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">3回分の​図を​一枚の​地図に​統合し、​ビジョンを​言葉に​します。​迷った​ときに​立ち返る​「自分らしさの​羅針盤」を​つくります。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">キャリアの​羅針盤が​手に​入る</span></p></div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: auto" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="2" d="M92 80 L58 30 M108 80 L142 30" stroke="#c9d6e2" stroke-linecap="round"/><path vector-effect="non-scaling-stroke" stroke-width=".8" d="M100 76 V40" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="24" rx="72" ry="14" fill="#fcfcfb" stroke="#1f2a48"/><text x="100" y="28" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="10" letter-spacing="1.5" fill="#1f2a48">VISION</text><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="84" rx="40" ry="9" fill="#eef2f6" stroke="#1f2a48"/><text x="100" y="87.5" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="8" letter-spacing="1.2" fill="#1f2a48">MISSION</text><rect vector-effect="non-scaling-stroke" stroke-width="1" x="76" y="104" width="48" height="10" rx="5" fill="#d6e0ea" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 114 V134 M100 120 Q92 126 84 134 M100 120 Q108 126 116 134" stroke="#1f2a48"/></svg></div>
+<div class="pnl p5"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">キャリアに​落とし込む</span></h3><p class="q"><span>約90分｜石倉 達也・宮﨑 洋</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">羅針盤を​もとに、​その先を​二人で​一緒に​描きます。​転職も、​満た​したい​ものを​満たす方​法の​一つと​して​考えます。​まずは​自分の​力で​試せる、​現実の​一歩を​用意します。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">次の​一歩が​見える</span></p></div><svg class="ic" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M14 50C24 46 30 30 44 20" stroke="#1f2a48" stroke-width="1.5" stroke-linecap="round"></path><path d="M44 20L56 10" stroke="#1f2a48" stroke-width="1.5" stroke-dasharray="2 2"></path><circle cx="56" cy="10" r="2" fill="#e09e5e"></circle></svg></div>
+<div class="pnl p6"><div><h3><span style="word-break: keep-all; overflow-wrap: anywhere;">入社後の​継続コーチング</span></h3><p class="q"><span style="word-break: keep-all; overflow-wrap: anywhere;">ご希望の​方に​｜入社後​1か月・3か月・6か​月</span></p><p class="d"><span style="word-break: keep-all; overflow-wrap: anywhere;">入社後の​半年は、​新しい​場で​立ち上がる​大事な​期間です。​3回の​コーチングで、​羅針盤と​照らし合わせて​振り返ります。</span></p><p class="r"><span style="word-break: keep-all; overflow-wrap: anywhere;">会社で​活躍するまで、​伴走が​続く</span></p></div><svg class="ic" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="22" stroke="#c9d6e2" stroke-width="1.5"></circle><circle cx="32" cy="10" r="2.4" fill="#1f2a48"></circle><circle cx="51" cy="43" r="2.4" fill="#1f2a48"></circle><circle cx="13" cy="43" r="2.4" fill="#e09e5e"></circle><text x="32" y="36" text-anchor="middle" font-family="Jost, sans-serif" font-size="8" fill="#1f2a48">1 · 3 · 6</text></svg></div>
+</div>
+</div>
+<div class="rise" style="margin-top: 72px; border-top: 1px solid #d5dbe4; padding: 32px 8px 0; font-size: 13px; line-height: 2.1; color: #39445c">
+<p style="margin: 0"><span style="word-break: keep-all; overflow-wrap: anywhere;">※ DAY1〜4 は​各回約2時間・オンライン​（Zoom）​・1対1。​約1か月で​進みます。</span></p>
+<p style="margin: 0"><span style="word-break: keep-all; overflow-wrap: anywhere;">※ 料金は​ 165,000円​（税込）。​入口の​キャリアカウンセリングから​ DAY1〜5 までを​含みます。</span></p>
+<p style="margin: 0"><span style="word-break: keep-all; overflow-wrap: anywhere;">※ 入社後の​継続コーチングの​料金：​［　］</span></p>
+<p style="margin: 0"><span style="word-break: keep-all; overflow-wrap: anywhere;">※ お支払いは​銀行振込（一括または​2回払い）。​途中で​おやめになる​場合は、​受けた​セッションの​分で​精算します。</span></p>
+</div>
+</div>
+</section>
+
+<svg class="roof" viewBox="0 0 1440 150" aria-hidden="true" style="background: #eef0f3"><path d="M0 150V30L900 110L1440 40V150Z" fill="#fcfcfb"></path></svg>
+<section id="journey" style="position: relative; isolation: isolate; padding: 64px 0 160px">
+<div class="wrap">
+<div class="center rise">
+<p class="lbl">( JOURNEY )</p>
+<h2 class="h vt"><span style="word-break: keep-all; overflow-wrap: anywhere;">霧の​中から、<br>晴れ​渡る​空へ。</span></h2>
+<p style="margin: 0 0 24px; font-size: 13px; color: #4a5468"><span style="display: inline-block; width: 28px; border-top: 2px solid #1f2a48; vertical-align: middle"></span> CDC　　<span style="display: inline-block; width: 28px; border-top: 2px dashed #a9b8cc; vertical-align: middle"></span> 一般的な転職エージェント</p>
+</div>
+<ol class="jmobile"><li class="jm-step"><p class="jm-n en">01</p><p class="jm-t"><span style="word-break: keep-all; overflow-wrap: anywhere;">内省の​扉を​開く</span></p><p class="jm-ph"><span style="word-break: keep-all; overflow-wrap: anywhere;">入口の​カウンセリング</span></p><p class="jm-c"><span class="jm-k en">CDC</span>未来への期待　→　固定観念に気づく</p><p class="jm-a"><span class="jm-k">一般的な転職エージェント</span>条件だけ聞かれる違和感</p></li><li class="jm-step"><p class="jm-n en">02</p><p class="jm-t"><span style="word-break: keep-all; overflow-wrap: anywhere;">発見・エネルギーに​気づく</span></p><p class="jm-ph"><span style="word-break: keep-all; overflow-wrap: anywhere;">DAY1〜4　約1か​月​（CDCだけ）</span></p><p class="jm-c"><span class="jm-k en">CDC</span>自分の言葉という一致感　→　意志を持って選ぶ</p><p class="jm-a"><span class="jm-k">一般的な転職エージェント</span>選択を迫られる迷い</p></li><li class="jm-step"><p class="jm-n en">03</p><p class="jm-t"><span style="word-break: keep-all; overflow-wrap: anywhere;">社会に​試す・つながり直す</span></p><p class="jm-ph"><span style="word-break: keep-all; overflow-wrap: anywhere;">DAY5　キャリアに​落とし込む</span></p><p class="jm-c"><span class="jm-k en">CDC</span>自分の物語を語る自信　→　根拠のある落ち着き</p><p class="jm-a"><span class="jm-k">一般的な転職エージェント</span>他人の言葉という違和感　→　想定問答止まりの不安</p></li><li class="jm-step"><p class="jm-n en">04</p><p class="jm-t"><span style="word-break: keep-all; overflow-wrap: anywhere;">見たい​世界を​クリエイトする</span></p><p class="jm-ph"><span style="word-break: keep-all; overflow-wrap: anywhere;">継続コーチング​（CDCだけ）</span></p><p class="jm-c"><span class="jm-k en">CDC</span>志を試すワクワク　→　新たな未来を築く</p><p class="jm-a"><span class="jm-k">一般的な転職エージェント</span>消えない迷い　→　支援終了</p></li></ol>
+<p class="charthint" style="display: none; margin: 0 0 12px; font-size: 12px; letter-spacing: .1em; color: #6b92ac; text-align: center"><span style="word-break: keep-all; overflow-wrap: anywhere;">← 横に​スクロールして​見られます →</span></p>
+<div class="jbox"><div class="chartwrap" style="position: relative">
+<svg class="chart" viewBox="160 100 640 400" role="img" aria-label="CDCと一般的な転職エージェントの、気持ちの移り変わりの比較" style="width: 100%; display: block; font-family: 'Noto Sans JP', sans-serif">
+<line x1="168" y1="117" x2="800" y2="117" stroke="#1f2a48" stroke-width="1.5"></line>
+<line x1="168" y1="426" x2="800" y2="426" stroke="#1f2a48" stroke-width="1.5"></line>
+<line x1="293" y1="117" x2="293" y2="426" stroke="#e3e7ee" stroke-width="1.5"></line>
+<line x1="401" y1="117" x2="401" y2="426" stroke="#e3e7ee" stroke-width="1.5"></line>
+<line x1="616" y1="117" x2="616" y2="426" stroke="#e3e7ee" stroke-width="1.5"></line>
+<g font-size="8.4" font-weight="700" fill="#1f2a48"><text x="178" y="133"><tspan fill="#6b92ac" font-family="Jost">01 </tspan>内省の扉を開く</text><text x="300" y="133"><tspan fill="#6b92ac" font-family="Jost">02 </tspan>発見・</text><text x="312" y="145">エネルギーに気づく</text><text x="408" y="133"><tspan fill="#6b92ac" font-family="Jost">03 </tspan>社会に試す・つながり直す</text><text x="623" y="133"><tspan fill="#6b92ac" font-family="Jost">04 </tspan>見たい世界を</text><text x="635" y="145">クリエイトする</text></g>
+<path d="M192 258 C 230 300, 260 360, 300 344 S 431 358, 503 362 S 620 345, 656 338 S 700 362, 724 372" fill="none" stroke="#a9b8cc" stroke-width="1.5" stroke-dasharray="4 4"></path>
+<g transform="matrix(0.749893,0,0,0.749893,119.413,-72.737)"><path class="draw" pathLength="1" d="M 95.76 441.6 C 108.53 469.2 147.63 593.4 171.57 608.35 C 195.51 623.3 217.06 565.8 239.4 533.6 C 261.74 501.4 273.71 433.55 303.24 412.85 C 332.77 392.15 380.64 410.55 414.96 407.1 C 449.27 403.65 478.8 397.9 510.72 393.3 C 542.64 388.7 572.17 384.1 606.48 379.5 C 640.8 374.9 684.68 370.3 718.2 363.4 C 751.72 356.5 791.61 343.85 805.98 340.4" fill="none" stroke="#1f2a48" stroke-width="2.6" style="vector-effect: none"></path></g>
+<g fill="#a9b8cc"><circle cx="299" cy="344.6" r="2.4"></circle><circle cx="431" cy="360" r="2.4"></circle><circle cx="502.5" cy="363.6" r="2.4"></circle><circle cx="574.3" cy="353.3" r="2.4"></circle><circle cx="658" cy="337.8" r="2.4"></circle><circle cx="723.9" cy="372.3" r="2.4"></circle></g>
+<g fill="#1f2a48"><circle cx="191.6" cy="258.4" r="2.8"></circle><circle cx="299.3" cy="327.4" r="2.8"></circle><circle cx="347.2" cy="236.9" r="2.8"></circle><circle cx="431" cy="232.5" r="2.8"></circle><circle cx="502.8" cy="222.2" r="2.8"></circle><circle cx="574.6" cy="211.8" r="2.8"></circle><circle cx="658.3" cy="199.8" r="2.8"></circle></g>
+<circle cx="726" cy="182.5" r="5" fill="#e09e5e"></circle>
+<g font-size="8.4" fill="#1f2a48"><text x="166" y="246">未来への期待</text><text x="227" y="268">固定観念に気づく</text><text x="300" y="219">自分の言葉という一致感</text><text x="396" y="187">意志を持って選ぶ</text><text x="459" y="204">自分の物語を語る自信</text><text x="535" y="172">根拠のある落ち着き</text><text x="623" y="162">志を試すワクワク</text><text x="696" y="203" font-weight="700">新たな未来を築く</text></g>
+<g font-size="8" fill="#7d8aa0"><text x="304" y="376">条件だけ聞かれる違和感</text><text x="391" y="398">選択を迫られる迷い</text><text x="455" y="383">他人の言葉という違和感</text><text x="530" y="370">想定問答止まりの不安</text><text x="632" y="355">消えない迷い</text><text x="735" y="388">支援終了</text></g>
+<g font-size="8.4" fill="#1f2a48" text-anchor="middle"><text x="196" y="442">最初の接点</text><text x="245" y="442">面談</text><text x="347" y="442" font-weight="700">軸の形成</text><text x="347" y="454" font-size="7.4" fill="#c07a3a">CDCだけ</text><text x="440" y="442">求人探し</text><text x="510" y="442">書類作成</text><text x="580" y="442">面接対策</text><text x="660" y="442">内定</text><text x="760" y="442" font-weight="700">内定後</text><text x="760" y="454" font-size="7.4" fill="#c07a3a">CDCだけ</text></g>
+<g fill="none" stroke="#1f2a48" stroke-width="1.5"><path d="M177 468v4h86v-4"></path><path d="M270 468v4h127v-4"></path><path d="M405 468v4h279v-4"></path></g>
+<path d="M692 468v4h78v-4" fill="none" stroke="#e09e5e" stroke-width="1.5"></path>
+<g font-size="8.4" font-weight="700" fill="#1f2a48" text-anchor="middle"><text x="220" y="487">入口のカウンセリング</text><text x="333" y="487">DAY1〜4　約1か月</text><text x="544" y="487">DAY5　キャリアに落とし込む</text><text x="731" y="487">継続コーチング</text></g>
+</svg>
+</div>
+<div class="jinfo" aria-live="polite"><div class="ji-body"><p><span class="k en">CDC</span><b class="ji-c">未来への期待 → 固定観念に気づく</b></p><p style="color: #8a93a6"><span class="k" style="color: #a9b3c3">一般的な転職エージェント</span><span class="ji-a">条件だけ聞かれる違和感</span></p></div></div>
+</div>
+</section>
+
+<section style="position: relative; isolation: isolate; padding: 0 0 160px"><div class="wrap">
+<div class="center rise" style="position: relative"><svg class="dab rollby" style="left: 8%; top: -20px; width: 54px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg><svg class="dab rollby" style="right: 12%; top: 60px; width: 30px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg><p class="lbl">( DIFFERENCE )</p><h2 class="h vt"><span style="word-break: keep-all; overflow-wrap: anywhere;">転職エージェントと、<br>ここが​違う。</span></h2></div>
+<div class="rise" style="overflow-x: auto">
+<table class="cmp" style="min-width: 640px">
+<thead><tr><th style="width: 18%; border-bottom: 1.5px solid #1f2a48"></th><th style="width: 28%; color: #5f6b82; border-bottom: 1.5px solid #1f2a48"><span style="word-break: keep-all; overflow-wrap: anywhere;">一般的な​転職エージェント</span></th><th class="en" style="letter-spacing: .06em; border-bottom: 1.5px solid #1f2a48">Career Design Canvas</th></tr></thead>
+<tbody>
+<tr><th style="font-weight: 700"><span>仕組み</span></th><td style="color: #5f6b82"><span style="word-break: keep-all; overflow-wrap: anywhere;">企業から​報酬を​受け取る</span></td><td style="font-weight: 700; font-size: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">あなたから​対価を​いただき、​あなたの方を​向く。</span></td></tr>
+<tr><th style="font-weight: 700"><span>面談</span></th><td style="color: #5f6b82"><span style="word-break: keep-all; overflow-wrap: anywhere;">経歴や​希望条件を​聞かれる</span></td><td style="font-weight: 700; font-size: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">まず、​いまの​モヤモヤを​聴いて​もらう。</span></td></tr>
+<tr><th style="font-weight: 700"><span style="word-break: keep-all; overflow-wrap: anywhere;">アプローチする​深さ</span></th><td style="color: #5f6b82"><span style="word-break: keep-all; overflow-wrap: anywhere;">条件が​中心</span></td><td style="font-weight: 700; font-size: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">潜在意識まで​扱い、​自分の​全体を​見る。</span></td></tr>
+<tr><th style="font-weight: 700">軸の形成<br><span style="font-size: 12px; font-weight: 400; color: #c07a3a">CDCだけ</span></th><td style="color: #a9b3c3"><span style="word-break: keep-all; overflow-wrap: anywhere;">この​段階が​ない</span></td><td><p style="margin: 0 0 16px; font-weight: 700; font-size: 16px">約1か月で、自分の軸を図にする。</p><div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; font-size: 12px; line-height: 1.6"><div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 60px; object-fit: contain" viewBox="0 0 200 140" fill="none"><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="72" cy="70" r="58" fill="#eef2f6" stroke="#9fb2c6"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="128" cy="70" r="58" stroke="#1f2a48"/><circle vector-effect="non-scaling-stroke" stroke-width=".8" cx="56" cy="70" r="28" fill="#d6e0ea" stroke="#6b92ac"/><circle vector-effect="non-scaling-stroke" stroke-width="1" cx="146" cy="70" r="28" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M88 70 L91 70" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M111 70 H118" stroke="#1f2a48" stroke-dasharray="2 2"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M91 70 Q100 61 109 70 Q100 79 91 70 Z" fill="#fcfcfb" stroke="#1f2a48"/><circle cx="100" cy="70" r="2.6" fill="#1f2a48"/></svg><b class="en" style="color: #6b92ac; font-weight: 400">DAY1</b><br>悩みの根源がわかる</div><div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 60px; object-fit: contain" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 L38 128 H162 Z" fill="#eef2f6" stroke="#1f2a48" stroke-linejoin="round"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="128" rx="62" ry="7" fill="#eef2f6" stroke="#1f2a48"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="102" rx="47" ry="5.5" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="76" rx="32" ry="4.2" fill="#d6e0ea" stroke="#6b92ac"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="50" rx="17" ry="3" fill="#d6e0ea" stroke="#6b92ac"/><path d="M100 2 L102.4 9.6 L110 12 L102.4 14.4 L100 22 L97.6 14.4 L90 12 L97.6 9.6 Z" fill="#e09e5e"/></svg><b class="en" style="color: #6b92ac; font-weight: 400">DAY2</b><br>本当に大事にしたいものがわかる</div><div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 60px; object-fit: contain" viewBox="0 0 200 140" fill="none"><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="88" ry="38" fill="#eef2f6" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="60" ry="24" fill="#e3eaf1" stroke="#b9c8d8"/><ellipse vector-effect="non-scaling-stroke" stroke-width=".8" cx="100" cy="70" rx="32" ry="12" fill="#fcfcfb" stroke="#9fb2c6"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 20 V58 M100 82 V120" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="10" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="88" y="120" width="24" height="10" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M14 70 H160" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="8" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="40" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="84" y="64" width="32" height="12" rx="6" fill="#d6e0ea" stroke="#1f2a48"/><rect vector-effect="non-scaling-stroke" stroke-width="1" x="136" y="65" width="22" height="10" rx="5" fill="#fcfcfb" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M160 70 L194 56 M160 70 H196 M160 70 L194 84" stroke="#1f2a48"/><circle cx="196" cy="70" r="2.4" fill="#e09e5e"/></svg><b class="en" style="color: #6b92ac; font-weight: 400">DAY3</b><br>うまくいくパターンが手に入る</div><div><svg role="img" aria-hidden="true" style="display: block; width: 100%; height: 60px; object-fit: contain" viewBox="0 0 200 140" fill="none"><path vector-effect="non-scaling-stroke" stroke-width="2" d="M92 80 L58 30 M108 80 L142 30" stroke="#c9d6e2" stroke-linecap="round"/><path vector-effect="non-scaling-stroke" stroke-width=".8" d="M100 76 V40" stroke="#c9d6e2"/><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="24" rx="72" ry="14" fill="#fcfcfb" stroke="#1f2a48"/><text x="100" y="28" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="10" letter-spacing="1.5" fill="#1f2a48">VISION</text><ellipse vector-effect="non-scaling-stroke" stroke-width="1" cx="100" cy="84" rx="40" ry="9" fill="#eef2f6" stroke="#1f2a48"/><text x="100" y="87.5" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', sans-serif" font-size="8" letter-spacing="1.2" fill="#1f2a48">MISSION</text><rect vector-effect="non-scaling-stroke" stroke-width="1" x="76" y="104" width="48" height="10" rx="5" fill="#d6e0ea" stroke="#1f2a48"/><path vector-effect="non-scaling-stroke" stroke-width="1" d="M100 114 V134 M100 120 Q92 126 84 134 M100 120 Q108 126 116 134" stroke="#1f2a48"/></svg><b class="en" style="color: #6b92ac; font-weight: 400">DAY4</b><br>キャリアの羅針盤が手に入る</div></div></td></tr>
+<tr><th style="font-weight: 700"><span>求人・書類・面接</span></th><td style="color: #5f6b82"><span style="word-break: keep-all; overflow-wrap: anywhere;">手持ちの​求人と、​想定問答の​練習</span></td><td style="font-weight: 700; font-size: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">自分の​軸で​選び、​自分の​言葉で​語る。</span></td></tr>
+<tr><th style="font-weight: 700">内定後<br><span style="font-size: 12px; font-weight: 400; color: #c07a3a">CDCだけ</span></th><td style="color: #5f6b82"><span style="word-break: keep-all; overflow-wrap: anywhere;">そこで​関係が​終わる</span></td><td style="font-weight: 700; font-size: 16px"><span style="word-break: keep-all; overflow-wrap: anywhere;">入社後​1か月・3か月・6か月に、​コーチングで​振り返る。</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section class="opener opR" style="--fx0: 45%; --fy: 60%"><div class="openstick"><div class="opmat" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,8 60,0 100,7 100,93 38,100 0,92" fill="#fff"/><path d="M64 0.7L100 7L100 93L38 100L0 92L0 8L24 4.8" fill="none" stroke="#1f2a48" stroke-width="1" vector-effect="non-scaling-stroke"/></svg></div><h2 class="ophead"><span style="word-break: keep-all; overflow-wrap: anywhere;">あなたを、<br>当たり前に<br>大切に​したい。</span></h2><div class="openwrap"><div class="openph"><div role="img" aria-label="夜明けの海と岩" class="openimg bgdawn"></div></div></div><div class="opendeco framein" aria-hidden="true"><svg class="openframe" viewBox="0 0 64 64" fill="none"><path class="ofl" d="M40 6H58V58H6V6H18" stroke="#1f2a48" stroke-width="1.5"></path><path d="M18 44C26 40 30 26 40 22" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round"></path><circle cx="44" cy="20" r="1.5" fill="#e09e5e"></circle></svg><span class="odab" style="left: -80px; top: 30%; width: 64px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#6b92ac"></path></svg></span><span class="odab" style="right: -64px; bottom: 16%; width: 46px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#e09e5e"></path></svg></span><span class="odab" style="right: -36px; top: -34px; width: 30px"><svg class="dab place" style="position: static; width: 100%" viewBox="0 0 100 70"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg></span></div></div></section>
+
+<section id="profile" style="position: relative; isolation: isolate; padding: 0 0 144px">
+<div class="wrap">
+<div class="center rise" style="margin-bottom: 72px; position: relative"><svg class="dab rollby" style="right: 6%; top: 0; width: 64px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#f9e1c5"></path></svg><svg class="dab rollby" style="left: 10%; top: 90px; width: 26px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M14 20C30 2 76 4 90 26s-18 44-48 36S-2 38 14 20z" fill="#6b92ac"></path></svg><p class="lbl">( PROFILE )</p><p style="margin: 0 auto; max-width: 640px"><span style="word-break: keep-all; overflow-wrap: anywhere;">キャリアは​あなたの命の​使い方であり、​どこで​誰と​何を​するかは、​人生に​深く​影響する​意思決定です。​それを​大切に​扱う。​当たり前の​ことを、​当たり前に​やる。​それが​今の​業界では​当たり前ではない。​だから​こそ、​この​サービスを​創りました。</span></p></div>
+<div class="two rise" style="margin-bottom: 96px">
+<div>
+<p class="lbl" style="font-size: 13px">( Career coach )</p>
+<p style="margin: 0 0 16px; font-size: 20px; font-weight: 700; letter-spacing: .1em">宮﨑 洋　<span class="en" style="font-size: 13px; font-weight: 400; letter-spacing: .06em">Hiroshi Miyazaki</span></p>
+<p style="margin: 0 0 16px; font-size: 14px"><span style="word-break: keep-all; overflow-wrap: anywhere;">株式会社HotSpring 代表／キャリアコーチ。​外資系医療機器​メーカーに​17年間在籍し、​マーケティング、​経営企画、​DX推進、​企業変革を​担う。​コーチングと​出会い​プロコーチと​して​独立。​約5年間、​人材紹介の​現場に​携わる。​キャリアコンサルタント​（国家資格）​／GCS認定プロフェッショナルコーチ。</span></p>
+<p style="margin: 0; font-weight: 700"><span style="word-break: keep-all; overflow-wrap: anywhere;">「正解」の​中に、​自分は​いなかった。​違っていて、​いい。</span></p>
+</div>
+<div class="pfwrap kf"><img src="img/miyazaki-portrait.jpg" alt="宮﨑 洋" class="depth tiltin" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: 50% 22%; display: block"></div>
+</div>
+<div class="two rise">
+<div class="pfwrap kf"><img src="img/ishikura-portrait.jpg" alt="石倉 達也" class="depth tiltin" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block"></div>
+<div>
+<p class="lbl" style="font-size: 13px">( Vision design )</p>
+<p style="margin: 0 0 16px; font-size: 20px; font-weight: 700; letter-spacing: .1em">石倉 達也　<span class="en" style="font-size: 13px; font-weight: 400; letter-spacing: .06em">Tatsuya Ishikura</span></p>
+<p style="margin: 0 0 16px; font-size: 14px"><span style="word-break: keep-all; overflow-wrap: anywhere;">VISIONARY CANVAS 代表。​静岡文化芸術大学で​文化政策を​学ぶ。​島根県庁、​農業の​現場、​NPO での​活動を​経て、​VISIONARY CANVAS を​立ち上げる。​思考の​癖を​対話で​見つけ、​図に​して​手渡すセッションを​行っている。</span></p>
+<p style="margin: 0"><a href="#profile" style="text-decoration-color: #6b92ac; text-underline-offset: 6px; word-break: keep-all; overflow-wrap: anywhere;">私たちの​想いを​読む　→</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<svg class="roof" viewBox="0 0 1440 150" aria-hidden="true"><path d="M0 150V70L620 12L1440 96V150Z" fill="#eef0f3"></path><path id="rf3" d="M240 66C360 48 480 34 600 26" fill="none"></path><text class="flowtxt" style="--fx: 130px; --fy: -14px" font-family="Jost, sans-serif" font-size="30" fill="#1f2a48" letter-spacing="1"><textPath href="#rf3">We are listening.</textPath></text></svg>
+<section id="faq" class="alt" style="position: relative; isolation: isolate; padding: 104px 0 144px">
+<div class="wrap" style="max-width: 900px">
+<div class="center rise" style="position: relative"><svg class="dab rollby" style="left: 14%; top: 10px; width: 40px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M10 34C4 14 38 2 60 10s38 30 16 48-60 6-66-24z" fill="#e09e5e"></path></svg><svg class="dab rollby" style="right: 16%; top: 70px; width: 24px; z-index: 0" viewBox="0 0 100 70" aria-hidden="true"><path d="M20 14C40 0 80 8 88 30S70 68 42 62 4 30 20 14z" fill="#b2b1ae"></path></svg><p class="lbl">( FAQ )</p><h2 class="h vt"><span style="word-break: keep-all; overflow-wrap: anywhere;">よく​ある​質問</span></h2></div>
+<div class="rise">
+<details style="border-bottom: 1px solid #d5dbe4; padding: 26px 8px"><summary style="cursor: pointer; font-weight: 700"><span style="word-break: keep-all; overflow-wrap: anywhere;">転職する​か​決めていなくても、​相談できますか？</span></summary><p style="margin: 12px 0 0; font-size: 14px"><span style="word-break: keep-all; overflow-wrap: anywhere;">はい。​決めていなくて​大丈夫です。​今の​会社にとどまる、​副業を​始める、​異動するなど、​転職しない​結論も​あります。</span></p></details>
+<details style="border-bottom: 1px solid #d5dbe4; padding: 26px 8px"><summary style="cursor: pointer; font-weight: 700"><span style="word-break: keep-all; overflow-wrap: anywhere;">オンラインで​受けられますか？</span></summary><p style="margin: 12px 0 0; font-size: 14px"><span style="word-break: keep-all; overflow-wrap: anywhere;">はい。​すべて​オンライン​（Zoom）で​行います。</span></p></details>
+<details style="border-bottom: 1px solid #d5dbe4; padding: 26px 8px"><summary style="cursor: pointer; font-weight: 700"><span style="word-break: keep-all; overflow-wrap: anywhere;">「治療」を​目的とした​カウンセリングですか？</span></summary><p style="margin: 12px 0 0; font-size: 14px"><span style="word-break: keep-all; overflow-wrap: anywhere;">いいえ。​CDCは​キャリアの​ための​コーチングと​カウンセリングです。​心身の​不調で​治療や​休養が​必要な方は、​医療機関や​専門の​相談窓口を​ご利用ください。</span></p></details>
+<p class="center" style="margin: 32px 0 0"><a href="#faq" style="text-decoration-color: #6b92ac; text-underline-offset: 6px; word-break: keep-all; overflow-wrap: anywhere;">よく​ある​質問を​すべて​見る​　→</a></p>
+</div>
+</div>
+</section>
+
+<svg class="roof" viewBox="0 0 1440 150" aria-hidden="true" style="background: #eef0f3"><path d="M0 150V60L760 8L1440 92V150Z" fill="#fcfcfb"></path></svg>
+<section id="consult" style="position: relative; isolation: isolate; background: #fcfcfb; color: #1f2a48; padding: 144px 0 0">
+<div class="wrap rise" style="max-width: 1100px">
+<p class="lbl" style="margin-bottom: 40px">( FREE CONSULTATION )</p>
+<div class="ctagrid">
+<h2 class="h vt ctah" style="margin: 0; font-size: 34px"><span style="word-break: keep-all; overflow-wrap: anywhere;">まずは、​いまの<br>モヤモヤを<br>聴かせてください。</span></h2>
+<div style="border-top: 1px solid rgba(31,42,72,.12); font-size: 14px; margin-top: 12px">
+<p style="margin: 0; display: grid; grid-template-columns: 96px 1fr; align-items: baseline; padding: 13px 0; border-bottom: 1px solid rgba(31,42,72,.12)"><span class="en" style="color: #6b92ac; letter-spacing: .18em; font-size: 11px">TIME</span><span>60分</span></p>
+<p style="margin: 0; display: grid; grid-template-columns: 96px 1fr; align-items: baseline; padding: 13px 0; border-bottom: 1px solid rgba(31,42,72,.12)"><span class="en" style="color: #6b92ac; letter-spacing: .18em; font-size: 11px">STYLE</span><span>オンライン（Zoom）</span></p>
+<p style="margin: 0; display: grid; grid-template-columns: 96px 1fr; align-items: baseline; padding: 13px 0; border-bottom: 1px solid rgba(31,42,72,.12)"><span class="en" style="color: #6b92ac; letter-spacing: .18em; font-size: 11px">FEE</span><span>無料</span></p>
+<p style="margin: 0; display: grid; grid-template-columns: 96px 1fr; align-items: baseline; padding: 13px 0; border-bottom: 1px solid rgba(31,42,72,.12)"><span class="en" style="color: #6b92ac; letter-spacing: .18em; font-size: 11px">COACH</span><span>宮﨑 洋</span></p>
+</div>
+<p style="margin: 0; font-size: 15px; max-width: 440px; align-self: end"><span style="word-break: keep-all; overflow-wrap: anywhere;">宮﨑が、​オンラインで​60分、​フラットに​お話を​伺います。​求人を​紹介する​場では​ありません。​CDCを​無理に​お勧めする​こともありません。​CDCが​合うか​どうかも、​そこで​一緒に​確かめましょう。</span></p>
+<div style="align-self: end">
+<a class="ctabtn" href="#consult"><span>無料相談の日程を選ぶ</span><span class="ctago" aria-hidden="true">→</span></a>
+<p style="margin: 14px 0 0; font-size: 12.5px; color: #5b6478; text-align: center"><span style="word-break: keep-all; overflow-wrap: anywhere;">予約ページで、​空いている​日時から​お選びいただけます</span></p>
+</div>
+</div>
+</div>
+<footer class="ctafoot wrap" style="max-width: 1100px; margin-top: 160px; padding-top: 56px; padding-bottom: 56px; font-size: 12px; line-height: 1.9; color: #c9d2df">
+<div class="footgrid">
+<div style="display: flex; align-items: center; gap: 12px"><svg class="logo" style="overflow: visible; shape-rendering: geometricPrecision" width="32" height="32" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M40 6H58V58H6V6H18" stroke="#fcfcfb" stroke-width="1.5" style="vector-effect: non-scaling-stroke"></path><path d="M18 44C26 40 30 26 39 22.4" stroke="#fcfcfb" stroke-width="1.5" stroke-linecap="round" style="vector-effect: non-scaling-stroke"></path><circle cx="45" cy="19.6" r="3" fill="#fcfcfb"></circle></svg><p style="margin: 0; line-height: 1.5"><span class="en wm" style="display: block; font-size: 13px; letter-spacing: .3em; font-weight: 500; color: #fcfcfb">CAREER DESIGN CANVAS</span><span style="display: block; font-size: 9px; letter-spacing: .5em; color: #c9d2df; margin-top: 2px">キャリアデザインキャンバス</span></p></div>
+<p style="margin: 0"><span style="word-break: keep-all; overflow-wrap: anywhere;">運営　株式会社HotSpring<br>有料職業紹介事業 許可番号 ​［　］<br>企画・プログラム　VISIONARY CANVAS</span></p>
+</div>
+<div class="footgrid" style="margin-top: 40px; align-items: end">
+<p style="margin: 0; display: flex; gap: 28px; flex-wrap: wrap"><a href="#top" style="color: rgb(201, 210, 223); word-break: keep-all; overflow-wrap: anywhere;">特定商取引法に​基づく​表記</a><a href="#top" style="color: #c9d2df">プライバシーポリシー</a><a href="#top" style="color: #c9d2df">職業紹介について</a></p>
+<p class="en" style="margin: 0; letter-spacing: .14em; font-size: 11px">© 2026 CAREER DESIGN CANVAS</p>
+</div>
+</footer>
+</section>
+
+</div>
+
+<script>
+(function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('js');
+var q=[],t=null;
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){q.push(e.target);io.unobserve(e.target);}});
+if(!t){t=setTimeout(function(){q.forEach(function(el,i){var dl=(Math.min(i,6)*(el.classList.contains('mframe')||el.classList.contains('drift')||el.classList.contains('rollby')?0.22:0.09))+'s';el.style.transitionDelay=dl;el.style.animationDelay=dl;el.classList.add('in');});q=[];t=null;},30);}},{rootMargin:'0px 0px -10% 0px'});
+document.querySelectorAll('.rise,.h,.place,.tiltin,.draw,.framein,.mframe,.drift,.rollby').forEach(function(el){io.observe(el);});})();
+
+(function(){
+var hdr=document.querySelector(".hdr");if(hdr){var on=function(){hdr.classList.toggle("scrolled",window.scrollY>40);};on();window.addEventListener("scroll",on,{passive:true});}
+
+var svg=document.querySelector('#journey svg.chart');
+if(svg&&svg.getScreenCTM){
+  var NS='http://www.w3.org/2000/svg';
+  var cdcPath=svg.querySelector('path.draw'),agPath=svg.querySelector('path[stroke-dasharray="4 4"]');
+  var m=cdcPath.parentNode.transform.baseVal.consolidate().matrix;
+  function sample(path,mat){var L=path.getTotalLength(),out=[];for(var i=0;i<=400;i++){var q=path.getPointAtLength(L*i/400);out.push(mat?{x:mat.a*q.x+mat.c*q.y+mat.e,y:mat.b*q.x+mat.d*q.y+mat.f}:{x:q.x,y:q.y});}return out;}
+  var C=sample(cdcPath,m),A=sample(agPath,null);
+  function at(arr,x){var b=arr[0];arr.forEach(function(p){if(Math.abs(p.x-x)<Math.abs(b.x-x))b=p;});return b;}
+  var S=[{x0:168,x1:300,n:'01',t:'内省の扉を開く',c:'未来への期待 → 固定観念に気づく',a:'条件だけ聞かれる違和感'},
+         {x0:300,x1:408,n:'02',t:'発見・エネルギーに気づく',c:'自分の言葉という一致感 → 意志を持って選ぶ',a:'選択を迫られる迷い'},
+         {x0:408,x1:623,n:'03',t:'社会に試す・つながり直す',c:'自分の物語を語る自信 → 根拠のある落ち着き',a:'他人の言葉という違和感 → 想定問答止まりの不安'},
+         {x0:623,x1:780,n:'04',t:'見たい世界をクリエイトする',c:'志を試すワクワク → 新たな未来を築く',a:'消えない迷い → 支援終了'}];
+  var band=document.createElementNS(NS,'rect');band.setAttribute('y','122');band.setAttribute('height','310');band.setAttribute('fill','#6b92ac');band.setAttribute('opacity','0');band.style.transition='x .3s ease,width .3s ease,opacity .3s';
+  svg.insertBefore(band,svg.firstChild);
+  var layer=document.createElementNS(NS,'g');layer.setAttribute('pointer-events','none');layer.style.opacity='0';layer.style.transition='opacity .25s';
+  var dc=document.createElementNS(NS,'circle');dc.setAttribute('r','6');dc.setAttribute('fill','#e09e5e');dc.setAttribute('stroke','#fcfcfb');dc.setAttribute('stroke-width','2');
+  var da=document.createElementNS(NS,'circle');da.setAttribute('r','4.5');da.setAttribute('fill','#a9b8cc');da.setAttribute('stroke','#fcfcfb');da.setAttribute('stroke-width','2');
+  layer.appendChild(da);layer.appendChild(dc);svg.appendChild(layer);
+  var info=document.querySelector('#journey .jinfo'),cur=-1;
+  var steps=info?info.querySelectorAll('.ji-steps span'):[],bar=info?info.querySelector('.ji-bar'):null,body=info?info.querySelector('.ji-body'):null;
+  var titles=[['178'],['300','312'],['408'],['623','635']].map(function(xs){return xs.map(function(x){return svg.querySelector('text[x="'+x+'"][y="'+(x==='312'||x==='635'?'145':'133')+'"]');}).filter(Boolean);});
+  function setStage(i,quiet){if(i===cur)return;cur=i;var s=S[i];band.setAttribute('x',s.x0);band.setAttribute('width',s.x1-s.x0);
+    titles.forEach(function(ts,k){ts.forEach(function(t){t.style.fill=k===i?'#6b92ac':'';t.style.fontWeight=k===i?'700':'';});});
+    if(!info)return;
+    info.querySelector('.ji-c').textContent=s.c;info.querySelector('.ji-a').textContent=s.a;
+    if(!quiet){body.classList.remove('swap');void body.offsetWidth;body.classList.add('swap');}}
+  svg.addEventListener('pointermove',function(e){
+    var pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;var v=pt.matrixTransform(svg.getScreenCTM().inverse());
+    var x=Math.max(170,Math.min(726,v.x)),c=at(C,x),a=at(A,Math.max(192,Math.min(724,x)));
+    dc.setAttribute('cx',c.x);dc.setAttribute('cy',c.y);da.setAttribute('cx',a.x);da.setAttribute('cy',a.y);layer.style.opacity='1';
+    for(var i=0;i<S.length;i++){if(x<S[i].x1){setStage(i);break;}}
+  });
+  svg.addEventListener('pointerleave',function(){layer.style.opacity='0';});
+  setStage(0,true);band.setAttribute('opacity','0');
+  svg.addEventListener('pointerenter',function(){band.setAttribute('opacity','.12');});
+}
+
+/* 一番上：カーソルが石に触れるたびに、何度か揺れて止まる */
+(function(){var top=document.getElementById('top');if(!top)return;
+  var dabs=[].slice.call(top.querySelectorAll('.dab'));if(!dabs.length)return;
+  var st=dabs.map(function(el){return {el:el,hits:0,x:0,y:0,vx:0,vy:0,rot:0,fall:false,done:false,last:0};});
+  var lx=null,ly=null,lt=0,raf=null;
+  var lastT=0;
+  function fall(o,dir,sp){o.fall=true;o.el.classList.remove('wob');o.el.style.animation='none';o.el.style.opacity='1';o.el.style.transform='none';
+    o.b=o.el.getBoundingClientRect();o.t=top.getBoundingClientRect();o.vx=dir*Math.min(5,1.6+sp*2.2);o.vy=-5;
+    if(!raf){lastT=performance.now();raf=requestAnimationFrame(step);}}
+  function step(now){var busy=false,k=Math.min(2,(now-lastT)/16.7||1);lastT=now;
+    st.forEach(function(o){if(!o.fall||o.done)return;busy=true;
+      var w=o.b.width/2,maxY=(o.t.bottom-70)-o.b.bottom,onFloor=false;
+      o.vy+=0.32*k;o.x+=o.vx*k;o.y+=o.vy*k;
+      if(o.y>=maxY){o.y=maxY;if(o.vy>1.6){o.vy*=-0.45;}else{o.vy=0;onFloor=true;}}
+      if(onFloor){o.vx*=Math.pow(0.985,k);}
+      if(o.b.left+o.x<o.t.left+10){o.x=o.t.left+10-o.b.left;o.vx=Math.abs(o.vx)*0.6;}
+      if(o.b.right+o.x>o.t.right-10){o.x=o.t.right-10-o.b.right;o.vx=-Math.abs(o.vx)*0.6;}
+      o.rot+=o.vx*k/Math.max(8,w)*57.3;
+      o.el.style.transform='translate('+o.x.toFixed(1)+'px,'+o.y.toFixed(1)+'px) rotate('+o.rot.toFixed(1)+'deg)';
+      if(onFloor&&Math.abs(o.vx)<0.05){o.done=true;}
+    });
+    raf=busy?requestAnimationFrame(step):null;}
+  top.addEventListener('pointermove',function(e){
+    var now=performance.now(),sp=0,dir=1;
+    if(lx!==null){var dt=Math.max(16,now-lt);sp=Math.hypot(e.clientX-lx,e.clientY-ly)/dt;dir=e.clientX>=lx?1:-1;}
+    lx=e.clientX;ly=e.clientY;lt=now;
+    st.forEach(function(o){if(o.fall)return;var r=o.el.getBoundingClientRect();
+      var cx=r.left+r.width/2,cy=r.top+r.height/2,rad=Math.max(r.width,r.height)/2+6;
+      if(Math.hypot(e.clientX-cx,e.clientY-cy)<rad){
+        if(now-o.last<250)return;o.last=now;o.hits++;
+        {o.el.style.opacity='1';o.el.style.animation='none';o.el.classList.remove('wob');o.el.getBoundingClientRect();o.el.classList.add('wob');}
+      }});
+  });
+})();
+})();
+</script>
+</body>
+</html>
