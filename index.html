@@ -621,7 +621,7 @@ if(svg&&svg.getScreenCTM){
 document.querySelectorAll(".ftabs").forEach(function(t){var bs=[].slice.call(t.querySelectorAll(".fttab")),ps=[].slice.call(t.parentNode.querySelectorAll(".ftpan"));bs.forEach(function(b,i){b.addEventListener("click",function(){bs.forEach(function(x,k){x.classList.toggle("on",k===i);x.setAttribute("aria-selected",k===i?"true":"false");});ps.forEach(function(p,k){p.classList.toggle("on",k===i);});});});});
 
 /* セクションの脇の部品が、読み進めるごとに組み上がる（台帳 2-1）
-   .sstg[data-have][data-add]：have 個目までは最初から組んである。見えたら add 個目まで、下（落ちている部品のあたり）から飛んできて組み上がる。
+   .sstg[data-have][data-add]：have 個目までは最初から組んである。見えたら add 個目まで、上から一つずつ落ちてきて、下の段から積み上がる。
    各回の内容のあとの無料相談（.cta1）の横で完成する */
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -645,24 +645,30 @@ document.querySelectorAll(".ftabs").forEach(function(t){var bs=[].slice.call(t.q
     else if(t==='me'){ g.beginPath(); g.arc(0,0,w/2,0,7); g.fillStyle=O; g.fill(); g.lineWidth=lw*1.4; g.stroke(); g.beginPath(); g.arc(0,0,w*.18,0,7); g.fillStyle=N; g.fill(); }
     else if(t==='arrow'){ var L=q[3]*u, hd=u*.32; g.rotate(q[4]*Math.PI/180); g.beginPath(); g.moveTo(-L/2,0); g.lineTo(L/2-hd*.8,0); g.stroke(); g.beginPath(); g.moveTo(L/2,0); g.lineTo(L/2-hd,-hd*.55); g.lineTo(L/2-hd,hd*.55); g.closePath(); g.fillStyle=N; g.fill(); } }
 
-  function ease(k){ var c=1.3; return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2); }
   var cta=document.querySelector('.cta1');
   if(cta){ var f=document.createElement('div'); f.className='sstg sfin'; f.dataset.have='15'; f.dataset.add=String(P.length); f.setAttribute('aria-hidden','true'); cta.insertBefore(f,cta.firstChild); }
+  /* 上から一つずつ真っすぐ落ちてきて、下の段から積み上がる（2026-10-18 石倉さん「上から落ちてきて積み上がる形」）。
+     キャンバスは枠より上にはみ出して描き、落ちてくる途中も見えるようにする */
   [].forEach.call(document.querySelectorAll('.sstg'),function(el){
-    var have=+el.dataset.have||0, add=+el.dataset.add||have, cv=document.createElement('canvas'); el.appendChild(cv);
-    var g=cv.getContext('2d'), W=0,H=0, items=[], started=false, run=false;
-    function size(){ var r=el.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*d; cv.height=H*d; g.setTransform(d,0,0,d,0,0); draw(performance.now()); }
-    function box(){ var bh=H*.96, bw=bh*10/14; if(bw>W*.96){ bw=W*.96; bh=bw*14/10; } return {x:(W-bw)/2, y:H-bh, u:bh/14}; }
+    var have=+el.dataset.have||0, add=+el.dataset.add||have, fin=el.classList.contains('sfin'), cv=document.createElement('canvas'); el.appendChild(cv);
+    var g=cv.getContext('2d'), W=0,H=0,EX=0, items=[], started=false, run=false;
+    function size(){ var r=el.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; EX=Math.round(H*(fin?.5:1));
+      cv.style.position='absolute'; cv.style.left='0'; cv.style.top=(-EX)+'px'; cv.style.width=W+'px'; cv.style.height=(H+EX)+'px';
+      cv.width=W*d; cv.height=(H+EX)*d; g.setTransform(d,0,0,d,0,0); draw(performance.now()); }
+    function box(){ var bh=H*.96, bw=bh*10/14; if(bw>W*.96){ bw=W*.96; bh=bw*14/10; } return {x:(W-bw)/2, y:EX+H-bh, u:bh/14}; }
     for(var i=0;i<have;i++) items.push({q:P[i],t:-1e9});
-    function draw(now){ g.clearRect(0,0,W,H); var B=box(), busy=false;
-      items.forEach(function(it){ var q=it.q, k=Math.min(1,(now-it.t)/760); if(k<0){ busy=true; return; } if(k<1) busy=true; var e=ease(k), tx=B.x+q[1]*B.u, ty=B.y+q[2]*B.u;
-        var x=it.sx===undefined?tx:it.sx+(tx-it.sx)*e, y=it.sy===undefined?ty:it.sy+(ty-it.sy)*e;
-        g.save(); g.translate(x,y); g.rotate((it.sa||0)*(1-Math.min(1,e))); g.globalAlpha=Math.min(1,k*4); part(g,q,B.u); g.restore(); });
+    function draw(now){ g.clearRect(0,0,W,H+EX); var B=box(), busy=false;
+      items.forEach(function(it){ var q=it.q, tx=B.x+q[1]*B.u, ty=B.y+q[2]*B.u, x=tx, y=ty, a=0, al=1;
+        if(it.t>-1e8){ var sy=-(q[4]||1)*B.u, dur=300+560*Math.sqrt(Math.max(0,ty-sy)/(H+EX)), e=now-it.t;
+          if(e<0){ busy=true; return; }
+          if(e<dur){ busy=true; var k=e/dur; y=sy+(ty-sy)*k*k; x=tx+it.dx*(1-k); a=it.sa*(1-k); al=Math.min(1,k*6); }
+          else if(e<dur+340){ busy=true; var b=(e-dur)/340; y=ty-Math.abs(Math.sin(b*Math.PI*2))*B.u*.42*(1-b)*(1-b); a=it.sa*.25*Math.sin(b*Math.PI*3)*(1-b); } }
+        g.save(); g.translate(x,y); g.rotate(a); g.globalAlpha=al; part(g,q,B.u); g.restore(); });
       return busy; }
     function loop(){ var b=draw(performance.now()); if(b||run) requestAnimationFrame(loop); }
-    function start(){ if(started) return; started=true; var now=performance.now(), gap=el.classList.contains('sfin')?90:260;
-      for(var i=have;i<add;i++) items.push({q:P[i], t:reduce?-1e9:now+(i-have)*gap, sx:W*(.1+Math.random()*.8), sy:-H*.3-Math.random()*H*.3, sa:(Math.random()-.5)*2.4});
-      run=true; requestAnimationFrame(loop); setTimeout(function(){ run=false; }, (add-have)*gap+1200); }
+    function start(){ if(started) return; started=true; var now=performance.now(), gap=fin?120:340, B=box();
+      for(var i=have;i<add;i++) items.push({q:P[i], t:reduce?-1e9:now+(i-have)*gap, dx:(Math.random()-.5)*B.u*.8, sa:(Math.random()-.5)*.5});
+      run=true; requestAnimationFrame(loop); setTimeout(function(){ run=false; }, (add-have)*gap+1600); }
     size(); addEventListener('resize', size); if(document.fonts&&document.fonts.ready) document.fonts.ready.then(size);
     new IntersectionObserver(function(es){ if(es[0].isIntersecting) start(); },{threshold:.6}).observe(el);
   });
