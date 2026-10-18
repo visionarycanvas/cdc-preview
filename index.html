@@ -751,7 +751,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 })();
 
 window.KVM=1;window.KVBR=7;window.KVBG="o";
-/* 一番上をキャンバスにする（額縁つき・画面全体）。カーソルを動かすと図解の部品が飛んできて組み上がる。つかんで動かすと、その場所に固定できる（積み上げられる）。押すと崩れて、ゆっくり組み直す。組み上がったあとはカーソルから部品がこぼれ落ちる
+/* 一番上をキャンバスにする（額縁つき・画面全体）。カーソルを動かすと図解の部品が飛んできて組み上がる。押すと崩れて、手を止めるとゆっくり組み直す。組み上がったあとは、カーソルから部品がこぼれ落ちる
    br=1 筆の線 / br=2 にじみ、 fr=a 画面全体が額縁のキャンバス / fr=b 右に額縁のキャンバス */
 (function(){
   var Q=location.search;
@@ -936,7 +936,7 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";
   /* ---------- 一番上 B（br=7）：部品が飛んできて組み上がる。組み上がったら遊べる ----------
      play=1 つかんで好きな場所に置き直せる／play=2 引き抜くと落ちる（下の段を抜くと上が崩れる）／play=3 押すと全部崩れて、しばらくすると組み直す
      どの遊び方でも、組み上がったあとにカーソルを動かすと、カーソルから部品がこぼれ落ちる */
-  var PLAY=+((Q.match(/[?&]play=(\d)/)||[0,4])[1]);
+  var PLAY=+((Q.match(/[?&]play=(\d)/)||[0,3])[1]);
   var P7={ items:[], next:0, built:false, held:null, ptr:{x:0,y:0,vx:0,vy:0,in:false}, last:0, regroup:0 };
   if(BR===7 && MT){ eng=MT.Engine.create({enableSleeping:true}); eng.gravity.y=1; walls(); }
   function p7tgt(it){ var B=box(), q=it.q; return {x:B.x+q[1]*B.u, y:B.y+q[2]*B.u, u:B.u, w:(q[3]||.6)*B.u, h:(q[0]==='arrow'?.3:(q[4]||.6))*B.u}; }
