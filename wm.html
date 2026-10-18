@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
+<title>CDC 文字だけのロゴ 見比べ</title>
+<style>
+@font-face{font-family:"Noto Sans JP";font-weight:400;src:url(fonts/noto-sans-jp-japanese-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:500;src:url(fonts/noto-sans-jp-japanese-500-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:400;src:url(fonts/jost-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:500;src:url(fonts/jost-latin-500-normal.woff2) format("woff2")}
+:root{--navy:#1f2a48;--paper:#fcfcfb;--sub:#5f6b82;--blue:#6b92ac}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--navy);font-family:"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:64px 40px 120px}
+h1{font-size:18px;font-weight:500;letter-spacing:.08em;margin:0 0 8px}
+.lead{font-size:13px;color:var(--sub);margin:0 0 56px;line-height:1.9}
+.opt{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:56px 0;border-top:1px solid rgba(31,42,72,.14)}
+.opt h2{font-family:Jost,sans-serif;font-size:44px;font-weight:400;margin:0;line-height:1}
+.opt .nm{font-size:14px;font-weight:500;margin:12px 0 8px}
+.opt .ds{font-size:12.5px;color:var(--sub);line-height:1.9;margin:0}
+.cells{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px}.cell{overflow:hidden}
+.cell{border:1px solid rgba(31,42,72,.12);min-height:220px;display:flex;align-items:center;justify-content:center;position:relative;padding:24px}
+.cell small{position:absolute;left:12px;top:8px;font-size:10.5px;color:#8a93a6;letter-spacing:.08em}
+.cell.hdr{min-height:auto;justify-content:flex-start;padding:22px 24px}
+.cell.navy{background:var(--navy);color:#fcfcfb}
+.cell.navy small{color:#9aa6bb}
+.big{grid-row:span 2}
+/* A：大文字を一行で */
+.wA{font-family:Jost,sans-serif;font-weight:500;letter-spacing:.34em;white-space:nowrap;line-height:1}
+.wA .ja{display:block;font-family:"Noto Sans JP",sans-serif;font-weight:400;letter-spacing:.62em;font-size:.36em;margin-top:.9em;opacity:.75}
+/* B：三段に積む */
+.wB{font-family:Jost,sans-serif;font-weight:400;line-height:.98;letter-spacing:-.005em}
+.wB span{display:block}.wB span:last-child{font-weight:500}
+/* C：小文字、canvas だけ少し太く */
+.wC{font-family:Jost,sans-serif;font-weight:400;letter-spacing:.01em;white-space:nowrap;line-height:1}
+.wC b{font-weight:500}
+/* D：細い線の切れ目に文字がはまる */
+.wD{display:flex;align-items:center;gap:.7em;width:100%;font-family:Jost,sans-serif;font-weight:500;letter-spacing:.3em;white-space:nowrap;line-height:1}
+.wD::before,.wD::after{content:"";height:1px;background:currentColor;flex:1;opacity:.9}
+.wD::before{flex:0 0 1.6em}.wD::after{min-width:1.6em}
+</style></head><body><div class="wrap">
+<h1>文字だけのロゴ　見比べ</h1>
+<p class="lead">マーク（枠と線と点）を外し、CAREER DESIGN CANVAS の文字組みだけで作った4案です。書体は VI の Futura系（ここでは代わりの Jost）。どの案も単色で、紺の地では白にします。<br>左が大きく置いたとき（一番上の画面）、右上がメニューの左端の大きさ、右下が紺の地（フッター）です。</p>
+
+<section class="opt"><div><h2>A</h2><p class="nm">大文字を一行で</p><p class="ds">今の文字の部分だけを残した形。いちばん素直で、会社らしい落ち着き。そのぶん個性は控えめ。</p></div>
+<div class="cells">
+<div class="cell big"><small>大きく</small><div class="wA" style="font-size:21px">CAREER DESIGN CANVAS<span class="ja">キャリアデザインキャンバス</span></div></div>
+<div class="cell hdr"><small>メニュー</small><div class="wA" style="font-size:13px">CAREER DESIGN CANVAS<span class="ja">キャリアデザインキャンバス</span></div></div>
+<div class="cell navy hdr"><small>紺の地</small><div class="wA" style="font-size:12px">CAREER DESIGN CANVAS<span class="ja">キャリアデザインキャンバス</span></div></div>
+</div></section>
+
+<section class="opt"><div><h2>B</h2><p class="nm">三段に積む</p><p class="ds">Career / Design / Canvas を縦に積み、最後の Canvas だけ少し太く。塊として目に残り、雑誌の題字のような印象。小さい場所では横一行に切り替える。</p></div>
+<div class="cells">
+<div class="cell big"><small>大きく</small><div class="wB" style="font-size:64px"><span>Career</span><span>Design</span><span>Canvas</span></div></div>
+<div class="cell hdr"><small>メニュー（一行に）</small><div class="wC" style="font-size:20px">Career Design <b>Canvas</b></div></div>
+<div class="cell navy"><small>紺の地</small><div class="wB" style="font-size:30px"><span>Career</span><span>Design</span><span>Canvas</span></div></div>
+</div></section>
+
+<section class="opt"><div><h2>C</h2><p class="nm">小文字、canvas だけ少し太く</p><p class="ds">すべて小文字で、やわらかく話しかけるような印象。「canvas（あなたのキャンバス）」にだけ重みを置く。</p></div>
+<div class="cells">
+<div class="cell big"><small>大きく</small><div class="wC" style="font-size:42px">career design <b>canvas</b></div></div>
+<div class="cell hdr"><small>メニュー</small><div class="wC" style="font-size:21px">career design <b>canvas</b></div></div>
+<div class="cell navy hdr"><small>紺の地</small><div class="wC" style="font-size:20px">career design <b>canvas</b></div></div>
+</div></section>
+
+<section class="opt"><div><h2>D</h2><p class="nm">細い線の切れ目に文字がはまる</p><p class="ds">1本の細い線が途中で切れ、その切れ目に文字がはまる形。今の額縁の「切れ目」を文字で受け継ぐので、サイトの額縁とつながる。</p></div>
+<div class="cells">
+<div class="cell big"><small>大きく</small><div class="wD" style="font-size:19px">CAREER DESIGN CANVAS</div></div>
+<div class="cell hdr"><small>メニュー</small><div class="wD" style="font-size:13px;max-width:330px">CAREER DESIGN CANVAS</div></div>
+<div class="cell navy hdr"><small>紺の地</small><div class="wD" style="font-size:12px;max-width:310px">CAREER DESIGN CANVAS</div></div>
+</div></section>
+</div></body></html>
