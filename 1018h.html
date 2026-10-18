@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ja">
-<head><meta name="robots" content="noindex, nofollow"><script>var KVM=+((location.search.match(/[?&]kv=(\d)/)||[0,1])[1]);document.documentElement.classList.add("kvm-"+KVM);</script>
+<head><meta name="robots" content="noindex, nofollow"><script>(function(){var q=location.search,b=(q.match(/[?&]br=(\d)/)||[0,2])[1],f=(q.match(/[?&]fr=([ab])/)||[0,"a"])[1];window.KVM=1;document.documentElement.classList.add("br-"+b,"fr-"+f);})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CDC トップ試作</title>
@@ -275,7 +275,7 @@ html:not(.kv-blocks) @media (max-width:760px){}
 @media (min-width:761px){.daytabs .pnls .pnl{grid-template-columns:minmax(0,370px) minmax(0,1fr) !important}}
 .nb{white-space:nowrap}
 #about .lines br{display:inline !important}
-.kvcv{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}#top .kvc,#top .kvstack,#top .kvwm{z-index:1}html.kvm-1 .kvc i,html.kvm-2 .kvc i{color:#1f2a48 !important}html.kvm-3 .kvc i{color:#1f2a48;transition:color .9s ease}html.kvm-1 #top,html.kvm-2 #top,html.kvm-3 #top{cursor:crosshair}.kvm-sw{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 12px;background:rgba(252,252,251,.96);border:1px solid #c9d2df;border-radius:12px;font-size:11px;color:#5f6b82;max-width:calc(100vw - 120px)}.kvm-sw a{font-size:11.5px;border:1px solid #c9d2df;border-radius:999px;padding:3px 10px;text-decoration:none;color:#1f2a48}html.kvm-0 .kvm-sw a[data-k="0"],html.kvm-1 .kvm-sw a[data-k="1"],html.kvm-2 .kvm-sw a[data-k="2"],html.kvm-3 .kvm-sw a[data-k="3"]{background:#1f2a48;color:#fcfcfb;border-color:#1f2a48}@media (max-width:760px){.kvm-sw{left:12px;bottom:auto;top:64px}}
+#top .kvc,#top .kvstack,#top .kvwm{z-index:2}#top .kvc i{color:#1f2a48 !important}#top{cursor:crosshair}.kvfr{position:absolute;z-index:1;pointer-events:none;box-shadow:0 28px 40px -26px rgba(31,42,72,.28)}.kvfr.fr-a{top:84px;left:32px;right:32px;bottom:32px}.kvfr.fr-b{top:15%;bottom:12%;left:62%;right:5%}.kvfl{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.kvcl{position:absolute;inset:8px;overflow:hidden;background:#fff}.kvcl canvas{position:absolute;inset:0;width:100%;height:100%}.kvwet{opacity:.58}.kvtex{position:absolute;inset:0;mix-blend-mode:multiply;background-size:160px 160px}html.fr-a .kv-h .kvc{left:calc(32px + 8%)}html.fr-a .kv-h .kvstack,html.fr-a #top .kvstack{left:calc(32px + 8%)}@media (max-width:760px){.kvfr.fr-a,.kvfr.fr-b{top:68px;left:12px;right:12px;bottom:12px}html.fr-a .kv-h .kvc,html.fr-b .kv-h .kvc{left:36px;right:36px}html #top .kvstack{left:36px}}.kvm-sw{position:fixed;left:16px;bottom:16px;z-index:60;display:grid;grid-template-columns:auto auto auto;align-items:center;gap:6px 6px;padding:8px 12px;background:rgba(252,252,251,.96);border:1px solid #c9d2df;border-radius:12px;font-size:11px;color:#5f6b82}.kvm-sw a{font-size:11.5px;border:1px solid #c9d2df;border-radius:999px;padding:3px 10px;text-decoration:none;color:#1f2a48;text-align:center}html.fr-a .kvm-sw a.fa,html.fr-b .kvm-sw a.fb,html.br-1 .kvm-sw a.b1,html.br-2 .kvm-sw a.b2{background:#1f2a48;color:#fcfcfb;border-color:#1f2a48}@media (max-width:760px){.kvm-sw{left:12px;bottom:auto;top:72px}}
 </style>
 
 
@@ -711,86 +711,113 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
 })();
 
 </script>
-<div class="kvm-sw"><span>一番上</span><a data-k="1" href="?kv=1">1 筆の線</a><a data-k="2" href="?kv=2">2 にじみ</a><a data-k="3" href="?kv=3">3 文字が色づく</a><a data-k="0" href="?kv=0">いまの積み木</a></div><script>
-/* 一番上をキャンバスにする（見比べ用：1=筆の線／2=にじみ／3=文字が色づく） */
+<div class="kvm-sw"><span>額縁</span><a class="fa" href="#" data-fr="a">A 画面全体</a><a class="fb" href="#" data-fr="b">B 右に置く</a><span>塗り方</span><a class="b2" href="#" data-br="2">にじみ</a><a class="b1" href="#" data-br="1">筆の線</a></div><script>document.querySelectorAll(".kvm-sw a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();var q=location.search,b=(q.match(/[?&]br=(\d)/)||[0,2])[1],f=(q.match(/[?&]fr=([ab])/)||[0,"a"])[1];if(a.dataset.fr)f=a.dataset.fr;if(a.dataset.br)b=a.dataset.br;location.search="?fr="+f+"&br="+b;});});</script><script>
+/* 一番上をキャンバスにする（見比べ用）
+   br=1 筆の線 / br=2 にじみ、 fr=a 画面全体が額縁のキャンバス / fr=b 右に額縁のキャンバス */
 (function(){
-  var M=window.KVM||0; if(!M) return;
+  var Q=location.search;
+  var BR=+((Q.match(/[?&]br=(\d)/)||[0,2])[1]), FR=((Q.match(/[?&]fr=([ab])/)||[0,'a'])[1]);
   var top=document.getElementById('top'); if(!top) return;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine=matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var C=['#e09e5e','#6b92ac','#d44a4e','#1f2a48'];
-  var cv=document.createElement('canvas'); cv.className='kvcv'; cv.setAttribute('aria-hidden','true');
-  top.insertBefore(cv, top.firstChild);
-  var g=cv.getContext('2d'), W=0,H=0,dpr=1;
-  function size(){ var r=top.getBoundingClientRect(); dpr=Math.min(2,window.devicePixelRatio||1); W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; g.setTransform(dpr,0,0,dpr,0,0); }
-  size(); addEventListener('resize', size);
+  var mob=function(){ return innerWidth<761; };
+  var COL=['#e09e5e','#6b92ac','#d44a4e'];
 
-  /* 文字（パターン3） */
-  var chars=[].slice.call(top.querySelectorAll('.kvc i'));
-  if(M===3){ top.classList.add('kv-ink'); }
-  function charHit(x,y,col){
-    var r0=top.getBoundingClientRect();
-    chars.forEach(function(e){ if(e.dataset.c) return; var b=e.getBoundingClientRect(); var cx=b.left-r0.left+b.width/2, cy=b.top-r0.top+b.height/2;
-      if(Math.abs(cx-x)<b.width*.75 && Math.abs(cy-y)<b.height*.7){ var c=e.style.getPropertyValue('--c').trim(); e.dataset.c=1; e.style.color=c||col; } });
-  }
+  /* 額縁（ロゴと同じ切れ目のある細い紺の線＋白いマット）とキャンバス */
+  var fr=document.createElement('div'); fr.className='kvfr fr-'+FR; fr.setAttribute('aria-hidden','true');
+  fr.innerHTML='<svg class="kvfl" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M64 0.5H99.5V99.5H0.5V0.5H24" fill="none" stroke="#1f2a48" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>'
+    +'<div class="kvcl"><canvas class="kvdry"></canvas><canvas class="kvwet"></canvas><div class="kvtex"></div></div>';
+  top.insertBefore(fr, top.firstChild);
+  var cl=fr.querySelector('.kvcl'), dry=fr.querySelector('.kvdry'), wet=fr.querySelector('.kvwet'), tex=fr.querySelector('.kvtex');
+  var gd=dry.getContext('2d'), gw=wet.getContext('2d'), W=0,H=0,dpr=1;
 
-  /* 線（パターン1・3）とにじみ（パターン2） */
-  var strokes=[], dabs=[], cur=null, ci=0, LIFE = M===2?9000:(M===3?6000:7000);
-  function newStroke(){ cur={pts:[],col:C[ci++%3]}; strokes.push(cur); }
-  function addPt(x,y,t){
-    if(!cur) newStroke();
-    var p=cur.pts, last=p[p.length-1];
-    if(last){ var dx=x-last.x, dy=y-last.y, d=Math.sqrt(dx*dx+dy*dy); if(d<2) return; var v=d/Math.max(8,t-last.t); var w=Math.max(3,Math.min(16,14-v*4)); p.push({x:x,y:y,t:t,w:last.w*.7+w*.3}); if(cur.pts.length>140){ var c=cur.col; cur=null; newStroke(); cur.col=c; cur.pts.push(p[p.length-1]); } }
-    else p.push({x:x,y:y,t:t,w:8});
-    if(M===2){ var ld=dabs[dabs.length-1]; if(!ld||Math.hypot(ld.x-x,ld.y-y)>38) dabs.push({x:x,y:y,t:t,col:cur.col,R:40+Math.random()*50}); }
-    if(M===3) charHit(x,y,cur.col);
-  }
-  function draw(now){
-    g.clearRect(0,0,W,H);
-    if(M===2){
-      dabs=dabs.filter(function(d){return now-d.t<LIFE;});
-      g.globalCompositeOperation='multiply';
-      dabs.forEach(function(d){ var a=now-d.t, k=Math.min(1,a/900), f=1-Math.max(0,(a-LIFE*.55)/(LIFE*.45)); var r=d.R*(.35+.65*(1-Math.pow(1-k,3)));
-        var gr=g.createRadialGradient(d.x,d.y,0,d.x,d.y,r); gr.addColorStop(0,hexA(d.col,.30*f)); gr.addColorStop(.7,hexA(d.col,.16*f)); gr.addColorStop(1,hexA(d.col,0));
-        g.fillStyle=gr; g.beginPath(); g.arc(d.x,d.y,r,0,7); g.fill(); });
-      g.globalCompositeOperation='source-over';
-    } else {
-      strokes=strokes.filter(function(s){ return s.pts.length && now-s.pts[s.pts.length-1].t<LIFE; });
-      strokes.forEach(function(s){ var p=s.pts; if(p.length<2) return; var a=now-p[p.length-1].t, f=1-Math.max(0,(a-LIFE*.5)/(LIFE*.5)); if(f<=0) return;
-        var w=0; p.forEach(function(q){w+=q.w;}); w=w/p.length*(M===3?.5:1);
-        /* 一本の線として描く（つなぎ目に粒が出ないように）。かすれは細い線を2本重ねる */
-        [[0,.55,.85],[1,.18,.4],[-1,.18,.4]].forEach(function(L){ var ox=L[0]*w*.3, oy=-L[0]*w*.2;
-          g.strokeStyle=hexA(s.col,L[1]*f); g.lineWidth=w*L[2]; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); g.moveTo(p[0].x+ox,p[0].y+oy);
-          for(var i=1;i<p.length-1;i++){ var mx=(p[i].x+p[i+1].x)/2+ox, my=(p[i].y+p[i+1].y)/2+oy; g.quadraticCurveTo(p[i].x+ox,p[i].y+oy,mx,my); }
-          g.lineTo(p[p.length-1].x+ox,p[p.length-1].y+oy); g.stroke(); }); });
-    }
-  }
+  /* 布の目（キャンバス地）を一度だけ描いて敷く */
+  (function(){ var c=document.createElement('canvas'), n=160; c.width=c.height=n; var g=c.getContext('2d');
+    g.fillStyle='#f5f2ec'; g.fillRect(0,0,n,n);
+    /* 縦糸・横糸：太さと濃さを少しずつ変え、ところどころ途切れさせる */
+    for(var y=0;y<n;y+=2){ for(var x=0;x<n;x+=4){ g.fillStyle='rgba(110,100,80,'+(Math.random()*.07).toFixed(3)+')'; g.fillRect(x,y,4,1); } }
+    for(var x2=0;x2<n;x2+=2){ for(var y2=0;y2<n;y2+=4){ g.fillStyle='rgba(110,100,80,'+(Math.random()*.06).toFixed(3)+')'; g.fillRect(x2,y2,1,4); } }
+    for(var i=0;i<2200;i++){ g.fillStyle='rgba(80,70,55,'+(Math.random()*.05).toFixed(3)+')'; g.fillRect(Math.random()*n,Math.random()*n,1,1); }
+    tex.style.backgroundImage='url('+c.toDataURL()+')'; })();
+
+  var dabs=[];
+  function size(){ var r=cl.getBoundingClientRect(); dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height;
+    [dry,wet].forEach(function(c){ c.width=W*dpr; c.height=H*dpr; c.getContext('2d').setTransform(dpr,0,0,dpr,0,0); }); }
+  size(); addEventListener('resize', function(){ size(); dabs=[]; });
+
   function hexA(h,a){ var n=parseInt(h.slice(1),16); return 'rgba('+(n>>16)+','+(n>>8&255)+','+(n&255)+','+Math.max(0,a).toFixed(3)+')'; }
-  var raf=0; function loop(t){ draw(performance.now()); raf=requestAnimationFrame(loop); }
+  var ci=0; function nextCol(){ return COL[ci++%COL.length]; }
+  var idle=0, fading=false;
 
-  /* マウスでなぞる */
+  /* ---------- 筆の線 ----------
+     描いている線は「濡れた層」に不透明で描き（つなぎ目に粒が出ない）、層ごと半透明で見せる。
+     描き終わったら「乾いた層」に写す。手を止めてしばらくすると、乾いた層が静かに消える。
+     描き手（マウス／ひとりでに描く一筆）ごとに線を分ける */
+  var pens={};
+  function penDown(id,col){ pens[id]={pts:[],col:col||nextCol()}; }
+  function penMove(id,x,y,t){
+    var s=pens[id]; if(!s) return; var p=s.pts, L=p[p.length-1];
+    if(L){ var d=Math.hypot(x-L.x,y-L.y); if(d<1.5) return; var v=d/Math.max(8,t-L.t); var w=Math.max(4,Math.min(15,15-v*3.2)); w=L.w*.75+w*.25;
+      gw.strokeStyle=s.col; gw.lineCap='round'; gw.lineJoin='round';
+      [[0,1],[1,.38],[-1,.32]].forEach(function(b){ var ox=b[0]*w*.34, oy=-b[0]*w*.22; gw.lineWidth=w*b[1]; gw.beginPath();
+        if(p.length>1){ var P=p[p.length-2]; gw.moveTo((P.x+L.x)/2+ox,(P.y+L.y)/2+oy); gw.quadraticCurveTo(L.x+ox,L.y+oy,(L.x+x)/2+ox,(L.y+y)/2+oy); }
+        else { gw.moveTo(L.x+ox,L.y+oy); gw.lineTo((L.x+x)/2+ox,(L.y+y)/2+oy); }
+        gw.stroke(); });
+      p.push({x:x,y:y,t:t,w:w});
+    } else p.push({x:x,y:y,t:t,w:8});
+    idle=t;
+  }
+  function penUp(id){ if(!pens[id]) return; delete pens[id]; if(Object.keys(pens).length) return;
+    gd.globalAlpha=.58; gd.globalCompositeOperation='multiply'; gd.drawImage(wet,0,0,W,H); gd.globalAlpha=1; gd.globalCompositeOperation='source-over'; gw.clearRect(0,0,W,H); }
+
+  /* ---------- にじみ ---------- */
+  function blob(x,y,t,col){ var ld=dabs[dabs.length-1]; if(ld&&Math.hypot(ld.x-x,ld.y-y)<44) return;
+    var R=34+Math.random()*46, pts=[]; for(var k=0;k<4;k++) pts.push([(Math.random()-.5)*R*.6,(Math.random()-.5)*R*.6,.55+Math.random()*.45]);
+    dabs.push({x:x,y:y,t:t,col:col,R:R,pts:pts}); idle=t; }
+  var LIFE=9000;
+  function drawDabs(now){
+    gd.clearRect(0,0,W,H); dabs=dabs.filter(function(d){return now-d.t<LIFE;});
+    gd.globalCompositeOperation='multiply';
+    dabs.forEach(function(d){ var a=now-d.t, k=Math.min(1,a/1100), f=1-Math.max(0,(a-LIFE*.55)/(LIFE*.45)), grow=.35+.65*(1-Math.pow(1-k,3));
+      d.pts.forEach(function(q){ var r=d.R*q[2]*grow, x=d.x+q[0]*grow, y=d.y+q[1]*grow;
+        var gr=gd.createRadialGradient(x,y,0,x,y,r);
+        /* 縁が少し濃い（水彩のたまり） */
+        gr.addColorStop(0,hexA(d.col,.075*f)); gr.addColorStop(.62,hexA(d.col,.06*f)); gr.addColorStop(.86,hexA(d.col,.11*f)); gr.addColorStop(1,hexA(d.col,0));
+        gd.fillStyle=gr; gd.beginPath(); gd.arc(x,y,r,0,7); gd.fill(); }); });
+    gd.globalCompositeOperation='source-over';
+  }
+
+  function loop(){ var now=performance.now();
+    if(BR===2) drawDabs(now);
+    else if(!fading && idle && now-idle>5000 && !Object.keys(pens).length){ fading=true; dry.style.transition='opacity 1.6s ease'; dry.style.opacity=0;
+      setTimeout(function(){ gd.clearRect(0,0,W,H); dry.style.transition='none'; dry.style.opacity=1; fading=false; idle=0; },1700); }
+    requestAnimationFrame(loop); }
+
+  /* マウスでなぞる（額縁の内側だけ） */
+  var mcol=null;
   if(fine && !reduce){
-    top.addEventListener('pointermove',function(e){ var r=top.getBoundingClientRect(); addPt(e.clientX-r.left,e.clientY-r.top,performance.now()); });
-    top.addEventListener('pointerleave',function(){ cur=null; });
+    top.addEventListener('pointermove',function(e){ var r=cl.getBoundingClientRect(), x=e.clientX-r.left, y=e.clientY-r.top, t=performance.now();
+      if(x<0||y<0||x>r.width||y>r.height){ if(BR===1) penUp('m'); mcol=null; return; }
+      if(!mcol) mcol=nextCol();
+      if(BR===2){ blob(x,y,t,mcol); return; }
+      if(fading) return;
+      if(!pens.m) penDown('m',mcol); penMove('m',x,y,t); });
+    top.addEventListener('pointerleave',function(){ if(BR===1) penUp('m'); mcol=null; });
   }
 
-  /* 最初にひと筆、ひとりでに描かれる（スマホはこれだけ） */
+  /* 開いたときに、ひとりでに一筆（スマホはこれだけ） */
   function auto(){
-    if(M===3){ setTimeout(function(){ var k=0; chars.forEach(function(e){ if(e.dataset.c) return; var d=120*k++; setTimeout(function(){ e.dataset.c=1; e.style.color=e.style.getPropertyValue('--c'); }, d); }); }, fine?4500:0); return; }
-    var r0=top.getBoundingClientRect(), mob=W<761;
-    var kb=top.querySelector('.kvc').getBoundingClientRect();
-    var y1=kb.top-r0.top+kb.height*.27, y2=kb.top-r0.top+kb.height*.73, x0=kb.left-r0.left-20, x1=kb.right-r0.left+30;
-    var path = M===3
-      ? [[x0,y1],[x1,y1+10],[x0+40,y2-6],[x1,y2+8]]
-      : (mob ? [[W*.1,H*.70],[W*.45,H*.62],[W*.75,H*.78],[W*.95,H*.66]] : [[W*.48,H*.78],[W*.62,H*.60],[W*.78,H*.74],[W*.94,H*.52]]);
-    var T=M===3?2600:2000, t0=performance.now(); cur=null; newStroke();
-    function seg(u){ var n=path.length-1, k=Math.min(n-1,Math.floor(u*n)), q=u*n-k; var a=path[k],b=path[k+1]; var s=(1-Math.cos(q*Math.PI))/2;
-      return [a[0]+(b[0]-a[0])*q, a[1]+(b[1]-a[1])*s + Math.sin(u*Math.PI*6)*6]; }
-    (function step(){ var u=Math.min(1,(performance.now()-t0)/T); var p=seg(u); addPt(p[0],p[1],performance.now()); if(u<1) requestAnimationFrame(step); else cur=null; })();
+    var path = (FR==='b'&&!mob()) ? [[.12,.72],[.38,.42],[.62,.66],[.88,.30]] : (mob()? [[.08,.60],[.38,.52],[.68,.64],[.94,.54]] : [[.40,.80],[.58,.62],[.76,.78],[.94,.56]]);
+    var T=2000, t0=performance.now(), col=nextCol(); if(BR===1) penDown('a',col);
+    function at(u){ var n=path.length-1, k=Math.min(n-1,Math.floor(u*n)), q=u*n-k, a=path[k], b=path[k+1], s=(1-Math.cos(q*Math.PI))/2;
+      return [(a[0]+(b[0]-a[0])*q)*W, (a[1]+(b[1]-a[1])*s)*H + Math.sin(u*Math.PI*5)*5]; }
+    (function step(){ var u=Math.min(1,(performance.now()-t0)/T), p=at(u), t=performance.now();
+      if(BR===2) blob(p[0],p[1],t,col); else penMove('a',p[0],p[1],t);
+      if(u<1) requestAnimationFrame(step); else if(BR===1) penUp('a'); })();
   }
-  if(reduce){ if(M===3) chars.forEach(function(e){ e.style.color=e.style.getPropertyValue('--c'); }); return; }
-  raf=requestAnimationFrame(loop);
-  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){ setTimeout(function(){ size(); auto(); }, 1300); });
+  if(reduce) return;
+  requestAnimationFrame(loop);
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){ setTimeout(function(){ size(); auto(); }, 1100); });
 })();
 
 </script></body>
