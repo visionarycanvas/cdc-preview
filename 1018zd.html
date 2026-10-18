@@ -751,8 +751,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
     floor:function(r){return ft.getBoundingClientRect().top-r.top;}});
 })();
 
-window.KVM=1;window.KVBR=7;window.KVBG="o";
-/* 一番上をキャンバスにする（額縁つき・画面全体）。カーソルを動かすと図解の部品が飛んできて組み上がる。押すと崩れて、手を止めるとゆっくり組み直す。組み上がったあとは、カーソルから部品がこぼれ落ちる
+window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="link";
+/* 一番上をキャンバスにする（額縁つき・画面全体）。カーソルを動かすと「つながり」の図解の部品が飛んできて組み上がる。押すと崩れて、手を止めるとゆっくり組み直す。組み上がったあとは、カーソルから部品がこぼれ落ちる
    br=1 筆の線 / br=2 にじみ、 fr=a 画面全体が額縁のキャンバス / fr=b 右に額縁のキャンバス */
 (function(){
   var Q=location.search;
@@ -938,10 +938,12 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";
      play=1 つかんで好きな場所に置き直せる／play=2 引き抜くと落ちる（下の段を抜くと上が崩れる）／play=3 押すと全部崩れて、しばらくすると組み直す
      どの遊び方でも、組み上がったあとにカーソルを動かすと、カーソルから部品がこぼれ落ちる */
   var PLAY=+((Q.match(/[?&]play=(\d)/)||[0,3])[1]);
+  if(window.KVSHAPE==='link'){ PLAN[7]=PLAN[5].map(function(q){ q=q.slice(); if(q[0]==='line'){ q.cx=(q[1]+q[3])/2; q.cy=(q[2]+q[4])/2; } return q; }); }
   var P7={ items:[], next:0, built:false, held:null, ptr:{x:0,y:0,vx:0,vy:0,in:false}, last:0, regroup:0 };
   if(BR===7 && MT){ eng=MT.Engine.create({enableSleeping:true}); eng.gravity.y=1; walls(); }
-  function p7tgt(it){ var B=box(), q=it.q; return {x:B.x+q[1]*B.u, y:B.y+q[2]*B.u, u:B.u, w:(q[3]||.6)*B.u, h:(q[0]==='arrow'?.3:(q[4]||.6))*B.u}; }
-  function p7static(it,x,y,a){ p7unbody(it); var T=p7tgt(it); if(it.q[0]==='arrow') return;
+  function p7tgt(it){ var B=box(), q=it.q; if(q[0]==='line') return {x:B.x+q.cx*B.u, y:B.y+q.cy*B.u, u:B.u, w:Math.max(.3,Math.abs(q[3]-q[1]))*B.u, h:Math.max(.3,Math.abs(q[4]-q[2]))*B.u};
+    return {x:B.x+q[1]*B.u, y:B.y+q[2]*B.u, u:B.u, w:(q[3]||.6)*B.u, h:(q[0]==='arrow'?.3:(q[4]||.6))*B.u}; }
+  function p7static(it,x,y,a){ p7unbody(it); var T=p7tgt(it); if(it.q[0]==='arrow'||it.q[0]==='line') return;
     var o={isStatic:true,friction:.6,angle:a||0}, b=(it.q[0]==='node'||it.q[0]==='me')?MT.Bodies.circle(x,y,T.w/2,o):MT.Bodies.rectangle(x,y,T.w,T.h,o);
     /* 大きな段の枠は、ほかの部品と重なっていてよいので、こぼれた部品だけがぶつかる */
     if((it.q[3]||0)>4) b.collisionFilter={group:-7,category:2,mask:1};
@@ -956,7 +958,7 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";
   function p7launch(x,y){ var P=PLAN[7]; if(P7.next>=P.length) return; var q=P[P7.next++]; P7.items.push({q:q,i:P7.next-1,state:'fly',sx:x,sy:y,sa:(Math.random()-.5)*3,t:performance.now()});
     if(P7.next>=P.length) P7.built=true; idle=performance.now(); }
   function p7hit(x,y){ var best=null, ba=1e12;
-    P7.items.forEach(function(it){ if(it.state==='fly'||it.q[0]==='arrow') return; var T=p7tgt(it), w=T.w/2+6, h=T.h/2+6;
+    P7.items.forEach(function(it){ if(it.state==='fly'||it.q[0]==='arrow'||it.q[0]==='line') return; var T=p7tgt(it), w=T.w/2+6, h=T.h/2+6;
       var X=it.x, Y=it.y; if(Math.abs(x-X)<w&&Math.abs(y-Y)<h){ var ar=T.w*T.h; if(ar<ba){ ba=ar; best=it; } } }); return best; }   /* いちばん小さい部品を優先（手前の枠に邪魔されない） */
   function p7collapse(from){ var T0=from?p7tgt(from):null;
     P7.items.forEach(function(it){ if(it.state!=='set'&&it.state!=='moved') return;
