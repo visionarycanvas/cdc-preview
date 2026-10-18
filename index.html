@@ -281,6 +281,9 @@ html:not(.kv-blocks) @media (max-width:760px){}
 
 /* 担当の流れ：選んだ回に関わらない人の段を薄く（2026-10-18 齋藤さん） */
 .flow .lane{transition:opacity .35s ease}.flow .lane.ln-off{opacity:.3}
+
+/* コンセプトの文章：ジャパンハートのミッションステートメントと同じ大きさ（1440pxで21.6px＝1.5vw、行間2、字間0.1em。スマホ15px）2026-10-18 */
+#about .lines p,#about .lines p[style*="font-size: 17px"]{font-size:clamp(16px,1.5vw,21.6px) !important;line-height:2 !important;letter-spacing:.1em !important}#about .lines p{margin-bottom:1.6em !important}#about .lines p.lnlead{margin-top:2.2em !important;margin-bottom:0 !important}#about .lines p.lnnext{margin-top:0 !important}@media (min-width:761px){#about.cv-b .lines{max-width:760px !important}}@media (max-width:760px){#about .lines p,#about .lines p[style*="font-size: 17px"]{font-size:15px !important}}
 </style>
 
 
