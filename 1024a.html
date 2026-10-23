@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>キービジュアル見比べ</title>
+<style>
+@font-face{font-family:"Noto Sans JP";font-weight:400;font-display:swap;src:url(fonts/noto-sans-jp-japanese-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:500;font-display:swap;src:url(fonts/noto-sans-jp-japanese-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:700;font-display:swap;src:url(fonts/noto-sans-jp-japanese-700-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(fonts/jost-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(fonts/jost-latin-500-normal.woff2) format("woff2")}
+:root{--n:#1f2a48;--cv:#f3efe7}
+*{box-sizing:border-box}
+body{margin:0;background:#e4dfd5;color:var(--n);font-family:"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased}
+.top{max-width:1240px;margin:0 auto;padding:40px 16px 8px}
+.top h1{font-size:22px;margin:0 0 10px;font-weight:700}
+.top p{margin:0;font-size:14px;line-height:1.9;max-width:820px}
+.opt{max-width:1240px;margin:36px auto 0;padding:0 16px}
+.lab{display:flex;gap:14px;align-items:baseline;margin:0 0 12px}
+.lab b{font-family:Jost;font-weight:500;font-size:20px}
+.lab span{font-size:15px;font-weight:700}
+.lab small{font-size:13px;opacity:.75}
+.note{font-size:13px;line-height:1.9;margin:12px 0 0;max-width:900px}
+/* 一枚の画面（1440×900 の比率） */
+.scr{position:relative;aspect-ratio:16/10;background:var(--cv);overflow:hidden;container-type:inline-size;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.scr img.shot{width:100%;height:100%;display:block;object-fit:cover}
+.hd{position:absolute;left:2.8cqw;right:2.8cqw;top:2.3cqw;display:flex;justify-content:space-between;align-items:center;font-size:.92cqw;z-index:3}
+.hd .lg{font-family:Jost;font-size:1.36cqw;font-weight:400;letter-spacing:.01em}
+.hd nav{display:flex;gap:2.2cqw;letter-spacing:.08em}
+.frm{position:absolute;left:2.7cqw;right:2.7cqw;top:6.1cqw;bottom:2.5cqw;border:1px solid var(--n);border-top:0}
+.frm:before,.frm:after{content:"";position:absolute;top:0;height:1px;background:var(--n)}
+.frm:before{left:0;width:23%}.frm:after{right:0;width:35%}
+.hl{margin:0;font-weight:700;letter-spacing:.12em;line-height:1.7;font-size:3.6cqw;color:var(--n);position:absolute;z-index:2}
+.hl span{display:block}
+canvas.f{position:absolute;display:block}
+.tex{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;background-size:160px 160px;z-index:4}
+.grain{position:absolute;pointer-events:none;mix-blend-mode:soft-light;opacity:.9;background-size:180px 180px}
+.fab{position:absolute;right:2.3cqw;bottom:2.5cqw;width:8.9cqw;height:8.9cqw;border-radius:50%;background:var(--n);color:#f3efe7;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.1cqw;font-weight:700;z-index:5}
+.fab small{font-family:Jost;font-weight:400;font-size:.62cqw;letter-spacing:.14em;margin-top:.3cqw}
+/* A：言葉の下に、横長の色の帯 */
+#A .hl{left:9%;top:15%}
+#A .band{position:absolute;left:2.7cqw;right:2.7cqw;bottom:2.5cqw;height:42%;overflow:hidden}
+#A .meta{position:absolute;left:9%;top:39.5%;font-size:1.05cqw;letter-spacing:.08em;line-height:2;z-index:2}
+#A .meta b{font-family:Jost;font-weight:500;letter-spacing:.04em;font-size:1.2cqw}
+/* B：額縁いっぱいに色がにじむ */
+#B .fill{position:absolute;inset:0}
+#B .hl{left:9%;top:50%;transform:translateY(-56%)}
+/* C：いまの図解に、色がしみる */
+#C .hl{left:9%;top:50%;transform:translateY(-56%)}
+#C canvas.tw{position:absolute;right:13%;bottom:3cqw;width:26%;height:52%}
+.foot{max-width:1240px;margin:44px auto 64px;padding:0 16px;font-size:13px;line-height:1.9}
+@media (max-width:760px){.top h1{font-size:19px}.lab{flex-wrap:wrap;gap:4px 10px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>キービジュアル見比べ：「美しいHUG！」の色の見せ方を、CDCのキャンバスで</h1>
+  <p>参考サイトの特徴は、①大きな言葉と情報を上にまとめ、②その下に横長の色の面を置き、③色が粒子のざらつきを持ってゆっくりうねること。CDCでは VI の色（紺・青・うすい青・ベージュ・オレンジ）に置きかえ、布の目をかぶせて「キャンバスに絵の具がしみた」質感にしています。言葉は変えていません。</p>
+</div>
+
+<section class="opt"><div class="lab"><b>いま</b><span>図解が組み上がる</span><small>本番（10/18 の形）</small></div>
+  <div class="scr"><img class="shot" src="img/kv-now-1024.jpg" alt="いまの一番上：額縁の中に見出しと、三段の図解"></div>
+</section>
+
+<section class="opt" id="A"><div class="lab"><b>A</b><span>言葉の下に、色の帯</span><small>参考サイトの組み方にいちばん近い</small></div>
+  <div class="scr">
+    <div class="hd"><span class="lg">Career Design Canvas</span><nav><span>CDCについて</span><span>プログラム内容</span><span>CDCのアプローチ</span><span>私たちについて</span><span>よくある質問</span><span>無料相談</span></nav></div>
+    <h2 class="hl"><span>「何者か」になるより、</span><span>あなたの「色」で生きる。</span></h2>
+    <p class="meta">自己理解からはじめる、全5回のキャリア支援<br><b>Reflect — Re-Sketch — Realize</b></p>
+    <div class="frm"></div><div class="band"><canvas class="f" data-pal="a"></canvas><div class="grain"></div></div>
+    <div class="fab">無料相談<small>FREE · 60MIN</small></div>
+    <div class="tex"></div>
+  </div>
+  <p class="note">額縁の上半分に言葉、下半分を色の帯にする。帯の中で色がゆっくり流れる。図解の部品は出さない。※「自己理解からはじめる〜」の一行と英字の三語は、見え方を確かめるための仮置きです（文言は石倉さん・齋藤さんが決める）。</p>
+</section>
+
+<section class="opt" id="B"><div class="lab"><b>B</b><span>額縁いっぱいに色がにじむ</span><small>いまの組み方のまま、地を色に</small></div>
+  <div class="scr">
+    <div class="hd"><span class="lg">Career Design Canvas</span><nav><span>CDCについて</span><span>プログラム内容</span><span>CDCのアプローチ</span><span>私たちについて</span><span>よくある質問</span><span>無料相談</span></nav></div>
+    <div class="frm" style="overflow:hidden;border-color:transparent"><div class="fill"><canvas class="f" data-pal="b"></canvas><div class="grain"></div></div></div>
+    <div class="frm"></div>
+    <h2 class="hl"><span>「何者か」になるより、</span><span>あなたの「色」で生きる。</span></h2>
+    <div class="fab">無料相談<small>FREE · 60MIN</small></div>
+    <div class="tex"></div>
+  </div>
+  <p class="note">額縁の中ぜんぶに色がにじむ。言葉のある左側は淡い色（うすい青・ベージュ）にして、紺の文字が読めるようにする。濃い紺と青、オレンジは右下に寄せる。</p>
+</section>
+
+<section class="opt" id="C"><div class="lab"><b>C</b><span>図解に色がしみる</span><small>いまの図解と動きを残す</small></div>
+  <div class="scr">
+    <div class="hd"><span class="lg">Career Design Canvas</span><nav><span>CDCについて</span><span>プログラム内容</span><span>CDCのアプローチ</span><span>私たちについて</span><span>よくある質問</span><span>無料相談</span></nav></div>
+    <div class="frm"></div>
+    <h2 class="hl"><span>「何者か」になるより、</span><span>あなたの「色」で生きる。</span></h2>
+    <canvas class="tw"></canvas>
+    <div class="fab">無料相談<small>FREE · 60MIN</small></div>
+    <div class="tex"></div>
+  </div>
+  <p class="note">地はいまの布の色のまま。三段の図解の部品の中にだけ、流れる色がしみている。ページの他のところ（脇の図解・部品）とも合わせやすい。</p>
+</section>
+
+<div class="foot">どれも、色はゆっくり動き続けます（動きを減らす設定のときは止まります）。気になるものがあれば、言葉の大きさ・色の濃さ・帯の高さなどをもう一段詰めます。</div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* 布の目（本番と同じ作り方） */
+  var n=160,c=document.createElement('canvas');c.width=c.height=n;var g=c.getContext('2d');
+  for(var y=0;y<n;y+=2)for(var x=0;x<n;x+=4){g.fillStyle='rgba(110,100,80,'+(Math.random()*.07).toFixed(3)+')';g.fillRect(x,y,4,1);}
+  for(var x2=0;x2<n;x2+=2)for(var y2=0;y2<n;y2+=4){g.fillStyle='rgba(110,100,80,'+(Math.random()*.06).toFixed(3)+')';g.fillRect(x2,y2,1,4);}
+  for(var i=0;i<2200;i++){g.fillStyle='rgba(80,70,55,'+(Math.random()*.05).toFixed(3)+')';g.fillRect(Math.random()*n,Math.random()*n,1,1);}
+  var tex='url('+c.toDataURL()+')';
+  [].forEach.call(document.querySelectorAll('.tex'),function(e){e.style.backgroundImage=tex;});
+  /* 粒子のざらつき */
+  var m=180,gc=document.createElement('canvas');gc.width=gc.height=m;var gg=gc.getContext('2d'),im=gg.createImageData(m,m);
+  for(var k=0;k<m*m;k++){var v=Math.random()<.5?0:255,a=Math.random()*150;im.data[k*4]=im.data[k*4+1]=im.data[k*4+2]=v;im.data[k*4+3]=a;}
+  gg.putImageData(im,0,0);var grain='url('+gc.toDataURL()+')';
+  [].forEach.call(document.querySelectorAll('.grain'),function(e){e.style.backgroundImage=grain;e.style.inset='0';});
+
+  /* 色のかたまり：[色, x, y, 半径, 動く幅] （0〜1 の位置） */
+  var PAL={
+    a:{bg:'#c9d9e5',b:[['#1f2a48',.82,.75,.55,.10],['#6b92ac',.55,.45,.6,.14],['#e09e5e',.12,.65,.45,.12],['#f9e1c5',.28,.25,.5,.12],['#d44a4e',.95,.15,.32,.08],['#c9d9e5',.42,.9,.4,.1]]},
+    b:{bg:'#f3e9dc',b:[['#c9d9e5',.15,.3,.55,.08],['#f9e1c5',.3,.75,.5,.08],['#6b92ac',.78,.35,.45,.1],['#1f2a48',.95,.95,.45,.08],['#e09e5e',.7,.88,.3,.08],['#c9d9e5',.55,.1,.4,.08]]},
+    c:{bg:'#6b92ac',b:[['#1f2a48',.8,.85,.6,.16],['#6b92ac',.3,.55,.6,.18],['#e09e5e',.6,.12,.4,.16],['#c9d9e5',.15,.35,.45,.16],['#d44a4e',.12,.92,.32,.12],['#f9e1c5',.9,.4,.35,.14]]}
+  };
+  function field(pal){ var lw=96,lh=60,cv=document.createElement('canvas');cv.width=lw;cv.height=lh;var x=cv.getContext('2d');
+    return {cv:cv,draw:function(t){ x.globalCompositeOperation='source-over';x.fillStyle=pal.bg;x.fillRect(0,0,lw,lh);
+      pal.b.forEach(function(q,i){ var px=(q[1]+Math.sin(t*.00011*(1+i*.23)+i*1.7)*q[4])*lw, py=(q[2]+Math.cos(t*.00009*(1+i*.31)+i)*q[4])*lh, r=q[3]*lw;
+        var gr=x.createRadialGradient(px,py,0,px,py,r); gr.addColorStop(0,q[0]); gr.addColorStop(1,q[0]+'00'); x.fillStyle=gr; x.beginPath(); x.arc(px,py,r,0,7); x.fill(); }); }}; }
+
+  /* A・B：面に色を流す */
+  var fills=[];
+  [].forEach.call(document.querySelectorAll('canvas.f'),function(cv){ var F=field(PAL[cv.dataset.pal]); cv.style.inset='0';cv.style.width='100%';cv.style.height='100%';
+    cv.width=F.cv.width;cv.height=F.cv.height; fills.push(function(t){F.draw(t);cv.getContext('2d').drawImage(F.cv,0,0);}); });
+
+  /* C：三段の図解（脇と同じ設計図）の部品の中だけに色 */
+  var P=[ ['box',5,12.4,9.6,2.6], ['tab',1.9,11.1,2.4,.6], ['pill',2.9,11.95,3.6,.75], ['pillB',2.9,12.95,3.6,.75], ['dash',7.1,11.95,3.6,.75], ['pillO',7.1,12.95,3.6,.75],
+        ['arrow',5,10.45,.9,-90],
+        ['box',5,8.6,8.4,2.4], ['tab',2.2,7.4,2.4,.6], ['boxB',2.0,8.75,1.6,1.3], ['box',4.0,8.75,1.6,1.3], ['boxB',6.0,8.75,1.6,1.3], ['box',8.0,8.75,1.6,1.3],
+        ['arrow',5,6.75,.9,-90],
+        ['box',5,4.9,6.4,2.2], ['tab',2.7,3.8,1.8,.6], ['pill',3.5,4.45,2.2,.5], ['pill',3.5,5.05,2.2,.5], ['pill',3.5,5.65,2.2,.5], ['node',6.1,4.55,.7,.7], ['pillO',6.8,5.55,2.2,.5],
+        ['arrow',5,3.3,.6,-90], ['me',5,2.2,1.5,1.5] ];
+  var tw=document.querySelector('canvas.tw'), TF=field(PAL.c), N='#1f2a48';
+  function rr(g,w,h,r){ g.beginPath(); g.moveTo(-w/2+r,-h/2); g.arcTo(w/2,-h/2,w/2,h/2,r); g.arcTo(w/2,h/2,-w/2,h/2,r); g.arcTo(-w/2,h/2,-w/2,-h/2,r); g.arcTo(-w/2,-h/2,w/2,-h/2,r); g.closePath(); }
+  function drawTower(t){ var r=tw.getBoundingClientRect(), d=Math.min(2,devicePixelRatio||1), W=r.width, H=r.height; if(tw.width!==Math.round(W*d)){ tw.width=W*d; tw.height=H*d; }
+    var g=tw.getContext('2d'); g.setTransform(d,0,0,d,0,0); g.clearRect(0,0,W,H); TF.draw(t);
+    var bh=H*.96, bw=bh*10/14; if(bw>W*.96){ bw=W*.96; bh=bw*14/10; } var ox=(W-bw)/2, oy=H-bh, u=bh/14, lw=Math.max(1,u*.05);
+    P.forEach(function(q){ var t0=q[0], w=q[3]*u, h=(q[4]||0)*u; g.save(); g.translate(ox+q[1]*u, oy+q[2]*u); g.lineWidth=lw; g.strokeStyle=N; g.setLineDash([]);
+      if(t0==='arrow'){ var L=q[3]*u, hd=u*.32; g.rotate(q[4]*Math.PI/180); g.beginPath(); g.moveTo(-L/2,0); g.lineTo(L/2-hd*.8,0); g.stroke(); g.beginPath(); g.moveTo(L/2,0); g.lineTo(L/2-hd,-hd*.55); g.lineTo(L/2-hd,hd*.55); g.closePath(); g.fillStyle=N; g.fill(); g.restore(); return; }
+      if(t0==='node'||t0==='me'){ g.beginPath(); g.arc(0,0,w/2,0,7); } else rr(g,w,h,(t0==='box'?u*.35:t0==='boxB'?u*.18:t0==='tab'?u*.08:h/2));
+      var solid=(t0==='pill'||t0==='pillB'||t0==='tab'||t0==='me'), alpha=t0==='box'?.38:t0==='boxB'?.75:t0==='dash'||t0==='pillO'||t0==='node'?.0:1;
+      g.save(); g.clip(); g.globalAlpha=alpha; g.drawImage(TF.cv,-ox-q[1]*u,-oy-q[2]*u,W,H); g.restore();
+      if(t0==='dash') g.setLineDash([u*.18,u*.14]); if(t0==='pillO'){ g.strokeStyle='#e09e5e'; g.lineWidth=lw*1.3; }
+      if(!solid) g.stroke(); g.restore(); }); }
+  function loop(t){ fills.forEach(function(f){f(t);}); drawTower(t); if(!reduce) requestAnimationFrame(loop); }
+  requestAnimationFrame(loop); addEventListener('resize',function(){ drawTower(performance.now()); });
+})();
+</script>
+</body>
+</html>
