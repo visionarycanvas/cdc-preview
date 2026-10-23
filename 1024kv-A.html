@@ -1191,7 +1191,7 @@ window.CDCFIELD=(function(){
 (function(){ var M=window.KVCOLOR; if(!M||!window.CDCFIELD) return; var top=document.getElementById('top'); if(!top) return;
   var st=document.createElement('style');
   st.textContent='#top .kvdry,#top .kvwet,#top .kvobj{display:none !important}#top .kvband{position:absolute;overflow:hidden}'
-   +(M==='a'?'#top .kvband{left:0;right:0;bottom:0;height:44%}#top.kv-h .kvc{top:25% !important}@media (max-width:760px){#top .kvband{height:40%}#top.kv-h .kvc{top:28% !important}}'
+   +(M==='a'?'#top .kvband{left:0;right:0;bottom:0;height:44%}#top.kv{justify-content:flex-start !important}#top .kvc{margin-top:max(160px,21vh) !important}@media (max-width:760px){#top .kvband{height:40%}#top .kvc{margin-top:0 !important;top:25% !important}}'
             :'#top .kvband{inset:0}');
   document.head.appendChild(st);
   function go(){ var cl=top.querySelector('.kvcl'); if(!cl) return setTimeout(go,50); var h=document.createElement('div'); h.className='kvband'; h.setAttribute('aria-hidden','true'); cl.appendChild(h); CDCFIELD.mount(h,M); }
