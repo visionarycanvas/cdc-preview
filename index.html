@@ -306,7 +306,7 @@ html:not(.kv-blocks) @media (max-width:760px){}
 .fth{letter-spacing:.05em !important}
 
 /* 脇の図解：読み進めるほど「つながり」の図解が組み上がり、無料相談（1回目）の横で完成（台帳 2-1） */
-.sstg.sside{position:absolute;right:1.6vw;bottom:150px;width:min(11vw,190px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:170px;height:238px;flex:none}@media (max-width:760px){.sstg.sfin{width:120px;height:168px}}
+.sstg.sside{position:absolute;right:1.6vw;top:96px;bottom:auto;width:min(19vw,300px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:170px;height:238px;flex:none}@media (max-width:760px){.sstg.sfin{width:120px;height:168px}}
 
 /* 担当の流れは各回の内容の下に。タブとは連動させない。札にカーソルを合わせると、その人の段が浮かび上がり、ほかは薄くなる（2026-10-18） */
 .lanesafter{margin-top:96px}.flow .lane{transition:opacity .3s ease}.flow .lane .lav{transition:transform .3s ease,box-shadow .3s ease}.flow.ln-hl .lane.ln-m,.flow.ln-hl .lane.ln-i,.flow.ln-hl .lane.ln-y{opacity:.28}.flow.ln-hl .lane.ln-up{opacity:1 !important}.flow.ln-hl .lane.ln-up .lav{transform:scale(1.15);box-shadow:0 0 0 2px #eef0f3,0 0 0 3px #1f2a48,0 10px 18px -6px rgba(31,42,72,.35)}.flow.ln-hl .lane.ln-up .cap{box-shadow:0 10px 20px -10px rgba(31,42,72,.35)}
@@ -1261,6 +1261,21 @@ window.CDCFIELD=(function(){
   if(M==='a'){ var h1=top.querySelector('.kvc'); if(h1&&!top.querySelector('.kvmeta')){ var mt=document.createElement('p'); mt.className='kvmeta'; mt.innerHTML='自己理解からはじめる、全5回のキャリア支援<b>Reflect — Re-Sketch — Realize</b>'; h1.parentNode.insertBefore(mt,h1.nextSibling); } }
   function go(){ var cl=top.querySelector('.kvcl'); if(!cl) return setTimeout(go,50); var h=document.createElement('div'); h.className='kvband'; h.setAttribute('aria-hidden','true'); cl.appendChild(h); CDCFIELD.mount(h,M); }
   go(); })();
+
+/* 一番上の見出しと一行のまとまりを、色の帯の 32px 上に置く（2026-10-27 石倉さん K2 に決定）。脇の図解の大きさと位置は Main.dc.html の CSS（.sstg.sside）*/
+(function(){ var P=window.KVPOS||'low';
+  function fit(){ var top=document.getElementById('top'), h=top&&top.querySelector('.kvc'), m=top&&top.querySelector('.kvmeta'), b=top&&top.querySelector('.kvband'), fr=top&&top.querySelector('.kvfr');
+    if(!h||!m||!b||!fr) return setTimeout(fit,80);
+    var mob=innerWidth<761, r0=top.getBoundingClientRect().top;
+    h.style.removeProperty('margin-top'); h.style.removeProperty('top'); m.style.removeProperty('top');
+    var hr=h.getBoundingClientRect(), mr=m.getBoundingClientRect(), br=b.getBoundingClientRect(), fr0=fr.getBoundingClientRect();
+    var setH=mr.bottom-hr.top, areaTop=fr0.top+ (mob?24:40), areaBot=br.top;
+    var want = P==='low' ? areaBot-32-setH : areaTop+(areaBot-areaTop-setH)/2;
+    var dy=Math.max(0,want-hr.top);
+    if(mob){ h.style.setProperty('top',(hr.top-r0+dy)+'px','important'); m.style.setProperty('top',(mr.top-r0+dy)+'px','important'); }
+    else { var mt=parseFloat(getComputedStyle(h).marginTop)||0; h.style.setProperty('margin-top',(mt+dy)+'px','important'); } }
+  var t; addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(fit,150); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit,300); fit(); })();
 
 </script>
 </body>
