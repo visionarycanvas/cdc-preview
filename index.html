@@ -1277,6 +1277,33 @@ window.CDCFIELD=(function(){
   var t; addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(fit,150); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit,300); fit(); })();
 
+/* 一番上の色の帯を、額縁の下へにじませて本文のあたりで薄れさせ、ジャーニー（霧の中から、晴れ渡る空へ。）の後ろでもう一度うっすら出す（2026-10-27 石倉さん E3 に決定。台帳 3-1） */
+(function(){ var M=window.KVEXT||'e3'; if(!M||!window.CDCFIELD) return;
+  function layer(top,h,mask,op,blur){ var d=document.createElement('div'); d.className='kvext'; d.setAttribute('aria-hidden','true');
+    d.style.cssText='position:absolute;left:0;width:100%;pointer-events:none;z-index:9997;mix-blend-mode:multiply;opacity:'+op+';top:'+top+'px;height:'+h+'px;-webkit-mask-image:'+mask+';mask-image:'+mask+(blur?';filter:blur('+blur+'px)':'');
+    var host=document.createElement('div'); host.style.cssText='position:absolute;inset:0;transform:scaleY(-1)'; d.appendChild(host); document.body.appendChild(d); CDCFIELD.mount(host,'a'); return d; }
+  var made=[];
+  function build(){ made.forEach(function(x){ x.remove(); }); made=[];
+    var fr=document.querySelector('#top .kvfr'); if(!fr) return setTimeout(build,80);
+    var y=fr.getBoundingClientRect().bottom+scrollY-8, docH=document.documentElement.scrollHeight, vh=innerHeight;
+    if(M==='e2') made.push(layer(y, docH-y, 'linear-gradient(to bottom, rgba(0,0,0,.6) 0, rgba(0,0,0,.14) 12%, rgba(0,0,0,.06) 40%, rgba(0,0,0,.03) 75%, transparent 100%)', 1, 40));
+    else made.push(layer(y, vh*1.1, 'linear-gradient(to bottom, rgba(0,0,0,.75) 0, rgba(0,0,0,.3) 30%, transparent 100%)', 1));
+    if(M==='e3'){ var j=document.getElementById('journey'); if(j){ var r=j.getBoundingClientRect(); made.push(layer(r.top+scrollY, r.height, 'linear-gradient(to bottom, transparent 0, rgba(0,0,0,.42) 28%, rgba(0,0,0,.42) 62%, transparent 100%)', 1, 20)); } } }
+  var tm; function later(){ clearTimeout(tm); tm=setTimeout(build,300); }
+  if(document.readyState==='complete') build(); else addEventListener('load',build);
+  addEventListener('resize',later); setTimeout(build,1500); })();
+
+/* 2026-10-27 石倉さん F1 に決定（台帳 3-4）：小さい文字を、本文（17px）の一段下＝15px より小さくしない。ヘッダー・メニュー・右下の無料相談・フッター・プロフィールはそのまま（齋藤さん「プロフィールはこれでいい」）。英字の小さな見出しラベルもそのまま */
+(function(){ var MIN=window.FSMIN||15;
+  function skip(e){ return e.closest('header,nav,.fab,.ctafoot,footer,#profile,svg,.copytag,.kvwm,.kvstack'); }
+  function run(){ var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT), n, seen=new Set();
+    while(n=w.nextNode()){ var t=n.textContent.replace(/[\s​]+/g,''); if(!t) continue; var e=n.parentElement; if(!e||seen.has(e)||skip(e)) continue; seen.add(e);
+      var cs=getComputedStyle(e), fs=parseFloat(cs.fontSize); if(fs>=MIN) continue;
+      /* 英字だけの短いラベル（ENTRANCE・DAY1 など）は飾りの見出しなので残す */
+      if(/^[A-Za-z0-9 .·・—\-]+$/.test(t)&&t.length<=12&&/Jost/.test(cs.fontFamily)) continue;
+      e.style.setProperty('font-size',MIN+'px','important'); if(parseFloat(cs.letterSpacing)>1) e.style.setProperty('letter-spacing','.04em','important'); } }
+  if(document.readyState==='loading') addEventListener('DOMContentLoaded',run); else run(); setTimeout(run,1200); })();
+
 </script>
 </body>
 </html>
