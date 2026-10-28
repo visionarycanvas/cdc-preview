@@ -306,7 +306,7 @@ html:not(.kv-blocks) @media (max-width:760px){}
 .fth{letter-spacing:.05em !important}
 
 /* 脇の図解：読み進めるほど「つながり」の図解が組み上がり、無料相談（1回目）の横で完成（台帳 2-1） */
-.sstg.sside{position:absolute;right:1.6vw;top:96px;bottom:auto;width:min(19vw,300px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:clamp(200px,19vw,300px);height:auto;aspect-ratio:10/14;flex:none}.fab{z-index:10000 !important}.hdr{z-index:10000 !important}.sstg.sside{width:min(14vw,200px)}.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:26px !important;letter-spacing:.06em}@media (max-width:760px){.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:22px !important}}@media (min-width:761px){.cta1{display:grid !important;grid-template-columns:auto 1fr;grid-template-rows:1fr auto 1fr;column-gap:64px !important;row-gap:28px !important;align-items:center}.cta1 .sstg.sfin{grid-row:1/4;grid-column:1}.cta1 .cta1h{grid-row:2;grid-column:2;align-self:end}.cta1 > div:last-child{grid-row:3;grid-column:2;align-self:start;margin-left:0 !important;justify-self:start}.cta1 > div:last-child p{text-align:left !important}}@media (max-width:760px){.sstg.sfin{width:180px;height:auto}}
+.sstg.sside{position:absolute;right:1.6vw;top:96px;bottom:auto;width:min(19vw,300px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:clamp(200px,19vw,300px);height:auto;aspect-ratio:10/14;flex:none}.fab{z-index:10000 !important}.hdr{z-index:10000 !important}.sstg.sside{width:min(14vw,200px)}@media (max-width:760px){.fab{width:72px !important;height:72px !important;font-size:13px !important;right:12px !important;letter-spacing:.04em !important}.fab small{display:none !important}.fl.t1 .stg{display:none !important}.fl.t1 .steps{display:flex !important;flex-direction:column;overflow:visible !important;gap:0 !important;margin-top:8px !important;padding:0 !important}.fl.t1 .steps:before{left:94px !important;right:auto !important;top:22px !important;bottom:22px;width:1px;height:auto !important}.fl.t1 .st{flex-direction:row !important;align-items:center !important;gap:14px;padding:11px 0 !important;width:100%}.fl.t1 .st .dot{margin:0 !important;flex:none}.fl.t1 .st .en{width:74px;flex:none}.fl.t1 .st .nm{margin:0 !important}.fl.t1 .st .nm br{display:none}.fl.t1 .detail{margin-top:10px !important}}.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:26px !important;letter-spacing:.06em}@media (max-width:760px){.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:22px !important}}@media (min-width:761px){.cta1{display:grid !important;grid-template-columns:auto 1fr;grid-template-rows:1fr auto 1fr;column-gap:64px !important;row-gap:28px !important;align-items:center}.cta1 .sstg.sfin{grid-row:1/4;grid-column:1}.cta1 .cta1h{grid-row:2;grid-column:2;align-self:end}.cta1 > div:last-child{grid-row:3;grid-column:2;align-self:start;margin-left:0 !important;justify-self:start}.cta1 > div:last-child p{text-align:left !important}}@media (max-width:760px){.sstg.sfin{width:180px;height:auto}}
 
 /* 担当の流れは各回の内容の下に。タブとは連動させない。札にカーソルを合わせると、その人の段が浮かび上がり、ほかは薄くなる（2026-10-18） */
 .lanesafter{margin-top:96px}.flow .lane{transition:opacity .3s ease}.flow .lane .lav{transition:transform .3s ease,box-shadow .3s ease}.flow.ln-hl .lane.ln-m,.flow.ln-hl .lane.ln-i,.flow.ln-hl .lane.ln-y{opacity:.28}.flow.ln-hl .lane.ln-up{opacity:1 !important}.flow.ln-hl .lane.ln-up .lav{transform:scale(1.15);box-shadow:0 0 0 2px #eef0f3,0 0 0 3px #1f2a48,0 10px 18px -6px rgba(31,42,72,.35)}.flow.ln-hl .lane.ln-up .cap{box-shadow:0 10px 20px -10px rgba(31,42,72,.35)}
@@ -973,7 +973,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener
     floor:function(r){return r.height-10;}});
   /* プロフィールの下：左寄りに */
   var pf=document.getElementById('profile');
-  if(pf) pile(pf,{kinds:['boxB','pill','badge','pillO','card','tab','star','blkN','ell','fat'],x0:.04,x1:.36,
+  /* 2026-10-28 スマホでは文字に重なるので出さない */
+  if(pf&&!mobile) pile(pf,{kinds:['boxB','pill','badge','pillO','card','tab','star','blkN','ell','fat'],x0:.04,x1:.36,
     dropFrom:function(h){return h-(mobile?260:300);},sizes:mobile?[44,24,32,20]:[88,32,56,24,44,28],cols:['#1f2a48','#e09e5e','#c9d9e5','#6b92ac','#f9e1c5','#b2b1ae'],
     floor:function(r){return r.height-10;}});
   /* 最後の無料相談：フッターの紺の帯の上に積もる */
@@ -1017,7 +1018,7 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="tower";window.KVPARTS
     /* 紙を一枚かぶせる（bg=o）：白い地・白い箱・図解の下地・写真のマットまで、同じ布の目にそろえる */
     if(BG==='o'){ tex.style.display='none'; var ov=document.createElement('div'); ov.className='cvov'; ov.setAttribute('aria-hidden','true');
       ov.style.cssText='position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:9999;mix-blend-mode:multiply;background:'+u+' repeat;background-size:160px 160px';
-      document.body.appendChild(ov); var fit=function(){ ov.style.height=document.documentElement.scrollHeight+'px'; }; fit(); addEventListener('resize',fit); addEventListener('load',fit); setInterval(fit,1500); }
+      document.body.appendChild(ov); var fit=function(){ ov.style.height='0px'; ov.style.height=document.documentElement.scrollHeight+'px'; }; fit(); addEventListener('resize',fit); addEventListener('load',fit); setInterval(fit,1500); }
     if(BG==='c'){ var st=document.createElement('style'); st.textContent='body{background:#f5f2ec '+u+' repeat !important;background-size:160px 160px !important}#consult,.cdc{background:transparent !important}.hdr.scrolled{background:rgba(245,242,236,.9) !important}'; document.head.appendChild(st); } })();
 
   var dabs=[];
@@ -1371,10 +1372,10 @@ window.CDCFIELD=(function(){
     var mob=innerWidth<761, r0=top.getBoundingClientRect().top;
     h.style.removeProperty('margin-top'); h.style.removeProperty('top'); m.style.removeProperty('top');
     var hr=h.getBoundingClientRect(), mr=m.getBoundingClientRect(), br=b.getBoundingClientRect(), fr0=fr.getBoundingClientRect();
-    var setH=mr.bottom-hr.top, areaTop=fr0.top+ (mob?24:40), areaBot=br.top;
+    var GAP=24, setH=mob?(hr.height+GAP+mr.height):(mr.bottom-hr.top), areaTop=fr0.top+ (mob?24:40), areaBot=br.top;
     var want = P==='low' ? areaBot-32-setH : areaTop+(areaBot-areaTop-setH)/2;
     var dy=Math.max(0,want-hr.top);
-    if(mob){ h.style.setProperty('top',(hr.top-r0+dy)+'px','important'); m.style.setProperty('top',(mr.top-r0+dy)+'px','important'); }
+    if(mob){ /* 2026-10-28 スマホ：見出しのすぐ下に一行を寄せ、二つまとめて帯の上へ */ var ht=hr.top-r0+dy; h.style.setProperty('top',ht+'px','important'); m.style.setProperty('top',(mr.top-r0+((ht+hr.height+GAP)-(mr.top-r0)))+'px','important'); }
     else { var mt=parseFloat(getComputedStyle(h).marginTop)||0; h.style.setProperty('margin-top',(mt+dy)+'px','important'); } }
   var t; addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(fit,150); });
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fit); setTimeout(fit,300); fit(); })();
@@ -1466,6 +1467,22 @@ window.CDCFIELD=(function(){
   var tm; function later(){ if(busy) return; clearTimeout(tm); tm=setTimeout(fit,250); }
   addEventListener('load',function(){ setTimeout(fit,300); setTimeout(fit,1800); }); addEventListener('resize',later);
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
+})();
+
+/* 2026-10-28 石倉さん「スマホの見え方がひどいので最適化」：スマホ（760px 以下）だけの調整 */
+(function(){
+  var mq=matchMedia('(max-width:760px)');
+  function pad(){ [].forEach.call(document.querySelectorAll('body section'),function(s){
+      if(s.id==='top') return;
+      if(!s.dataset.opt){ var c=getComputedStyle(s); s.dataset.opt=c.paddingTop; s.dataset.opb=c.paddingBottom; }
+      var pt=parseFloat(s.dataset.opt), pb=parseFloat(s.dataset.opb);
+      s.style.setProperty('padding-top',(mq.matches?Math.min(pt,56):pt)+'px','important');
+      s.style.setProperty('padding-bottom',(mq.matches?Math.min(pb,64):pb)+'px','important'); }); }
+  pad(); addEventListener('resize',function(){ clearTimeout(pad.t); pad.t=setTimeout(pad,200); });
+  /* 各回の内容：スマホでは回を縦に並べる。回を押したら、下に開いた中身が見える位置まで送る */
+  [].forEach.call(document.querySelectorAll('.fl.t1 .st'),function(b){ b.addEventListener('click',function(){
+    if(!mq.matches) return; var d=document.querySelector('.fl.t1 .detail'); if(!d) return;
+    var r=d.getBoundingClientRect(); if(r.top>innerHeight*.55) scrollBy({top:r.top-80,behavior:'smooth'}); }); });
 })();
 
 </script>
