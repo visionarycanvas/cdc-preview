@@ -306,7 +306,7 @@ html:not(.kv-blocks) @media (max-width:760px){}
 .fth{letter-spacing:.05em !important}
 
 /* 脇の図解：読み進めるほど「つながり」の図解が組み上がり、無料相談（1回目）の横で完成（台帳 2-1） */
-.sstg.sside{position:absolute;right:1.6vw;top:96px;bottom:auto;width:min(19vw,300px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:clamp(200px,19vw,300px);height:auto;aspect-ratio:10/14;flex:none}.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:26px !important;letter-spacing:.06em}@media (max-width:760px){.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:22px !important}}@media (min-width:761px){.cta1{display:grid !important;grid-template-columns:auto 1fr;grid-template-rows:1fr auto 1fr;column-gap:64px !important;row-gap:28px !important;align-items:center}.cta1 .sstg.sfin{grid-row:1/4;grid-column:1}.cta1 .cta1h{grid-row:2;grid-column:2;align-self:end}.cta1 > div:last-child{grid-row:3;grid-column:2;align-self:start;margin-left:0 !important;justify-self:start}.cta1 > div:last-child p{text-align:left !important}}@media (max-width:760px){.sstg.sfin{width:180px;height:auto}}
+.sstg.sside{position:absolute;right:1.6vw;top:96px;bottom:auto;width:min(19vw,300px);aspect-ratio:10/14;z-index:1;pointer-events:none}.sstg canvas{width:100%;height:100%;display:block}@media (max-width:1299px){.sstg.sside{display:none}}@media (min-width:761px){.cta1{flex-wrap:nowrap !important;justify-content:flex-start !important;gap:48px !important}.cta1 > div:last-child{margin-left:auto}}.sstg.sfin{position:relative;width:clamp(200px,19vw,300px);height:auto;aspect-ratio:10/14;flex:none}.fab{z-index:10000 !important}.hdr{z-index:10000 !important}.sstg.sside{width:min(14vw,200px)}.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:26px !important;letter-spacing:.06em}@media (max-width:760px){.fl.t1 h3.subh,.fl.t1 h3.subh span{font-size:22px !important}}@media (min-width:761px){.cta1{display:grid !important;grid-template-columns:auto 1fr;grid-template-rows:1fr auto 1fr;column-gap:64px !important;row-gap:28px !important;align-items:center}.cta1 .sstg.sfin{grid-row:1/4;grid-column:1}.cta1 .cta1h{grid-row:2;grid-column:2;align-self:end}.cta1 > div:last-child{grid-row:3;grid-column:2;align-self:start;margin-left:0 !important;justify-self:start}.cta1 > div:last-child p{text-align:left !important}}@media (max-width:760px){.sstg.sfin{width:180px;height:auto}}
 
 /* 担当の流れは各回の内容の下に。タブとは連動させない。札にカーソルを合わせると、その人の段が浮かび上がり、ほかは薄くなる（2026-10-18） */
 .lanesafter{margin-top:96px}.flow .lane{transition:opacity .3s ease}.flow .lane .lav{transition:transform .3s ease,box-shadow .3s ease}.flow.ln-hl .lane.ln-m,.flow.ln-hl .lane.ln-i,.flow.ln-hl .lane.ln-y{opacity:.28}.flow.ln-hl .lane.ln-up{opacity:1 !important}.flow.ln-hl .lane.ln-up .lav{transform:scale(1.15);box-shadow:0 0 0 2px #eef0f3,0 0 0 3px #1f2a48,0 10px 18px -6px rgba(31,42,72,.35)}.flow.ln-hl .lane.ln-up .cap{box-shadow:0 10px 20px -10px rgba(31,42,72,.35)}
@@ -1440,6 +1440,32 @@ window.CDCFIELD=(function(){
   function go(i,scroll){ var b=root.querySelector('.st[data-i="'+i+'"]'); if(b) b.click(); if(scroll) root.scrollIntoView({behavior:'smooth',block:'start'}); }
   sgs.forEach(function(g){ g.addEventListener('click',function(){ go(+g.dataset.go,false); }); });
   [].forEach.call(document.querySelectorAll('.scg .br'),function(g){ g.addEventListener('click',function(){ go(+g.dataset.go,true); }); });
+})();
+
+/* 2026-10-28 石倉さん「脇の図解の主張が大きすぎ、重なっていてバランスが悪い」：
+   脇の図解を小さく（幅 min(14vw,200px)）し、章の中で文字・図・表に重ならない高さを探して置く。どこにも置けない章では出さない */
+(function(){
+  var SEL='p,h1,h2,h3,h4,li,img,svg,table,figure,a,button,dl,canvas,.lines,.ftno';
+  var busy=false;
+  function fit(){
+    [].forEach.call(document.querySelectorAll('.sstg.sside'),function(el){
+      el.style.display=''; if(getComputedStyle(el).display==='none') return;
+      var sec=el.parentElement, sr=sec.getBoundingClientRect(), right=innerWidth*.016, M=20;
+      var obs=[].slice.call(sec.querySelectorAll(SEL)).filter(function(e){ return !e.closest('.sstg') && !(e.parentElement&&e.parentElement.closest('svg')); })
+        .map(function(e){ return e.getBoundingClientRect(); }).filter(function(r){ return r.width>2&&r.height>2; });
+      var done=false;
+      [Math.min(innerWidth*.14,200),160].some(function(W){ var H=W*1.4, x0=innerWidth-right-W-M, x1=innerWidth-right+M;
+        for(var y=48;y<=sr.height-H-24;y+=12){ var top=sr.top+y-M, bot=sr.top+y+H+M;
+          var hit=obs.some(function(r){ return r.left<x1&&r.right>x0&&r.top<bot&&r.bottom>top; });
+          if(!hit){ el.style.width=W+'px'; el.style.top=y+'px'; done=true; return true; } }
+        return false; });
+      if(!done) el.style.display='none';
+    });
+    busy=true; dispatchEvent(new Event('resize')); busy=false;
+  }
+  var tm; function later(){ if(busy) return; clearTimeout(tm); tm=setTimeout(fit,250); }
+  addEventListener('load',function(){ setTimeout(fit,300); setTimeout(fit,1800); }); addEventListener('resize',later);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
 })();
 
 </script>
