@@ -1538,13 +1538,13 @@ window.CDCFIELD=(function(){
 #top .kvobj{display:none !important}
 #top{cursor:auto !important}
 /* ページの一番下：無料相談とフッターのあいだに、図解が組み上がる場所 */
-.kvend{position:relative;height:clamp(380px,46vw,520px);margin:0}
+.kvend{position:relative;height:260px;margin:32px 0 0}
 .kvend .kvfr{inset:0 !important;box-shadow:none !important;pointer-events:none}
 .kvend .kvfl,.kvend .kvdry,.kvend .kvwet,.kvend .kvtex{display:none !important}
 .kvend .kvcl{inset:0 !important;background:transparent !important;overflow:visible}
 .kvend .kvobj{z-index:3}
 #consult .ctafoot{margin-top:0 !important}
-@media (max-width:760px){.kvend{height:340px}}
+@media (max-width:760px){.kvend{height:240px;margin-top:16px}}
 </style><script>(function(){ var f=document.querySelector('#consult .ctafoot'); if(!f) return; var d=document.createElement('div'); d.id='kvend'; d.className='kvend'; d.setAttribute('aria-hidden','true'); f.parentNode.insertBefore(d,f); })();
 
 /* 2026-11-08 試し：一番上の図解とがらくたを、ページの一番下（最後の無料相談）へ移す */
@@ -1680,7 +1680,7 @@ window.CDCFIELD=(function(){
         ['ell',5,5.6,6.4,1.4], ['arrow',3.35,3.85,4.0,-55], ['arrow',6.65,3.85,4.0,-125], ['ell',5,2.65,3.6,.8], ['star',5,1.3,1.5,1.5] ];
   var parts=[], nextSlot=0, built=false, gap=0;
   function gnd(){ return H-2; }
-  function box(){ var m=mob(), G=gnd(), sc=1, bh=(m?Math.min(H*.68,250):Math.min(H*.66,440))*sc, bw=bh*10/14, bx=m?(W-bw)/2:W*.86-bw, by=G-bh; return {x:bx,y:by,u:bh/14}; }
+  function box(){ var m=mob(), G=gnd(), sc=1, bh=(m?H*.86:H*.9)*sc, bw=bh*10/14, bx=m?(W-bw)/2:W*.86-bw, by=G-bh; return {x:bx,y:by,u:bh/14}; }
   function launch(x,y){ var P=PLAN[BR]; if(!P||nextSlot>=(window.STAGE_TOP||P.length)) return; var q=P[nextSlot++]; if(q[0]==='line') q=q.concat([]), q.cx=(q[1]+q[3])/2, q.cy=(q[2]+q[4])/2; parts.push({q:q,sx:x,sy:y,sa:(Math.random()-.5)*3,t:performance.now()});
     if(nextSlot>=(window.STAGE_TOP||P.length)) built=true; idle=performance.now(); }
   function ease(k){ var c=1.5; return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2); }
