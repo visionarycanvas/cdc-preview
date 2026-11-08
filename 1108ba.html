@@ -1938,7 +1938,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 .ctabtn .ctago{width:42px;height:42px;background:#e09e5e !important;color:#1f2a48 !important}
 .cbchips{gap:22px !important}
 .cbchip{border:0 !important;background:none !important;padding:0 !important;display:inline-flex;align-items:center;gap:8px;font-size:15px !important}
-.cbchip:before{content:"";width:26px;height:26px;flex:none;border-radius:50%;border:1px solid #1f2a48;background:radial-gradient(circle at 60% 40%,rgba(224,158,94,.9),rgba(249,225,197,.6) 60%,transparent 72%);transform:translate(0,0)}
+.cbchip:before{content:"";width:16px;height:16px;flex:none;border-radius:50%;border:1.1px solid #1f2a48;background:transparent;box-shadow:5px 4px 0 1px rgba(224,158,94,.55);margin-right:6px}
 </style><script>(function(){ var c=document.createElement('canvas'),n=120; c.width=c.height=n; var g=c.getContext('2d'), im=g.createImageData(n,n);
   for(var i=0;i<n*n;i++){ var w=Math.random()<.5; im.data[i*4]=im.data[i*4+1]=im.data[i*4+2]=w?255:0; im.data[i*4+3]=Math.random()*38; } g.putImageData(im,0,0);
   document.documentElement.style.setProperty('--grn','url('+c.toDataURL()+')');
