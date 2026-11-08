@@ -1312,6 +1312,16 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="tower";window.KVPARTS
 
 (function(){ var f=document.querySelector('#consult .ctafoot'); if(!f) return; var d=document.createElement('div'); d.id='kvend'; d.className='kvend'; d.setAttribute('aria-hidden','true'); f.parentNode.insertBefore(d,f); })();
 
+/* 2026-11-08：落ちてくるがらくたも C2（細い紺の線＋二色の粒子を少しずらして重ねる）で描く */
+var C2P=(function(){ var cache={};
+  function grain(col){ if(cache[col]) return cache[col]; var c=document.createElement('canvas'),n=64; c.width=c.height=n; var g=c.getContext('2d'), im=g.createImageData(n,n), v=parseInt(col.slice(1),16), r=v>>16,gg=v>>8&255,b=v&255;
+    for(var i=0;i<n*n;i++){ var on=Math.random()<.55; im.data[i*4]=r; im.data[i*4+1]=gg; im.data[i*4+2]=b; im.data[i*4+3]=on?Math.round(150+Math.random()*90):0; } g.putImageData(im,0,0); return cache[col]=c; }
+  var PAIRS=[['#6b92ac','#f9e1c5'],['#f9e1c5','#e09e5e'],['#1f2a48','#6b92ac'],['#e09e5e','#f9e1c5'],['#b2b1ae','#f9e1c5']];
+  function path(g,b){ var v=b.vertices; g.beginPath(); g.moveTo(v[0].x,v[0].y); for(var i=1;i<v.length;i++) g.lineTo(v[i].x,v[i].y); g.closePath(); }
+  return function(g,b,a){ if(!b.c2) b.c2=PAIRS[Math.floor(Math.random()*PAIRS.length)];
+    g.save(); g.globalAlpha=a==null?1:a;
+    [[b.c2[1],-3,2,.75],[b.c2[0],2,-2,1]].forEach(function(q){ g.save(); g.translate(q[1],q[2]); path(g,b); g.globalAlpha=(a==null?1:a)*q[3]; g.fillStyle=g.createPattern(grain(q[0]),'repeat'); g.fill(); g.restore(); });
+    path(g,b); g.lineWidth=1.1; g.strokeStyle='#1f2a48'; g.lineJoin='round'; g.stroke(); g.restore(); }; })();
 /* 2026-11-08 試し：一番上の図解とがらくたを、ページの一番下（最後の無料相談）へ移す */
 /* 一番上をキャンバスにする（額縁つき・画面全体）。カーソルを動かすと TO BE マップの三段の図解の部品が飛んできて組み上がる。押すと崩れて、手を止めるとゆっくり組み直す。組み上がったあとは、カーソルから部品がこぼれ落ちる
    br=1 筆の線 / br=2 にじみ、 fr=a 画面全体が額縁のキャンバス / fr=b 右に額縁のキャンバス */
@@ -1411,7 +1421,7 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="tower";window.KVPARTS
   function spill(x,y,t){ if(!lastDrop){ lastDrop={x:x,y:y}; return; } var d=Math.hypot(x-lastDrop.x,y-lastDrop.y); if(d<(mob()?44:60)) return;
     drop(x,y,(x-lastDrop.x)/d*2); lastDrop={x:x,y:y}; }
   function drawBodies(now){ if(!eng) return; MT.Engine.update(eng,1000/60); go.clearRect(0,0,W,H);
-    function paint(b,a){ if(b.pk){ CDCPARTS.paint(go,b,a); return; } go.globalAlpha=a; go.fillStyle=b.col; go.strokeStyle=b.col; go.lineWidth=3; go.lineJoin='round'; go.beginPath();
+    function paint(b,a){ if(b.pk){ C2P(go,b,a); return; } go.globalAlpha=a; go.fillStyle=b.col; go.strokeStyle=b.col; go.lineWidth=3; go.lineJoin='round'; go.beginPath();
       if(b.circleRadius){ go.arc(b.position.x,b.position.y,b.circleRadius,0,7); } else { var v=b.vertices; go.moveTo(v[0].x,v[0].y); for(var i=1;i<v.length;i++) go.lineTo(v[i].x,v[i].y); go.closePath(); go.stroke(); }
       go.fill(); }
     bodies.forEach(function(b){ paint(b,Math.min(1,(now-b.born)/180)); });
@@ -1545,8 +1555,8 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="tower";window.KVPARTS
       it.x=x; it.y=y; it.a=a;
       go.save(); go.translate(x,y); go.rotate(a); partU(it.q,u); go.restore(); go.globalAlpha=1; });
     /* こぼれた部品 */
-    bodies.forEach(function(b){ CDCPARTS.paint(go,b,Math.min(1,(now-b.born)/180)); });
-    fadeOut=fadeOut.filter(function(b){ var al=1-(now-b.gone)/600; if(al<=0){ MT.Composite.remove(eng.world,b); return false; } CDCPARTS.paint(go,b,al); return true; });
+    bodies.forEach(function(b){ C2P(go,b,Math.min(1,(now-b.born)/180)); });
+    fadeOut=fadeOut.filter(function(b){ var al=1-(now-b.gone)/600; if(al<=0){ MT.Composite.remove(eng.world,b); return false; } C2P(go,b,al); return true; });
     /* 描かずに待っていても、少しずつ組み上がる */
     if(!P7.built && P7.items.length && now-idle>240 && now-gap>200){ gap=now; p7launch(W*(.35+Math.random()*.6), H*(.05+Math.random()*.2)); }
     /* 組み直す（play=3）：崩れてから手を止めて 3.5 秒 */
