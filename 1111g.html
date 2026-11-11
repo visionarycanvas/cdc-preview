@@ -2994,18 +2994,21 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   var ORIG=window.__cdcRastOrig=new Map(), n=0, dpr=Math.min(window.devicePixelRatio||2,3), TEX=null;
   try{ var tu=(getComputedStyle(document.documentElement).getPropertyValue('--cvtex')||'').match(/url\(["']?(.*?)["']?\)/); if(tu){ TEX=new Image(); TEX.src=tu[1]; } }catch(e){}
   function list(){ var s=new Set(); [].forEach.call(document.querySelectorAll('svg [filter]'),function(e){ var v=e.ownerSVGElement; if(v&&!v.dataset.rast&&!v.closest('.fzoom')) s.add(v); }); return Array.from(s); }
-  function bake(v,done){ var vb=v.viewBox&&v.viewBox.baseVal; if(!vb||!vb.width){ done(); return; }
+  var LOG=window.__rastLog={canvas:0,svgimg:0,err:[],skip:0};
+  function put(v,vb,href){ var id='r'+(++n); ORIG.set(id,v.innerHTML); v.dataset.rast=id;
+    var tx=[].map.call(v.querySelectorAll('text'),function(t){ var g=t.cloneNode(true); try{ var m=v.getCTM().inverse().multiply(t.getCTM()); g.setAttribute('transform','matrix('+[m.a,m.b,m.c,m.d,m.e,m.f].join(' ')+')'); }catch(e){} return g; });
+    v.innerHTML='<image href="'+href+'" x="'+vb.x+'" y="'+vb.y+'" width="'+vb.width+'" height="'+vb.height+'" preserveAspectRatio="none"/>'; tx.forEach(function(g){ v.appendChild(g); }); }
+  function bake(v,done){ var vb=v.viewBox&&v.viewBox.baseVal; if(!vb||!vb.width){ LOG.skip++; done(); return; }
     var cw=v.getBoundingClientRect().width||Math.min(vb.width,350), W=Math.round(Math.min(Math.max(cw,120)*dpr,1400)), H=Math.round(W*vb.height/vb.width);
-    var c=v.cloneNode(true); c.setAttribute('xmlns','http://www.w3.org/2000/svg'); c.setAttribute('width',W); c.setAttribute('height',H); c.removeAttribute('style'); c.removeAttribute('class'); [].forEach.call(c.querySelectorAll('text'),function(t){ t.remove(); }); /* 文字は焼かずに、絵の上に残す（書体を保つ） */
-    var url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(c)],{type:'image/svg+xml'})), im=new Image();
-    im.onload=function(){ try{ var cv=document.createElement('canvas'); cv.width=W; cv.height=H; var g=cv.getContext('2d'); g.drawImage(im,0,0,W,H); URL.revokeObjectURL(url);
-        /* ページの紙の目（これまで画面全体に乗算でかぶせていたもの）を、図にも同じように焼き込む */
+    var c=v.cloneNode(true); c.setAttribute('xmlns','http://www.w3.org/2000/svg'); c.setAttribute('width',W); c.setAttribute('height',H); c.removeAttribute('style'); c.removeAttribute('class'); [].forEach.call(c.querySelectorAll('text'),function(t){ t.remove(); });
+    var src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(c)), im=new Image(), fin=false;
+    /* Safari で絵に焼けなかったときは、図そのものを「画像としての SVG」にする（ブラウザが一度だけ描いて覚える） */
+    function fallback(why){ if(fin) return; fin=true; LOG.err.push(why); put(v,vb,src); LOG.svgimg++; done(); }
+    im.onload=function(){ if(fin) return; try{ var cv=document.createElement('canvas'); cv.width=W; cv.height=H; var g=cv.getContext('2d'); g.drawImage(im,0,0,W,H);
         if(TEX&&TEX.complete&&TEX.naturalWidth){ var k=W/cw, t=document.createElement('canvas'); t.width=Math.round(160*k); t.height=t.width; t.getContext('2d').drawImage(TEX,0,0,t.width,t.height);
           g.globalCompositeOperation='multiply'; g.fillStyle=g.createPattern(t,'repeat'); g.fillRect(0,0,W,H); g.globalCompositeOperation='destination-in'; g.drawImage(im,0,0,W,H); g.globalCompositeOperation='source-over'; }
-        cv.toBlob(function(b){ if(!b){ done(); return; } var id='r'+(++n); ORIG.set(id,v.innerHTML); v.dataset.rast=id;
-          var tx=[].map.call(v.querySelectorAll('text'),function(t){ var g=t.cloneNode(true); var m=t.getCTM&&v.getCTM&&v.getCTM()?v.getCTM().inverse().multiply(t.getCTM()):null; if(m) g.setAttribute('transform','matrix('+[m.a,m.b,m.c,m.d,m.e,m.f].join(' ')+')'); return g; });
-          v.innerHTML='<image href="'+URL.createObjectURL(b)+'" x="'+vb.x+'" y="'+vb.y+'" width="'+vb.width+'" height="'+vb.height+'" preserveAspectRatio="none"/>'; tx.forEach(function(g){ v.appendChild(g); }); done(); },'image/png'); }catch(e){ done(); } };
-    im.onerror=function(){ URL.revokeObjectURL(url); done(); }; im.src=url; }
+        var d=cv.toDataURL('image/png'); if(!d||d.length<200) return fallback('empty'); fin=true; put(v,vb,d); LOG.canvas++; done(); }catch(e){ fallback('canvas:'+(e&&e.name)); } };
+    im.onerror=function(){ fallback('load'); }; setTimeout(function(){ fallback('timeout'); },4000); im.src=src; }
   var busy=false, tries=0;
   function run(){ if(busy) return; var q=list(); if(!q.length){ if(++tries<12) setTimeout(run,700); return; } busy=true;
     (function next(){ var v=q.shift(); if(!v){ busy=false; setTimeout(run,300); return; } if(!v.isConnected){ next(); return; } bake(v,function(){ (window.requestIdleCallback||function(f){ setTimeout(f,30); })(next); }); })(); }
@@ -3026,5 +3029,9 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
     e.style.setProperty('background-repeat','repeat'+(n?', '+c.backgroundRepeat:''),'important');
     e.style.setProperty('background-position','0 0'+(n?', '+c.backgroundPosition:''),'important');
     e.style.setProperty('background-blend-mode','multiply'+(n?', '+c.backgroundBlendMode:''),'important'); }); })();
+
+/* 切り分け用（?dbg=1）：焼いた数・残っている粒子・エラーを画面の上に出す */
+(function(){ if(!/[?&]dbg=1/.test(location.search)) return; var d=document.createElement('div'); d.style.cssText='position:fixed;left:6px;top:50px;z-index:100000;background:rgba(0,0,0,.75);color:#fff;font:12px/1.4 monospace;padding:6px 8px;border-radius:6px;max-width:80vw;pointer-events:none';
+  document.body.appendChild(d); setInterval(function(){ var L=window.__rastLog||{}; d.textContent='baked canvas:'+(L.canvas||0)+' svgimg:'+(L.svgimg||0)+' skip:'+(L.skip||0)+' | live filters:'+document.querySelectorAll('svg [filter]').length+' | err:'+((L.err||[]).slice(0,3).join(','))+' | ua:'+navigator.userAgent.slice(-40); },1000); })();
 </script></body>
 </html>
