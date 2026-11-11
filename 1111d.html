@@ -2707,6 +2707,16 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #journey .scg figure.sc .sq{height:auto !important;min-height:52px !important}
   #journey .scg figure.sc figcaption{height:auto !important;min-height:44px}
 }
+/* 2026-11-11 16:37 石倉さん「図を小さくしたら意味がわからない」「文字が途切れる」「面談がまた3行」：札の高さを固定するのをやめ、図は幅いっぱいの大きさに戻す。アプローチのひとことは 13px にして2行に収める */
+@media (max-width:760px){
+  .fl.t1 .detail{height:auto !important;overflow:visible !important}
+  .fl.t1 .detail .dfig{flex:none !important;display:block !important;margin:12px -4px 0 !important}
+  .fl.t1 .detail .dfig .dfs,.fl.t1 .detail .dfig .dfs>*,.fl.t1 .detail .dfig .dg{height:auto !important;display:block !important}
+  .fl.t1 .detail .dfig svg{width:100% !important;height:auto !important;max-height:none !important;display:block}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *{font-size:13px !important;line-height:1.65 !important}
+  #journey .scg figure.sc.cd .sq,#journey .scg figure.sc.cd .sq *{font-weight:700 !important}
+  #journey .scg figure.sc .sq{min-height:44px !important}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2789,5 +2799,8 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   after(); })();
 /* アプローチの説明は 13px にそろえる（もとの文に直接書かれた大きさを外す） */
 (function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); })();
+/* 文字の大きさをそろえる処理（読み込みの1.2秒後にも動く）のあとに、アプローチのひとこと・説明の大きさを外し直す */
+(function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); }
+  rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1600); }); })();
 </script></body>
 </html>
