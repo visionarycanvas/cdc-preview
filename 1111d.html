@@ -2749,7 +2749,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .spd-swipe .zm{margin-left:10px;padding-left:10px;border-left:1px solid #d9d4ca}
   .cdc section .fl.t1 p.spd-swipe.spd-swipe,.cdc section .fl.t1 p.spd-swipe *{font-size:13px !important;line-height:1.5 !important}
   .cdc section .fl.t1 .detail p.db.db{text-wrap:wrap !important}
-  .fzoom.on{justify-content:flex-start !important;overflow-x:auto !important;overflow-y:hidden !important;padding:72px 0 56px !important;-webkit-overflow-scrolling:touch}
+  .fzoom.on{justify-content:center !important;overflow:hidden !important;padding:72px 16px 40px !important;background:#f4f1eb !important}
   .fzoom .fzb{flex:none}
   .fzoom .spd-zh{display:none;position:fixed;left:0;right:0;bottom:24px;text-align:center;font-size:13px !important;color:#5b6478;margin:0}
   .fzoom.spd-wide .spd-zh{display:block}
@@ -2870,9 +2870,9 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 (function(){ if(innerWidth>760) return;
   function fix(zm){ var c=zm.querySelector('.fzb svg'), b=zm.querySelector('.fzb'); if(!c||!b||c.__spdfix) return; c.__spdfix=1;
     var vb=c.viewBox.baseVal, mn=99; [].forEach.call(c.querySelectorAll('text'),function(t){ var f=parseFloat(t.getAttribute('font-size')); if(f&&f<mn) mn=f; });
-    var w=Math.round(Math.max(innerWidth-32, Math.min(vb.width*12/mn, (innerHeight-160)*vb.width/vb.height, innerWidth*2.4)));
+    var w=Math.round(Math.min(innerWidth-32,(innerHeight-160)*vb.width/vb.height)); /* 18:36 石倉さん「画面の幅に合わせて」 */
     c.style.position=''; c.style.left=''; c.style.top=''; c.style.transform='none'; c.style.setProperty('width',w+'px','important'); c.style.height='auto';
-    b.style.cssText='width:'+w+'px;margin:auto 16px'; zm.classList.toggle('spd-wide',w>innerWidth-32); zm.scrollLeft=0;
+    b.style.cssText='width:'+w+'px;margin:auto'; zm.classList.remove('spd-wide'); zm.scrollLeft=0;
     var h=zm.querySelector('.spd-zh'); if(!h){ h=document.createElement('p'); h.className='spd-zh'; h.textContent='← 左右に動かして見られます →'; zm.appendChild(h); } }
   new MutationObserver(function(){ var zm=document.querySelector('.fzoom.on'); if(zm) fix(zm); else { var z=document.querySelector('.fzoom svg'); if(z) z.__spdfix=0; } }).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}); })();
 </script></body>
