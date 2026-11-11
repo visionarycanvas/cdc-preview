@@ -1677,7 +1677,7 @@ var C2P=(function(){ var cache={};
   }
   function build7(x,y){ if(!lastDrop){ lastDrop={x:x,y:y}; return; } if(Math.hypot(x-lastDrop.x,y-lastDrop.y)<44) return; p7launch(x,y); lastDrop={x:x,y:y}; }
 
-  function loop(){ var now=performance.now(); if(BR===7&&eng) p7frame(now); else if(BR>=4) drawParts(now); if(BR===3) drawBodies(now);
+  function loop(){ /* 2026-11-11 画面に出ていない間は描かない（スマホでスクロールがガタつく原因になるため） */ if(top.__off){ requestAnimationFrame(loop); return; } var now=performance.now(); if(BR===7&&eng) p7frame(now); else if(BR>=4) drawParts(now); if(BR===3) drawBodies(now);
     if(BR===2) drawDabs(now);
     if(BR!==2 && !fading && idle && now-idle>5000 && !Object.keys(pens).length){ fading=true; dry.style.transition='opacity 1.6s ease'; dry.style.opacity=0;
       setTimeout(function(){ gd.clearRect(0,0,W,H); dry.style.transition='none'; dry.style.opacity=1; fading=false; idle=0; },1700); }
@@ -1707,6 +1707,7 @@ var C2P=(function(){ var cache={};
   }
   if(reduce) return;
   requestAnimationFrame(loop);
+  new IntersectionObserver(function(es){ top.__off=!es[0].isIntersecting; }).observe(top);
   var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ io.disconnect(); size(); walls(); setTimeout(auto,200); } },{threshold:.45}); io.observe(top);
 })();
 
@@ -2012,7 +2013,7 @@ var C2P=(function(){ var cache={};
   }
   function build7(x,y){ if(!lastDrop){ lastDrop={x:x,y:y}; return; } if(Math.hypot(x-lastDrop.x,y-lastDrop.y)<44) return; p7launch(x,y); lastDrop={x:x,y:y}; }
 
-  function loop(){ var now=performance.now(); if(BR===7&&eng) p7frame(now); else if(BR>=4) drawParts(now); if(BR===3) drawBodies(now);
+  function loop(){ /* 2026-11-11 画面に出ていない間は描かない（スマホでスクロールがガタつく原因になるため） */ if(top.__off){ requestAnimationFrame(loop); return; } var now=performance.now(); if(BR===7&&eng) p7frame(now); else if(BR>=4) drawParts(now); if(BR===3) drawBodies(now);
     if(BR===2) drawDabs(now);
     if(BR!==2 && !fading && idle && now-idle>5000 && !Object.keys(pens).length){ fading=true; dry.style.transition='opacity 1.6s ease'; dry.style.opacity=0;
       setTimeout(function(){ gd.clearRect(0,0,W,H); dry.style.transition='none'; dry.style.opacity=1; fading=false; idle=0; },1700); }
@@ -2042,6 +2043,7 @@ var C2P=(function(){ var cache={};
   }
   if(reduce) return;
   requestAnimationFrame(loop);
+  new IntersectionObserver(function(es){ top.__off=!es[0].isIntersecting; }).observe(top);
   var io=new IntersectionObserver(function(es){ if(es[0].isIntersecting){ io.disconnect(); size(); walls(); setTimeout(auto,200); } },{threshold:.45}); io.observe(top);
 })();
 
@@ -2152,7 +2154,8 @@ window.CDCFIELD=(function(){ var T0=performance.now();
   addEventListener('resize',later); setTimeout(build,1500); })();
 
 /* 2026-10-27 石倉さん F1 に決定（台帳 3-4）：小さい文字を、本文（17px）の一段下＝15px より小さくしない。ヘッダー・メニュー・右下の無料相談・フッター・プロフィールはそのまま（齋藤さん「プロフィールはこれでいい」）。英字の小さな見出しラベルもそのまま */
-(function(){ var MIN=window.FSMIN||15;
+/* 2026-11-11 スマホでは動かさない（fsnap と同じ理由：後から大きさが変わって行がずれるため。スマホの級数は CSS で決める） */
+(function(){ if(innerWidth<=760) return; var MIN=window.FSMIN||15;
   function skip(e){ return e.closest('header,nav,.fab,.ctafoot,footer,#profile,svg,.copytag,.kvwm,.kvstack'); }
   function run(){ var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT), n, seen=new Set();
     while(n=w.nextNode()){ var t=n.textContent.replace(/[\s​]+/g,''); if(!t) continue; var e=n.parentElement; if(!e||seen.has(e)||skip(e)) continue; seen.add(e);
@@ -2165,7 +2168,8 @@ window.CDCFIELD=(function(){ var T0=performance.now();
 /* 2026-10-28 石倉さん F2 に決定（台帳 3-4「級数の種類を限りなくそろえる」）：文字の大きさを 7 段だけにする。
    13＝英字・数字の小さなラベル／15＝本文の一段下／17＝本文／22＝リード（コンセプトの文、違いの文など）／26＝小見出し／34＝見出し／64＝英字の大見出し。
    一番上の大きな見出し・ヘッダー・メニュー・右下の無料相談・フッター・図の中（svg）はそのまま */
-(function(){ var STEPS=[13,15,17,22,26,34,64];
+/* 2026-11-11 石倉さん「同じガタつきが繰り返す」：スマホでは動かさない。スマホの級数は CSS（spd.css・sp2.css）で決め、読み込みの後から大きさが変わって行がずれることをなくす */
+(function(){ if(innerWidth<=760) return; var STEPS=[13,15,17,22,26,34,64];
   function snap(fs,latin){ if(fs<=14.6) return latin?13:15; if(fs<16.1) return 15; if(fs<19.6) return 17; if(fs<24.1) return 22; if(fs<29.1) return 26; if(fs<48) return 34; return 64; }
   function skip(e){ return e.closest('header,nav,.fab,.ctafoot,footer,svg,.copytag,.kvwm,.kvstack,#top .kvc'); }
   function run(){ var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT), n, seen=new Set(), list=[];
@@ -2284,6 +2288,7 @@ window.cdcScrollBy=function(dy){ if(window.__lenis){ window.__lenis.scrollTo(scr
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(later);
 })();
 
+/* 2026-11-11 章の上下の余白を 56/64 → 44/48px に（齋藤さん「スマホは余白が気になる」）。後から書き直さず、ここで一度だけ決める */
 /* 2026-10-28 石倉さん「スマホの見え方がひどいので最適化」：スマホ（760px 以下）だけの調整 */
 (function(){
   var mq=matchMedia('(max-width:760px)');
@@ -2291,8 +2296,8 @@ window.cdcScrollBy=function(dy){ if(window.__lenis){ window.__lenis.scrollTo(scr
       if(s.id==='top') return;
       if(!s.dataset.opt){ var c=getComputedStyle(s); s.dataset.opt=c.paddingTop; s.dataset.opb=c.paddingBottom; }
       var pt=parseFloat(s.dataset.opt), pb=parseFloat(s.dataset.opb);
-      s.style.setProperty('padding-top',(mq.matches?Math.min(pt,56):pt)+'px','important');
-      s.style.setProperty('padding-bottom',(mq.matches?Math.min(pb,64):pb)+'px','important'); }); }
+      s.style.setProperty('padding-top',(mq.matches?Math.min(pt,44):pt)+'px','important');
+      s.style.setProperty('padding-bottom',(mq.matches?Math.min(pb,48):pb)+'px','important'); }); }
   pad(); addEventListener('resize',function(){ clearTimeout(pad.t); pad.t=setTimeout(pad,200); });
   /* 各回の内容：スマホでは回を縦に並べる。回を押したら、下に開いた中身が見える位置まで送る */
   [].forEach.call(document.querySelectorAll('.fl.t1 .st'),function(b){ b.addEventListener('click',function(){
@@ -2926,7 +2931,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .cdc section h2,.cdc section .h,.cdc section h2 *{font-size:26px !important;line-height:1.55 !important;letter-spacing:.04em !important}
   .cdc section h3,.cdc section h3 *{font-size:19px !important;line-height:1.6 !important}
   section.feat .fth,section.feat .fth *{font-size:22px !important}
-  .cdc section#program h2.rrr,.cdc section#program h2.rrr *{font-size:24px !important}
+  .cdc section#program h2.rrr,.cdc section#program h2.rrr *{font-size:22px !important}
   .cdc section table.cmp td:nth-of-type(2),.cdc section table.cmp td:nth-of-type(2) *{font-size:16px !important}
   /* 各回のカードの説明と、アプローチの比べる文は、1画面・2行に収めるため今の大きさ */
   .cdc section .fl.t1 .detail p.db.db,.cdc section .fl.t1 .detail p.db *{font-size:15px !important;line-height:1.7 !important}
@@ -2943,13 +2948,20 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #about p{margin-bottom:20px !important}
   .cdc section#about p,.cdc section#about p *{font-size:16px !important;line-height:1.9 !important}
   .cdc section table.cmp th,.cdc section table.cmp th *{font-size:16px !important}
+  /* 各回の内容のあとの「まずは、いまのモヤモヤを…」：上の線と見出しの間をあける（.wrap の padding-top:0 に負けていた） */
+  .cdc .wrap.cta1{padding-top:32px !important;margin-top:56px !important}
+  /* 料金の流れの図の文字（これまで fsnap がそろえていた大きさを CSS で） */
+  #price .prdg small{font-size:13px !important}
+  #price .prdg span{font-size:15px !important}
+  #price .prbig span{font-size:16px !important}
+  .cdc a.ctabtn>span:first-child{font-size:16px !important}
 }
 </style><script>/* 2026-11-11 齋藤さん「スマホは余白が気になる」：章の上下の余白（mobile_fit.js が直接書く 56/64px）を 44/48px に。特徴の図は描いてある範囲だけを見せる */
 (function(){ if(innerWidth>760) return;
   function pad(){ [].forEach.call(document.querySelectorAll('body section'),function(s){ if(s.id==='top') return; var t=parseFloat(s.style.paddingTop)||0, b=parseFloat(s.style.paddingBottom)||0;
       if(t>44) s.style.setProperty('padding-top','44px','important'); if(b>48) s.style.setProperty('padding-bottom','48px','important'); }); }
   function crop(){ [].forEach.call(document.querySelectorAll('section.feat .ftfig svg'),function(v){ if(v.__crop) return; try{ var b=v.getBBox(); if(b.width>10&&b.height>10){ var m=10; v.setAttribute('viewBox',(b.x-m)+' '+(b.y-m)+' '+(b.width+2*m)+' '+(b.height+2*m)); v.__crop=1; } }catch(e){} }); }
-  pad(); crop(); setTimeout(function(){ pad(); crop(); },300); addEventListener('load',function(){ setTimeout(function(){ pad(); crop(); },700); }); addEventListener('resize',function(){ setTimeout(pad,500); }); })();
+  crop(); })();
 
 /* トップの帯の大きさ（回した絵の縦横）と、トップを過ぎたらヘッダーの地を戻す */
 (function(){ if(innerWidth>760) return; var top=document.getElementById('top'); if(!top) return;
@@ -2958,6 +2970,6 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   function hd(){ document.documentElement.classList.toggle('spd-past',scrollY>40); } hd(); addEventListener('scroll',hd,{passive:true}); })();
 /* 文字の大きさをそろえる処理（fsnap）が直接書いた大きさを、スマホでは外して上の級数（本文 16・見出し 26 など）を効かせる */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('.cdc section:not(#top) [style*="font-size"]'),function(e){ if(e.closest('#price .prdg')) return; e.style.removeProperty('font-size'); }); }
-  rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1700); }); })();
+  rm(); })();
 </script></body>
 </html>
