@@ -778,7 +778,7 @@ if(svg&&svg.getScreenCTM){
   reset();window.addEventListener('pageshow',reset);})();
 
 /* スマホ：無料相談の丸はスクロール中に隠し、止まったら出す ／ 一番上：縦書き・横書きの見比べ */
-(function(){if(!matchMedia("(max-width:760px)").matches)return;var f=document.querySelector(".fab");if(!f)return;var t=null,inC=false,c=document.getElementById("consult");if(c)new IntersectionObserver(function(es){inC=es[0].isIntersecting;f.classList.toggle("away",inC);},{rootMargin:"0px 0px -30% 0px"}).observe(c);addEventListener("scroll",function(){f.classList.add("away");clearTimeout(t);t=setTimeout(function(){if(!inC)f.classList.remove("away");},450);},{passive:true});})();
+(function(){if(!matchMedia("(max-width:760px)").matches)return;var f=document.querySelector(".fab");if(!f)return;var t=null,inC=false,c=document.getElementById("consult");if(c)new IntersectionObserver(function(es){inC=es[0].isIntersecting;f.classList.toggle("away",inC);},{rootMargin:"0px 0px -30% 0px"}).observe(c);/* 2026-11-11 石倉さん「スクロールすると切り替わるのがたくさん」：スクロールのたびに右下の無料相談を消して出し直すのをやめる（無料相談の章に入ったときだけ隠す） */})();
 
 (function(){var k=document.querySelector(".kv");if(!k)return;k.querySelectorAll(".kvsw button").forEach(function(b){b.addEventListener("click",function(){var m=b.getAttribute("data-m");k.classList.toggle("kv-v",m==="v");k.classList.toggle("kv-h",m==="h");k.querySelectorAll(".kvsw button").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false");});});});})();
 
@@ -1082,9 +1082,10 @@ window.KVM=1;window.KVBR=7;window.KVBG="o";window.KVSHAPE="tower";window.KVPARTS
     var u='url('+c.toDataURL()+')'; tex.style.backgroundImage=u; document.documentElement.style.setProperty('--cvtex',u);
     /* 地をキャンバスに（bg=c）：白地のところを全部、同じ布の目にする */
     /* 紙を一枚かぶせる（bg=o）：白い地・白い箱・図解の下地・写真のマットまで、同じ布の目にそろえる */
+    /* 2026-11-11 スマホは紙を一枚かぶせる（固定・乗算の層）をやめ、地に布の目を描く（bg=c と同じ）。スクロールのたびに下の図を描き直させないため */ if(BG==='o'&&innerWidth<=760) BG='c';
     if(BG==='o'){ tex.style.display='none'; var ov=document.createElement('div'); ov.className='cvov'; ov.setAttribute('aria-hidden','true');
       ov.style.cssText='position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:9999;mix-blend-mode:multiply;background:'+u+' repeat;background-size:160px 160px';
-      document.body.appendChild(ov); var fit=function(){ ov.style.height='0px'; ov.style.height=document.documentElement.scrollHeight+'px'; }; fit(); addEventListener('resize',fit); addEventListener('load',fit); setInterval(fit,1500); }
+      document.body.appendChild(ov); /* 2026-11-11 1.5秒ごとに高さを0にしてから測り直していた（ページ全体の組み直しが周期的に起き、スクロールがダブつく原因）。ページの高さが変わったときだけ合わせる */ var fit=function(){ var h=document.body.scrollHeight; if(Math.abs(parseFloat(ov.style.height||0)-h)>1) ov.style.height=h+'px'; }; fit(); addEventListener('load',fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(document.body); else setInterval(fit,1500); }
     if(BG==='c'){ var st=document.createElement('style'); st.textContent='body{background:#f5f2ec '+u+' repeat !important;background-size:160px 160px !important}#consult,.cdc{background:transparent !important}.hdr.scrolled{background:rgba(245,242,236,.9) !important}'; document.head.appendChild(st); } })();
 
   /* 2026-11-08 石倉さん：一番上の図解とがらくたはページの一番下へ移した（kvtop_end.js）。ここは額縁の地と色の帯の土台だけ */
@@ -1418,9 +1419,10 @@ var C2P=(function(){ var cache={};
     var u='url('+c.toDataURL()+')'; tex.style.backgroundImage=u; document.documentElement.style.setProperty('--cvtex',u);
     /* 地をキャンバスに（bg=c）：白地のところを全部、同じ布の目にする */
     /* 紙を一枚かぶせる（bg=o）：白い地・白い箱・図解の下地・写真のマットまで、同じ布の目にそろえる */
+    /* 2026-11-11 スマホは紙を一枚かぶせる（固定・乗算の層）をやめ、地に布の目を描く（bg=c と同じ）。スクロールのたびに下の図を描き直させないため */ if(BG==='o'&&innerWidth<=760) BG='c';
     if(BG==='o'){ tex.style.display='none'; var ov=document.createElement('div'); ov.className='cvov'; ov.setAttribute('aria-hidden','true');
       ov.style.cssText='position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:9999;mix-blend-mode:multiply;background:'+u+' repeat;background-size:160px 160px';
-      document.body.appendChild(ov); var fit=function(){ ov.style.height='0px'; ov.style.height=document.documentElement.scrollHeight+'px'; }; fit(); addEventListener('resize',fit); addEventListener('load',fit); setInterval(fit,1500); }
+      document.body.appendChild(ov); /* 2026-11-11 1.5秒ごとに高さを0にしてから測り直していた（ページ全体の組み直しが周期的に起き、スクロールがダブつく原因）。ページの高さが変わったときだけ合わせる */ var fit=function(){ var h=document.body.scrollHeight; if(Math.abs(parseFloat(ov.style.height||0)-h)>1) ov.style.height=h+'px'; }; fit(); addEventListener('load',fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(document.body); else setInterval(fit,1500); }
     if(BG==='c'){ var st=document.createElement('style'); st.textContent='body{background:#f5f2ec '+u+' repeat !important;background-size:160px 160px !important}#consult,.cdc{background:transparent !important}.hdr.scrolled{background:rgba(245,242,236,.9) !important}'; document.head.appendChild(st); } })();
 
   var dabs=[];
@@ -1754,9 +1756,10 @@ var C2P=(function(){ var cache={};
     var u='url('+c.toDataURL()+')'; tex.style.backgroundImage=u; document.documentElement.style.setProperty('--cvtex',u);
     /* 地をキャンバスに（bg=c）：白地のところを全部、同じ布の目にする */
     /* 紙を一枚かぶせる（bg=o）：白い地・白い箱・図解の下地・写真のマットまで、同じ布の目にそろえる */
+    /* 2026-11-11 スマホは紙を一枚かぶせる（固定・乗算の層）をやめ、地に布の目を描く（bg=c と同じ）。スクロールのたびに下の図を描き直させないため */ if(BG==='o'&&innerWidth<=760) BG='c';
     if(BG==='o'){ tex.style.display='none'; var ov=document.createElement('div'); ov.className='cvov'; ov.setAttribute('aria-hidden','true');
       ov.style.cssText='position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:9999;mix-blend-mode:multiply;background:'+u+' repeat;background-size:160px 160px';
-      document.body.appendChild(ov); var fit=function(){ ov.style.height='0px'; ov.style.height=document.documentElement.scrollHeight+'px'; }; fit(); addEventListener('resize',fit); addEventListener('load',fit); setInterval(fit,1500); }
+      document.body.appendChild(ov); /* 2026-11-11 1.5秒ごとに高さを0にしてから測り直していた（ページ全体の組み直しが周期的に起き、スクロールがダブつく原因）。ページの高さが変わったときだけ合わせる */ var fit=function(){ var h=document.body.scrollHeight; if(Math.abs(parseFloat(ov.style.height||0)-h)>1) ov.style.height=h+'px'; }; fit(); addEventListener('load',fit); if(window.ResizeObserver) new ResizeObserver(fit).observe(document.body); else setInterval(fit,1500); }
     if(BG==='c'){ var st=document.createElement('style'); st.textContent='body{background:#f5f2ec '+u+' repeat !important;background-size:160px 160px !important}#consult,.cdc{background:transparent !important}.hdr.scrolled{background:rgba(245,242,236,.9) !important}'; document.head.appendChild(st); } })();
 
   var dabs=[];
@@ -2244,9 +2247,9 @@ window.cdcScrollBy=function(dy){ if(window.__lenis){ window.__lenis.scrollTo(scr
 
 /* 2026-10-29：比較の表と各回の内容を操作しているあいだ、右下の無料相談が表やボタンにかぶるときは、いったん隠す */
 (function(){ var fab=document.querySelector('.fab'); if(!fab) return; var T=['.scg','.fl.t1 .stg','.fl.t1 .steps','.fl.t1 .detail'], q=false;
-  function chk(){ q=false; if(document.querySelector('.fzoom.on')) return; fab.classList.remove('away2'); var f=fab.getBoundingClientRect(), hit=false;
+  function chk(){ q=false; if(innerWidth<=760) return; /* スマホは spd.js の一つの決まり（各回の札が見えている間だけ隠す）にまとめる */ if(document.querySelector('.fzoom.on')) return; var was=fab.classList.contains('away2'); if(!was||!chk.R) chk.R=fab.getBoundingClientRect(); var f=chk.R, hit=false; /* 2026-11-11 毎フレーム外して付け直すのをやめ、変わるときだけ書き換える（位置は隠す前に測った値を使う） */
     T.forEach(function(s){ var e=document.querySelector(s); if(!e||!e.offsetParent) return; var r=e.getBoundingClientRect(); if(r.left<f.right&&r.right>f.left&&r.top<f.bottom&&r.bottom>f.top) hit=true; });
-    fab.classList.toggle('away2',hit); }
+    if(hit!==was) fab.classList.toggle('away2',hit); }
   addEventListener('scroll',function(){ if(!q){ q=true; requestAnimationFrame(chk); } },{passive:true}); addEventListener('resize',chk); addEventListener('load',chk); })();
 
 /* CDCのアプローチ G（2026-11-08）：段ごとに横一列・CDC を紺の列で通す（PC）。fit2（比較の表の絵の高さ合わせ）は G では使わない */
@@ -2958,6 +2961,10 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #price .prdg span{font-size:15px !important}
   #price .prbig span{font-size:16px !important}
   .cdc a.ctabtn>span:first-child{font-size:16px !important}
+  /* 2026-11-11 石倉さん「スクロールすると切り替わるのがたくさん」：スマホでは、章や見出しが出てくるときの薄く出す動きをやめ、最初から出しておく */
+  .js .rise,.js .h,.js .place,.js .tiltin,.js .draw,.js .framein,.js .mframe,.js .drift,.js .rollby,.js .vt{opacity:1 !important;transform:none !important;animation:none !important;transition:none !important;clip-path:none !important}
+  a.fab{transition:none !important}
+  a.fab.spd-fab-off{transition:opacity .25s !important}
 }
 </style><script>/* 2026-11-11 齋藤さん「スマホは余白が気になる」：章の上下の余白（mobile_fit.js が直接書く 56/64px）を 44/48px に。特徴の図は描いてある範囲だけを見せる */
 (function(){ if(innerWidth>760) return;
@@ -2974,11 +2981,6 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 /* 文字の大きさをそろえる処理（fsnap）が直接書いた大きさを、スマホでは外して上の級数（本文 16・見出し 26 など）を効かせる */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('.cdc section:not(#top) [style*="font-size"]'),function(e){ if(e.closest('#price .prdg')) return; e.style.removeProperty('font-size'); }); }
   rm(); })();
-/* 2026-11-11 21:07 石倉さん「アプローチ・各回・プログラムでスクロールがダブつく」：紙の目（.cvov）は画面に固定した乗算の層で、
-   その下の図（粒子のフィルターつきの絵がたくさん）をスクロールのたびに描き直させていた。スマホでは層をやめ、紙の目をページの地（.cdc の背景）に描く */
-(function(){ if(innerWidth>760) return; var v=document.querySelector('.cvov'), c=document.querySelector('.cdc'); if(!v||!c) return;
-  var bg=getComputedStyle(v).backgroundImage, sz=getComputedStyle(v).backgroundSize; if(!bg||bg==='none') return;
-  [c, document.getElementById('consult')].forEach(function(e){ if(!e) return; e.style.setProperty('background-image',bg,'important'); e.style.setProperty('background-size',sz,'important'); e.style.setProperty('background-repeat','repeat','important'); e.style.setProperty('background-color','#ffffff','important'); });
-  v.style.setProperty('display','none','important'); })();
+/* 紙の目の層の扱いは kvtop.js（スマホは地に描く）にまとめた（2026-11-11） */
 </script></body>
 </html>
