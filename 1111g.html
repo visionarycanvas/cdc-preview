@@ -536,7 +536,7 @@ table.cmp small.fe{display:block;margin-top:6px;font-size:13px;color:#8a93a6}
 @media (max-width:900px){.fl.t1 .detail.wfig{grid-template-columns:1fr;gap:20px}.fl.t1 .dfig{order:-1}.fl.t1 .dfig svg{max-height:none}.fl.t1 .dq{font-size:22px}.fl.t1 .dgt{font-size:17px !important}}
 </style>
 <script>/* 2026-11-11 スマホ：アドレスバーの出入りで高さだけ変わったときは、組み直さない（下地がずれる原因） */(function(){try{if(!matchMedia('(pointer: coarse)').matches)return;var ae=window.addEventListener;window.addEventListener=function(t,f,o){if(t==='resize'&&typeof f==='function'){var w=innerWidth;var g=function(e){if(innerWidth===w)return;w=innerWidth;return f.call(this,e)};return ae.call(window,t,g,o)}return ae.call(window,t,f,o)}}catch(e){}})();</script><script>/* 2026-11-08 最初の画面の流れ：描く前に隠しておく（intro.js が動かす） */(function(d){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash){d.classList.add('kvi');}}catch(e){}})(document.documentElement);</script>
-</head>
+<script>/* スマホ用のトップ */if(innerWidth<=760)document.documentElement.classList.add("sp-hero");</script></head>
 <body>
 
 
@@ -2120,6 +2120,8 @@ window.CDCFIELD=(function(){ var T0=performance.now();
   function fit(){ var top=document.getElementById('top'), h=top&&top.querySelector('.kvc'), m=top&&top.querySelector('.kvmeta'), b=top&&top.querySelector('.kvband'), fr=top&&top.querySelector('.kvfr');
     if(!h||!m||!b||!fr) return setTimeout(fit,80);
     var mob=innerWidth<761, r0=top.getBoundingClientRect().top;
+    /* 2026-11-11 スマホ用のトップ（色の帯が一枚目いっぱい）：見出しと一行は CSS で下から置く。ここで上からの位置を書き込まない */
+    if(mob&&document.documentElement.classList.contains('sp-hero')){ h.style.removeProperty('top'); m.style.removeProperty('top'); return; }
     h.style.removeProperty('margin-top'); h.style.removeProperty('top'); m.style.removeProperty('top');
     var hr=h.getBoundingClientRect(), mr=m.getBoundingClientRect(), br=b.getBoundingClientRect(), fr0=fr.getBoundingClientRect();
     var GAP=24, setH=mob?(hr.height+GAP+mr.height):(mr.bottom-hr.top), areaTop=fr0.top+ (mob?24:40), areaBot=br.top;
@@ -2911,6 +2913,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #top .kvband{top:0 !important;left:-8px !important;width:calc(100% + 16px) !important;height:100% !important}
   #top .kvband>div{top:0 !important;height:100% !important;width:100% !important}
   #top .kvfr{top:0 !important;height:100% !important}
+  #top>.kvfr>.kvcl{background:#1f2a48 !important}
   #top .kvband{overflow:hidden !important;visibility:visible !important}
   #top .kvband canvas{visibility:visible !important}
   /* 帯の絵を90度回して、上から「夜明けの色 → 青 → 紺」に。見出しは紺の上に白で */
@@ -2965,8 +2968,8 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 
 /* トップの帯の大きさ（回した絵の縦横）と、トップを過ぎたらヘッダーの地を戻す */
 (function(){ if(innerWidth>760) return; var top=document.getElementById('top'); if(!top) return;
-  function sz(){ var r=top.getBoundingClientRect(); top.style.setProperty('--kvH',Math.ceil(r.height)+'px'); top.style.setProperty('--kvW',Math.ceil(r.width+16)+'px'); }
-  sz(); addEventListener('load',sz); addEventListener('orientationchange',function(){ setTimeout(sz,400); });
+  function sz(){ var r=top.getBoundingClientRect(); top.style.setProperty('--kvH',Math.ceil(r.height+2)+'px'); top.style.setProperty('--kvW',Math.ceil(r.width+16)+'px'); }
+  sz(); addEventListener('load',sz); addEventListener('orientationchange',function(){ setTimeout(sz,400); }); if(window.ResizeObserver) new ResizeObserver(sz).observe(top);
   function hd(){ document.documentElement.classList.toggle('spd-past',scrollY>40); } hd(); addEventListener('scroll',hd,{passive:true}); })();
 /* 文字の大きさをそろえる処理（fsnap）が直接書いた大きさを、スマホでは外して上の級数（本文 16・見出し 26 など）を効かせる */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('.cdc section:not(#top) [style*="font-size"]'),function(e){ if(e.closest('#price .prdg')) return; e.style.removeProperty('font-size'); }); }
