@@ -2645,6 +2645,26 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .spd-nav button{font:inherit;font-size:13px;color:#1f2a48;background:none;border:1px solid rgba(31,42,72,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
   .spd-nav button[disabled]{visibility:hidden}
 }
+/* 2026-11-11 15:58 石倉さん「意味の単位で改行されていない」：スマホでは文節（言葉のまとまり）でだけ折り、1〜2文字だけ次の行に落ちないようにする。見出し・ひとこと・比較の文は行の長さをそろえる */
+@media (max-width:760px){
+  .cdc p,.cdc p *,.cdc td,.cdc td *,.cdc th,.cdc dd,.cdc dd *,.cdc figcaption,.cdc figcaption *,.cdc li,.cdc summary,.cdc h2,.cdc h2 *,.cdc h3,.cdc h3 *{word-break:keep-all !important;overflow-wrap:anywhere !important;line-break:strict !important}
+  .cdc p,.cdc dd,.cdc li,.cdc summary{text-wrap:pretty}
+  .cdc h2,.cdc h3,.cdc td,.cdc figcaption,#journey .sq,.fl.t1 .detail .dq,.fl.t1 .detail .dgt,section.feat .ftd{text-wrap:balance}
+  section.feat .ftd br{display:inline !important}
+  #journey .scg figure.sc .sq{min-height:4.9em !important}
+  /* 無料相談の札：見出しの上の線と文字の間をあけ、案内の文はボタンにそろえる */
+  #consult .ctag2{padding-top:36px !important}
+  #consult .ctah{padding-top:14px !important}
+  #consult .cbrow .ctabtn{width:100% !important;min-width:0 !important}
+  #consult .canote{text-align:center !important;margin:10px 0 0 !important;font-size:13px !important;width:100% !important}
+  .cta1 .canote{text-align:center !important}
+}
+@media (max-width:760px){
+  #consult .cbrow{width:100% !important;max-width:100% !important;margin-left:0 !important;margin-right:0 !important;padding:0 !important;box-sizing:border-box}
+  #consult .cbrow>*{max-width:100% !important;box-sizing:border-box}
+  #consult .cbchips{width:100% !important;margin:0 !important}
+  #consult .cbrow .ctabtn{width:100% !important;margin:0 !important;box-sizing:border-box}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2707,5 +2727,14 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   nav.addEventListener('click',function(e){ var k=cur(); if(e.target.closest('.pv')&&k>0) go(k-1,true); if(e.target.closest('.nx')&&k<B.length-1) go(k+1,true); });
   var x0=null; det.addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; },{passive:true}); det.addEventListener('touchend',function(e){ if(x0==null) return; var dx=e.changedTouches[0].clientX-x0; x0=null; var k=cur(); if(dx<-60&&k<B.length-1) go(k+1); if(dx>60&&k>0) go(k-1); });
   draw(); })();
+/* 2026-11-11 意味の単位で折る：区切りの入っていない文に、助詞・句読点のあとで区切りを入れる。句読点の前の区切りは消す（「。」だけが次の行に落ちないように） */
+(function(){ if(innerWidth>760) return; var Z='​', root=document.querySelector('.cdc'); if(!root) return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), n, list=[];
+  while(n=w.nextNode()){ var e=n.parentElement; if(!e||e.closest('svg,#top,script,style')) continue; list.push(n); }
+  list.forEach(function(n){ var t=n.textContent; if(!/[぀-ヿ一-鿿]/.test(t)) return;
+    t=t.replace(/​+(?=[。、，．」』）\)！？…・ー])/g,'');
+    var blk=n.parentElement.closest('p,td,th,figcaption,h2,h3,dd,li,summary,b,span,button')||n.parentElement;
+    if(blk.textContent.indexOf(Z)<0&&t.length>7){ t=t.replace(/([をはがにでとものやへ]|から|まで|ため|より|、|。)(?=[぀-ヿ一-鿿A-Za-z0-9「（])/g,'$1'+Z); }
+    if(t!==n.textContent) n.textContent=t; }); })();
 </script></body>
 </html>
