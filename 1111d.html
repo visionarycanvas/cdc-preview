@@ -2511,6 +2511,49 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   /* Program の見出し：画面に収める */
   #program h2.rrr{font-size:22px !important;letter-spacing:.04em !important;line-height:1.6 !important;white-space:normal !important}
 }
+/* 2026-11-11 石倉さん（実機 15:43）：配置のバランス・各回の体験・アプローチを1画面に */
+@media (max-width:760px){
+  /* 思いの章：見出しも本文と同じ左そろえに、上下の間を詰める */
+  .psec.pband{padding-top:48px !important;padding-bottom:40px !important}
+  .psec .pshead{text-align:left !important;font-size:22px !important;margin-bottom:20px !important}
+  .psec .omoi-sub{text-align:left !important;margin-top:0 !important}
+  /* 料金：札と同じことを言う「165,000円」の帯と DAY1〜5 は外し、流れの図だけを札の下に */
+  #price .prbars,#price .prcaps{display:none !important}
+  #price .prdg{margin-top:22px !important;padding-bottom:0 !important}
+  #price{padding-bottom:32px !important}
+  /* 各回の内容：回の行は1行にそろえ、開いた中身を短く */
+  .fl.t1 .steps button.st{display:grid !important;grid-template-columns:72px 18px minmax(0,1fr) 18px;align-items:center;column-gap:8px;min-height:40px !important;padding:0 !important;text-align:left}
+  .fl.t1 .steps button.st .en{font-size:13px !important;width:auto !important;text-align:left !important}
+  .fl.t1 .steps button.st .nm{font-size:15px !important;white-space:nowrap !important;overflow:hidden;text-overflow:ellipsis;padding-right:0 !important}
+  .fl.t1 .steps button.st .nm *{white-space:nowrap !important}
+  .fl.t1 .steps button.st:after{position:static !important;transform:none !important;justify-self:end}
+  .fl.t1 .steps .detail{padding:14px 16px 12px !important;margin:4px 0 10px !important}
+  .fl.t1 .steps .detail .dq{font-size:17px !important;line-height:1.6 !important;margin:0 0 6px !important;text-wrap:balance}
+  .fl.t1 .steps .detail .dgt{font-size:15px !important;margin:0 0 8px !important;padding-bottom:8px !important}
+  .fl.t1 .steps .detail .dw,.fl.t1 .steps .detail .dw *{font-size:13px !important;line-height:1.6 !important;margin:0 0 6px !important;color:#5b6478}
+  .fl.t1 .steps .detail .db,.fl.t1 .steps .detail .db *{font-size:15px !important;line-height:1.75 !important}
+  .fl.t1 .steps .detail .dfig{margin-top:8px !important}
+  .fl.t1 .steps .detail .dfig svg{max-height:96px}
+  /* アプローチ：場面は4つ横一列の小さな札に。比べる中身を1画面に */
+  .spd-grid{grid-template-columns:repeat(4,1fr) !important;gap:6px !important;margin:0 0 14px !important}
+  .spd-grid button{padding:6px 4px 6px !important;border-radius:10px !important;align-items:center;text-align:center !important;gap:4px !important}
+  .spd-grid button .th{height:40px !important}
+  .spd-grid button .th svg{height:40px !important}
+  .spd-grid button .lb{font-size:13px !important;line-height:1.35 !important}
+  #journey h2{margin-bottom:18px !important}
+  #journey .scg figure.sc{margin:0 !important}
+  #journey .scg figure.sc svg{max-height:96px;width:100% !important;height:auto}
+  #journey .scg .sq,#journey .scg .sq *{font-size:15px !important;line-height:1.6 !important}
+  #journey .scg figure.sc.ag .sq,#journey .scg figure.sc.ag .sq *,#journey .scg figure.sc.ag figcaption,#journey .scg figure.sc.ag figcaption *{font-size:13px !important;color:#5b6478 !important}
+  #journey .scg figcaption,#journey .scg figcaption *{font-size:15px !important;line-height:1.6 !important}
+  #journey .scg>p.rl.ag,#journey .scg>p.rl.ag *{font-size:13px !important;line-height:1.5 !important}
+}
+@media (max-width:760px){
+  .fl.t1 .steps .detail .dfig svg{max-height:110px !important;width:auto !important;max-width:100% !important;height:auto !important;display:block;margin:0 auto}
+  .fl.t1 .steps .detail .dfig .dfs,.fl.t1 .steps .detail .dfig .dg{height:auto !important;min-height:0 !important}
+  .fl.t1 .steps .detail .dn{display:block !important;font-size:13px !important;color:#5b6478;margin:0 0 4px !important;letter-spacing:.04em}
+  .fl.t1 .steps .detail .dq{order:-1}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
