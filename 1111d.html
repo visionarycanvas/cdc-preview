@@ -2499,6 +2499,18 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #journey .lblbig,#profile .lblbig,#program .lblbig{width:100vw !important;margin-left:-20px !important;margin-right:0 !important}
   .fl.t1 .steps button.st .nm{padding-right:22px !important}
 }
+/* 2026-11-11 石倉さん（実機）「章が切り替わるときの段差が変」「Reflect・Re-Sketch・Realize が右に寄りすぎ」 */
+@media (max-width:760px){
+  /* 章の境目の屋根の形と、章ごとの地の色の切り替えをやめる（章の頭は札で区切る） */
+  .cdc>svg.roof,.cdc>section>svg.roof{display:none !important}
+  .cdc>section.alt:has(>svg.roof:only-child){display:none !important}
+  .cdc>section.alt{background:transparent !important}
+  .cdc>section.alt:before,.cdc>section.alt:after{display:none !important}
+  /* 料金の札：札の線を枠の角に当てない */
+  #price .prtext .lblbig{margin:0 0 18px !important;width:auto !important;border-top:0 !important;padding:0 0 10px !important}
+  /* Program の見出し：画面に収める */
+  #program h2.rrr{font-size:22px !important;letter-spacing:.04em !important;line-height:1.6 !important;white-space:normal !important}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2506,7 +2518,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   /* 5 各回の内容：中身を押した回のすぐ下へ移す */
   (function(){ var fl=document.querySelector('.fl.t1'); if(!fl) return; var det=fl.querySelector('.detail'), steps=fl.querySelector('.steps'); if(!det||!steps) return;
     function place(){ var on=steps.querySelector('button.st.on')||steps.querySelector('button.st'); if(on&&on.nextSibling!==det){ on.parentNode.insertBefore(det,on.nextSibling); det.style.animation='none'; det.offsetWidth; det.style.animation=''; } }
-    place(); q('button.st',steps).forEach(function(b){ b.addEventListener('click',function(){ setTimeout(place,0); }); }); })();
+    place(); window.__spdPlace=place; })();
   /* 9 三つの段 */
   (function(){ var rs=q('#program .rstep'); if(!rs.length) return; var row=document.createElement('div'); row.className='spd-row'; var names=['Reflect','Re-Sketch','Realize'];
     rs.forEach(function(r,i){ var b=document.createElement('button'); b.type='button'; var ic=r.querySelector('.ricon'); b.innerHTML='<span class="ic"></span><span class="nm">'+names[i]+'</span>'; if(ic){ var c=ic.cloneNode(true); c.style.cssText=getComputedStyle(ic).cssText?'':''; b.querySelector('.ic').style.background=getComputedStyle(ic).backgroundImage!=='none'?getComputedStyle(ic).background:getComputedStyle(ic).backgroundColor; var s=ic.querySelector('svg'); if(s) b.querySelector('.ic').appendChild(s.cloneNode(true)); }
@@ -2526,5 +2538,16 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
     function go(i){ groups.forEach(function(els,k){ els.forEach(function(e){ e.classList.toggle('spon',k===i); }); }); q('button',grid).forEach(function(b,k){ b.classList.toggle('on',k===i); }); }
     go(0); })();
 })();
+/* 2026-11-11 回や図を押したときの「ダブつき」：押したところを画面の同じ位置に保ち、ほかの自動スクロール（なめらかに送る動き）を止める */
+(function(){ if(innerWidth>760) return;
+  window.cdcScrollBy=function(){};
+  var hold=null, sb=window.scrollBy.bind(window);
+  window.scrollBy=function(a){ if(hold&&a&&typeof a==='object'&&a.behavior==='smooth') return; return sb.apply(window,arguments); };
+  var y0=0;
+  document.addEventListener('click',function(e){ var b=e.target.closest('.fl.t1 .steps button.st, .spd-row button, .spd-grid button'); if(!b) return; y0=b.getBoundingClientRect().top; hold=b; },true);
+  /* ボタンの処理が終わったあと、画面に描く前に、開く場所を決めて位置を戻す（同じ瞬間に済ませるので、途中の形は見えない） */
+  document.addEventListener('click',function(e){ var b=hold; if(!b) return; if(b.matches('.fl.t1 .steps button.st')&&window.__spdPlace) window.__spdPlace();
+    var dy=b.getBoundingClientRect().top-y0; if(Math.abs(dy)>1) sb(0,dy); setTimeout(function(){ hold=null; },400); });
+  document.documentElement.style.overflowAnchor='none'; })();
 </script></body>
 </html>
