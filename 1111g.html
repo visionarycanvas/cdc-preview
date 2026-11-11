@@ -2971,5 +2971,11 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 /* 文字の大きさをそろえる処理（fsnap）が直接書いた大きさを、スマホでは外して上の級数（本文 16・見出し 26 など）を効かせる */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('.cdc section:not(#top) [style*="font-size"]'),function(e){ if(e.closest('#price .prdg')) return; e.style.removeProperty('font-size'); }); }
   rm(); })();
+/* 2026-11-11 21:07 石倉さん「アプローチ・各回・プログラムでスクロールがダブつく」：紙の目（.cvov）は画面に固定した乗算の層で、
+   その下の図（粒子のフィルターつきの絵がたくさん）をスクロールのたびに描き直させていた。スマホでは層をやめ、紙の目をページの地（.cdc の背景）に描く */
+(function(){ if(innerWidth>760) return; var v=document.querySelector('.cvov'), c=document.querySelector('.cdc'); if(!v||!c) return;
+  var bg=getComputedStyle(v).backgroundImage, sz=getComputedStyle(v).backgroundSize; if(!bg||bg==='none') return;
+  [c, document.getElementById('consult')].forEach(function(e){ if(!e) return; e.style.setProperty('background-image',bg,'important'); e.style.setProperty('background-size',sz,'important'); e.style.setProperty('background-repeat','repeat','important'); e.style.setProperty('background-color','#ffffff','important'); });
+  v.style.setProperty('display','none','important'); })();
 </script></body>
 </html>
