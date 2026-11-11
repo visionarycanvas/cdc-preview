@@ -2613,6 +2613,14 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .cdc section p:not(.en):not(.lblbig):not(.prbig),.cdc section dd,.cdc section li,.cdc section summary{font-size:15px !important}
   #top .kvc,#top .kvc *{font-size:revert-layer}
 }
+/* 2026-11-11 15:54「題名が途切れてる」：回の名前を省略せず、折り返す（点と DAY は1行目にそろえる） */
+@media (max-width:760px){
+  .fl.t1 .steps button.st{align-items:start !important;padding-top:9px !important;padding-bottom:9px !important}
+  .fl.t1 .steps button.st .nm,.fl.t1 .steps button.st .nm *{white-space:normal !important;overflow:visible !important;text-overflow:clip !important;line-height:1.5 !important;word-break:keep-all;overflow-wrap:anywhere}
+  .fl.t1 .steps button.st .en,.fl.t1 .steps button.st:after{line-height:22px !important;margin-top:0 !important}
+  .fl.t1 .steps button.st .dot{margin-top:5px !important}
+  .fl.t1 .steps button.st:after{align-self:start}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
