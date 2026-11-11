@@ -2717,6 +2717,14 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #journey .scg figure.sc.cd .sq,#journey .scg figure.sc.cd .sq *{font-weight:700 !important}
   #journey .scg figure.sc .sq{min-height:44px !important}
 }
+@media (max-width:760px){
+  .fl.t1 .detail .dw,.fl.t1 .detail .dw *{white-space:nowrap !important;overflow:hidden;text-overflow:clip}
+  .spd-nav{grid-template-columns:96px 1fr 96px !important;column-gap:8px}
+  .spd-nav button{width:96px;height:36px;padding:0 !important;display:flex;align-items:center;justify-content:center;font-family:Jost,"Noto Sans JP",sans-serif !important;font-size:13px !important;border:1px solid rgba(31,42,72,.3) !important;background:transparent !important;color:#1f2a48 !important;border-radius:999px}
+  .spd-nav .pg{text-align:center;justify-self:center}
+  .spd-step button span{white-space:nowrap}
+}
+@media (max-width:760px){ .fl.t1 .detail .spd-nav{width:100% !important;box-sizing:border-box;align-self:stretch;margin-left:0 !important;margin-right:0 !important} }
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2802,5 +2810,22 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 /* 文字の大きさをそろえる処理（読み込みの1.2秒後にも動く）のあとに、アプローチのひとこと・説明の大きさを外し直す */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); }
   rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1600); }); })();
+/* 2026-11-11 16:41 石倉さん「文字量を要約して同じレベル感に」：スマホでは各回の説明を3行前後にそろえた要約にする（PC はもとの文のまま） */
+(function(){ if(innerWidth>760) return;
+  var DB=['いまのモヤモヤを、あるがままに伺います。求人の紹介はしません。CDCが合うかを一緒に確かめます。',
+    'モヤモヤを図にして、感情・思考・行動のパターンを客観視。その奥にある「本来体験したい世界」を描きます。',
+    'ルーツや好奇心、成功・失敗、死生観から「欲求の欠片」を集め、一つの言葉に凝縮します。',
+    'うまくいった出来事から「得意の発現メカニズム」を図にし、仕事で活躍できる条件を明らかにします。',
+    'これまでの図を統合して“未来の人生”を描き、キャリアパスとリソースを一枚のTO BEマップにまとめます。',
+    '羅針盤をもとに、その先を二人で描きます。転職も選択肢の一つとして、自分で試せる現実の一歩を用意します。',
+    '入社後の半年は、立ち上がりの大事な期間です。3回のコーチングで、羅針盤と照らし合わせて振り返ります。'];
+  var DW=[null,'担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1',null,'担当　石倉 達也｜入社後1・3・6か月（別料金）'];
+  var fl=document.querySelector('.fl.t1'); if(!fl) return; var B=[].slice.call(fl.querySelectorAll('.steps button.st'));
+  function apply(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); if(k<0) return; var d=fl.querySelector('.detail'); var db=d.querySelector('.db'), dw=d.querySelector('.dw');
+    if(db&&DB[k]&&db.textContent!==DB[k]) db.textContent=DB[k]; if(dw&&DW[k]&&dw.textContent!==DW[k]) dw.textContent=DW[k]; }
+  apply(); fl.addEventListener('click',function(){ setTimeout(apply,0); }); fl.addEventListener('touchend',function(){ setTimeout(apply,0); });
+  /* アプローチ：内定後の説明を2行に／下の「次へ」の印を4場面同じ見た目に */
+  var c=document.querySelector('#journey figure.sc.cd.k4 figcaption'); if(c){ var t=c.querySelector('b')||c; t.textContent='入社後1・3・6か月に、コーチングで振り返る。'; }
+  [].forEach.call(document.querySelectorAll('#journey button.br.o'),function(b){ b.classList.remove('o'); }); })();
 </script></body>
 </html>
