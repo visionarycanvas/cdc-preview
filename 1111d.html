@@ -2685,7 +2685,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .fl.t1 .detail .spd-nav{flex:none;margin-top:8px}
   .spd-nav{align-items:center}
   .spd-nav .pg{font-family:Jost,sans-serif;font-size:13px;color:#5b6478;letter-spacing:.06em}
-  .spd-swipe{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:#5b6478;margin:-6px 0 10px;transition:opacity .6s}
+  .spd-swipe{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:#5b6478;margin:-8px 0 6px;transition:opacity .6s}
   .spd-swipe i{display:inline-block;width:18px;height:1px;background:#b2b1ae;position:relative}
   .spd-swipe i:after{content:"";position:absolute;top:-3px;width:6px;height:6px;border-top:1px solid #b2b1ae;border-right:1px solid #b2b1ae}
   .spd-swipe i.l:after{left:0;transform:rotate(-135deg)}.spd-swipe i.r:after{right:0;transform:rotate(45deg)}
@@ -2725,6 +2725,31 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .spd-step button span{white-space:nowrap}
 }
 @media (max-width:760px){ .fl.t1 .detail .spd-nav{width:100% !important;box-sizing:border-box;align-self:stretch;margin-left:0 !important;margin-right:0 !important} }
+/* 2026-11-11 17:00 iPhone 指摘：アプローチのひとことを上そろえに／各回の札がカードからはみ出さない／1画面に収める */
+@media (max-width:760px){
+  #journey .scg figure.sc .sq{display:block !important;align-items:normal !important;border:0 !important}
+  #journey .scg figure.sc{border:0 !important;box-shadow:none !important}
+  #journey .scg>p.rl{border-top:0 !important}
+  .fl.t1 .detail,.fl.t1 .detail .dmain,.fl.t1 .detail .dfig{min-width:0 !important;max-width:100% !important;box-sizing:border-box}
+  .fl.t1 .detail .dmain>*,.fl.t1 .detail .dfig>*{min-width:0 !important;max-width:100% !important}
+  .fl.t1 .detail .dmain{width:100% !important}
+  .fl.t1 .detail .dw{white-space:normal !important;word-break:keep-all !important}
+  .cdc section .fl.t1 .detail p.dw.dw,.cdc section .fl.t1 .detail p.dw *{font-size:13px !important;margin:0 0 6px !important}
+  .cdc section .fl.t1 .detail p.dgt.dgt{margin-bottom:8px !important}
+  .fl.t1 .detail .dfig{margin:12px 0 0 !important;position:relative}
+  .cdc section .fl.t1 .detail p.dfhint.dfhint{display:none !important}
+  .cdc section .fl.t1 .detail p.dfhint *{font-size:11px !important}
+  .fl.t1 .detail .spd-nav{margin-top:12px !important;padding-top:10px !important}
+  .spd-nav button,.spd-nav button *{font-size:13px !important}
+  .cdc section .fl.t1 .detail p.db.db,.cdc section .fl.t1 .detail p.db *{line-height:1.7 !important}
+  .fl.t1 .detail .dfig svg{max-height:170px !important}
+  .fl.t1 .detail .spd-nav{margin-top:10px !important;padding-top:8px !important}
+  a.fab{transition:opacity .3s,transform .3s}
+  a.fab.spd-fab-off{opacity:0 !important;transform:translateY(16px) !important;pointer-events:none !important}
+  .spd-swipe .zm{margin-left:10px;padding-left:10px;border-left:1px solid #d9d4ca}
+  .cdc section .fl.t1 p.spd-swipe.spd-swipe,.cdc section .fl.t1 p.spd-swipe *{font-size:13px !important;line-height:1.5 !important}
+  .cdc section .fl.t1 .detail p.db.db{text-wrap:wrap !important}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2783,7 +2808,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   function cur(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); return k<0?0:k; }
   function draw(){ var k=cur(); [].forEach.call(bar.children,function(x,i){ x.classList.toggle('on',i===k); }); var pv=nav.querySelector('.pv'), nx=nav.querySelector('.nx');
     pv.disabled=k===0; nx.disabled=k===B.length-1; pv.textContent=k>0?'← '+L[k-1]:''; nx.textContent=k<B.length-1?L[k+1]+' →':''; if(nav.parentNode!==det) det.appendChild(nav); window.__spdPlace(); }
-  function go(i,fromNav){ B[i].click(); draw(); if(fromNav){ var r=bar.getBoundingClientRect(); if(r.top<60||r.top>innerHeight*.5) window.scrollBy(0,r.top-72); } }
+  function go(i,fromNav){ B[i].click(); draw(); if(fromNav){ var r=bar.getBoundingClientRect(); if(r.top<50||r.top>innerHeight*.4) window.scrollBy(0,r.top-56); } }
   nav.addEventListener('click',function(e){ var k=cur(); if(e.target.closest('.pv')&&k>0) go(k-1,true); if(e.target.closest('.nx')&&k<B.length-1) go(k+1,true); });
   var x0=null; det.addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; },{passive:true}); det.addEventListener('touchend',function(e){ if(x0==null) return; var dx=e.changedTouches[0].clientX-x0; x0=null; var k=cur(); if(dx<-60&&k<B.length-1) go(k+1); if(dx>60&&k>0) go(k-1); });
   draw(); })();
@@ -2799,33 +2824,39 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 /* 各回：送った向きに中身がすべって入れ替わる／何枚目かと、横に送れることを見せる */
 (function(){ if(innerWidth>760) return; var fl=document.querySelector('.fl.t1'); if(!fl) return; var bar=fl.querySelector('.spd-step'), det=fl.querySelector('.detail'), nav=fl.querySelector('.spd-nav'); if(!bar||!det) return;
   var B=[].slice.call(fl.querySelectorAll('.steps button.st')); function cur(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); return k<0?0:k; }
-  var hint=document.createElement('p'); hint.className='spd-swipe'; hint.innerHTML='<i class="l"></i>左右になぞって送れます<i class="r"></i>'; bar.parentNode.insertBefore(hint,bar.nextSibling);
+  var hint=document.createElement('p'); hint.className='spd-swipe'; hint.innerHTML='<i class="l"></i>左右になぞって送れます<i class="r"></i><span class="zm">図は押すと拡大</span>'; bar.parentNode.insertBefore(hint,bar.nextSibling);
   if(nav){ var pg=document.createElement('span'); pg.className='pg'; nav.insertBefore(pg,nav.children[1]); }
   var last=cur();
-  function after(){ var k=cur(); if(nav) nav.querySelector('.pg').textContent=(k+1)+' / '+B.length; if(k!==last){ det.classList.remove('spd-in-l','spd-in-r'); void det.offsetWidth; det.classList.add(k>last?'spd-in-l':'spd-in-r'); hint.classList.add('gone'); } last=k; }
+  function after(){ if(bar.nextSibling!==hint) bar.parentNode.insertBefore(hint,bar.nextSibling); var k=cur(); if(nav) nav.querySelector('.pg').textContent=(k+1)+' / '+B.length; if(k!==last){ det.classList.remove('spd-in-l','spd-in-r'); void det.offsetWidth; det.classList.add(k>last?'spd-in-l':'spd-in-r');  } last=k; }
   ['click','touchend'].forEach(function(ev){ fl.addEventListener(ev,function(){ setTimeout(after,0); }); });
   after(); })();
 /* アプローチの説明は 13px にそろえる（もとの文に直接書かれた大きさを外す） */
 (function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); })();
 /* 文字の大きさをそろえる処理（読み込みの1.2秒後にも動く）のあとに、アプローチのひとこと・説明の大きさを外し直す */
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); }
-  rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1600); }); })();
+  var rm0=rm; rm=function(){ rm0(); [].forEach.call(document.querySelectorAll('.fl.t1 .detail .dw, .fl.t1 .detail .dw *, .fl.t1 .detail .dfhint, .fl.t1 .detail .dfhint *, .spd-nav button'),function(e){ e.style.removeProperty('font-size'); }); };
+  document.addEventListener('click',function(){ setTimeout(rm,0); }); rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1600); }); })();
 /* 2026-11-11 16:41 石倉さん「文字量を要約して同じレベル感に」：スマホでは各回の説明を3行前後にそろえた要約にする（PC はもとの文のまま） */
 (function(){ if(innerWidth>760) return;
-  var DB=['いまのモヤモヤを、あるがままに伺います。求人の紹介はしません。CDCが合うかを一緒に確かめます。',
-    'モヤモヤを図にして、感情・思考・行動のパターンを客観視。その奥にある「本来体験したい世界」を描きます。',
-    'ルーツや好奇心、成功・失敗、死生観から「欲求の欠片」を集め、一つの言葉に凝縮します。',
-    'うまくいった出来事から「得意の発現メカニズム」を図にし、仕事で活躍できる条件を明らかにします。',
-    'これまでの図を統合して“未来の人生”を描き、キャリアパスとリソースを一枚のTO BEマップにまとめます。',
-    '羅針盤をもとに、その先を二人で描きます。転職も選択肢の一つとして、自分で試せる現実の一歩を用意します。',
-    '入社後の半年は、立ち上がりの大事な期間です。3回のコーチングで、羅針盤と照らし合わせて振り返ります。'];
+  var DB=['いまのモヤモヤを、|あるがままに伺います。|求人の紹介はしません。|CDCが合うかを|一緒に確かめます。',
+    'モヤモヤを図にして、|感情・思考・行動のパターンを客観視。|その奥にある|「本来体験したい世界」を|描きます。',
+    'ルーツや好奇心、|成功・失敗、|死生観から|「欲求の欠片」を集め、|一つの言葉に|凝縮します。',
+    'うまくいった出来事から|「得意の発現メカニズム」を|図にし、|仕事で活躍できる条件を|明らかにします。',
+    'これまでの図を統合し、|“未来の人生”と|キャリアパスを|一枚のTO\u00a0BEマップに|まとめます。',
+    '羅針盤をもとに、|その先を二人で描きます。|転職も選択肢の一つとして、|自分で試せる|現実の一歩を用意します。',
+    '入社後半年は、|立ち上がりの大事な時期。|3回のコーチングで、|羅針盤と照らして|振り返ります。'];
   var DW=[null,'担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1',null,'担当　石倉 達也｜入社後1・3・6か月（別料金）'];
   var fl=document.querySelector('.fl.t1'); if(!fl) return; var B=[].slice.call(fl.querySelectorAll('.steps button.st'));
   function apply(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); if(k<0) return; var d=fl.querySelector('.detail'); var db=d.querySelector('.db'), dw=d.querySelector('.dw');
-    if(db&&DB[k]&&db.textContent!==DB[k]) db.textContent=DB[k]; if(dw&&DW[k]&&dw.textContent!==DW[k]) dw.textContent=DW[k]; }
+    var T=DB[k]&&DB[k].split('|').join('\u200b');
+    if(db&&T&&db.textContent!==T) db.textContent=T; if(dw&&DW[k]&&dw.textContent!==DW[k]) dw.textContent=DW[k]; }
   apply(); fl.addEventListener('click',function(){ setTimeout(apply,0); }); fl.addEventListener('touchend',function(){ setTimeout(apply,0); });
   /* アプローチ：内定後の説明を2行に／下の「次へ」の印を4場面同じ見た目に */
   var c=document.querySelector('#journey figure.sc.cd.k4 figcaption'); if(c){ var t=c.querySelector('b')||c; t.textContent='入社後1・3・6か月に、コーチングで振り返る。'; }
   [].forEach.call(document.querySelectorAll('#journey button.br.o'),function(b){ b.classList.remove('o'); }); })();
+
+/* 2026-11-11 17:10 各回のカードが画面にある間は、右下の「無料相談」を引っ込める（「次へ」と重ならないように） */
+(function(){ if(innerWidth>760) return; var fab=document.querySelector('a.fab'), det=document.querySelector('.fl.t1 .detail'); if(!fab||!det||!window.IntersectionObserver) return;
+  new IntersectionObserver(function(es){ es.forEach(function(e){ fab.classList.toggle('spd-fab-off',e.isIntersecting); }); },{threshold:0.15}).observe(det); })();
 </script></body>
 </html>
