@@ -2987,5 +2987,44 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 (function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('.cdc section:not(#top) [style*="font-size"]'),function(e){ if(e.closest('#price .prdg')) return; e.style.removeProperty('font-size'); }); }
   rm(); })();
 /* 紙の目の層の扱いは kvtop.js（スマホは地に描く）にまとめた（2026-11-11） */
+/* 2026-11-11 22:15 石倉さんの iPhone で切り分け（?nf=1 で直る）→ ガタつきの原因は、図の粒子をつくる SVG のフィルター（feTurbulence＝ざらざらを描くたびに計算）。
+   iPhone の Safari はこの計算が遅く、図が画面に入るたびに引っかかっていた。スマホでは、読み込みのあと手のあいたときに各図を一度だけ絵（ビットマップ）に焼き、
+   図の中身をその絵一枚に置きかえる（見た目は同じ・スクロール中の計算なし）。拡大したときは元の図に戻す */
+(function(){ if(innerWidth>760||/[?&]nf=1/.test(location.search)) return;
+  var ORIG=window.__cdcRastOrig=new Map(), n=0, dpr=Math.min(window.devicePixelRatio||2,3), TEX=null;
+  try{ var tu=(getComputedStyle(document.documentElement).getPropertyValue('--cvtex')||'').match(/url\(["']?(.*?)["']?\)/); if(tu){ TEX=new Image(); TEX.src=tu[1]; } }catch(e){}
+  function list(){ var s=new Set(); [].forEach.call(document.querySelectorAll('svg [filter]'),function(e){ var v=e.ownerSVGElement; if(v&&!v.dataset.rast&&!v.closest('.fzoom')) s.add(v); }); return Array.from(s); }
+  function bake(v,done){ var vb=v.viewBox&&v.viewBox.baseVal; if(!vb||!vb.width){ done(); return; }
+    var cw=v.getBoundingClientRect().width||Math.min(vb.width,350), W=Math.round(Math.min(Math.max(cw,120)*dpr,1400)), H=Math.round(W*vb.height/vb.width);
+    var c=v.cloneNode(true); c.setAttribute('xmlns','http://www.w3.org/2000/svg'); c.setAttribute('width',W); c.setAttribute('height',H); c.removeAttribute('style'); c.removeAttribute('class'); [].forEach.call(c.querySelectorAll('text'),function(t){ t.remove(); }); /* 文字は焼かずに、絵の上に残す（書体を保つ） */
+    var url=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(c)],{type:'image/svg+xml'})), im=new Image();
+    im.onload=function(){ try{ var cv=document.createElement('canvas'); cv.width=W; cv.height=H; var g=cv.getContext('2d'); g.drawImage(im,0,0,W,H); URL.revokeObjectURL(url);
+        /* ページの紙の目（これまで画面全体に乗算でかぶせていたもの）を、図にも同じように焼き込む */
+        if(TEX&&TEX.complete&&TEX.naturalWidth){ var k=W/cw, t=document.createElement('canvas'); t.width=Math.round(160*k); t.height=t.width; t.getContext('2d').drawImage(TEX,0,0,t.width,t.height);
+          g.globalCompositeOperation='multiply'; g.fillStyle=g.createPattern(t,'repeat'); g.fillRect(0,0,W,H); g.globalCompositeOperation='destination-in'; g.drawImage(im,0,0,W,H); g.globalCompositeOperation='source-over'; }
+        cv.toBlob(function(b){ if(!b){ done(); return; } var id='r'+(++n); ORIG.set(id,v.innerHTML); v.dataset.rast=id;
+          var tx=[].map.call(v.querySelectorAll('text'),function(t){ var g=t.cloneNode(true); var m=t.getCTM&&v.getCTM&&v.getCTM()?v.getCTM().inverse().multiply(t.getCTM()):null; if(m) g.setAttribute('transform','matrix('+[m.a,m.b,m.c,m.d,m.e,m.f].join(' ')+')'); return g; });
+          v.innerHTML='<image href="'+URL.createObjectURL(b)+'" x="'+vb.x+'" y="'+vb.y+'" width="'+vb.width+'" height="'+vb.height+'" preserveAspectRatio="none"/>'; tx.forEach(function(g){ v.appendChild(g); }); done(); },'image/png'); }catch(e){ done(); } };
+    im.onerror=function(){ URL.revokeObjectURL(url); done(); }; im.src=url; }
+  var busy=false, tries=0;
+  function run(){ if(busy) return; var q=list(); if(!q.length){ if(++tries<12) setTimeout(run,700); return; } busy=true;
+    (function next(){ var v=q.shift(); if(!v){ busy=false; setTimeout(run,300); return; } if(!v.isConnected){ next(); return; } bake(v,function(){ (window.requestIdleCallback||function(f){ setTimeout(f,30); })(next); }); })(); }
+  /* あとから差しこまれた図（回の切りかえなど）も焼く */
+  new MutationObserver(function(ms){ for(var i=0;i<ms.length;i++){ var a=ms[i].addedNodes; for(var j=0;j<a.length;j++){ var x=a[j]; if(x.nodeType===1&&(x.matches('svg,[filter]')||x.querySelector&&x.querySelector('[filter]'))){ tries=0; setTimeout(run,200); return; } } } }).observe(document.body,{childList:true,subtree:true});
+  function later(){ (window.requestIdleCallback||function(f){ setTimeout(f,200); })(run,{timeout:1500}); }
+  if(document.readyState==='complete') later(); else addEventListener('load',later);
+  /* 拡大の画面に写した図は、元の図に戻す */
+  new MutationObserver(function(){ [].forEach.call(document.querySelectorAll('.fzoom svg[data-rast]'),function(c){ var o=ORIG.get(c.dataset.rast); if(o){ c.innerHTML=o; c.removeAttribute('data-rast'); } }); }).observe(document.body,{childList:true,subtree:true}); })();
+/* 紙の目をページの地に移したので、色のついた箱・円（札・カード・プログラムの円など）にも、同じ紙の目を重ねる（これまでの見え方にそろえる）。要素ごとの背景の重ね（軽い）で行う */
+(function(){ if(innerWidth>760) return; var tex=(getComputedStyle(document.documentElement).getPropertyValue('--cvtex')||'').trim(); if(!tex) return;
+  [].forEach.call(document.querySelectorAll('.cdc *'),function(e){ if(e.closest('svg,#top,header,footer,.fab,.fzoom')) return; var c=getComputedStyle(e), bi=c.backgroundImage, bc=c.backgroundColor;
+    var colored=(bc&&bc!=='rgba(0, 0, 0, 0)'&&bc!=='transparent'&&bc!=='rgb(255, 255, 255)')||(bi&&bi!=='none'&&/gradient/.test(bi)); if(!colored||/data:image/.test(bi)) return;
+    var r=e.getBoundingClientRect(); if(r.width<24&&r.height<24) return;
+    var n=bi&&bi!=='none'?bi.split(/,(?![^(]*\))/).length:0;
+    e.style.setProperty('background-image',tex+(n?', '+bi:''),'important');
+    e.style.setProperty('background-size','160px 160px'+(n?', '+c.backgroundSize:''),'important');
+    e.style.setProperty('background-repeat','repeat'+(n?', '+c.backgroundRepeat:''),'important');
+    e.style.setProperty('background-position','0 0'+(n?', '+c.backgroundPosition:''),'important');
+    e.style.setProperty('background-blend-mode','multiply'+(n?', '+c.backgroundBlendMode:''),'important'); }); })();
 </script></body>
 </html>
