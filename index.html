@@ -672,6 +672,7 @@ table.cmp small.fe{display:block;margin-top:6px;font-size:13px;color:#8a93a6}
 
 </div>
 
+
 <script>
 (function(){var d=document.documentElement;if(!('IntersectionObserver' in window))return;d.classList.add('js');
 var q=[],t=null;
@@ -2384,6 +2385,500 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   /* 万一止まったときの保険 */ setTimeout(function(){ done(); d.classList.add('kvgo','kvgo2'); },6000); })();
 
 
+/* spd.css と対（スマホだけ） */
+(function(){ if(innerWidth>760) return;
+  /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
+  function q(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  /* 5 各回の内容：中身を押した回のすぐ下へ移す */
+  (function(){ var fl=document.querySelector('.fl.t1'); if(!fl) return; var det=fl.querySelector('.detail'), steps=fl.querySelector('.steps'); if(!det||!steps) return;
+    function place(){ var on=steps.querySelector('button.st.on')||steps.querySelector('button.st'); if(on&&on.nextSibling!==det){ on.parentNode.insertBefore(det,on.nextSibling); det.style.animation='none'; det.offsetWidth; det.style.animation=''; } }
+    place(); window.__spdPlace=place; })();
+  /* 9 三つの段 */
+  (function(){ var rs=q('#program .rstep'); if(!rs.length) return; var row=document.createElement('div'); row.className='spd-row'; var names=['Reflect','Re-Sketch','Realize'];
+    rs.forEach(function(r,i){ var b=document.createElement('button'); b.type='button'; var ic=r.querySelector('.ricon'); b.innerHTML='<span class="ic"></span><span class="nm">'+names[i]+'</span>'; if(ic){ var c=ic.cloneNode(true); c.style.cssText=getComputedStyle(ic).cssText?'':''; b.querySelector('.ic').style.background=getComputedStyle(ic).backgroundImage!=='none'?getComputedStyle(ic).background:getComputedStyle(ic).backgroundColor; var s=ic.querySelector('svg'); if(s) b.querySelector('.ic').appendChild(s.cloneNode(true)); }
+      b.addEventListener('click',function(){ go(i); }); row.appendChild(b); });
+    rs[0].parentNode.insertBefore(row,rs[0]);
+    function go(i){ rs.forEach(function(r,k){ r.classList.toggle('spon',k===i); }); q('button',row).forEach(function(b,k){ b.classList.toggle('on',k===i); }); }
+    go(0); })();
+  /* 9 アプローチ */
+  (function(){ var g=document.querySelector('#journey .scg'); if(!g) return; var groups=[];
+    for(var k=1;k<=4;k++){ var els=q('.k'+k,g).filter(function(e){ return !e.classList.contains('arr'); }); if(els.length) groups.push(els); }
+    var grid=document.createElement('div'); grid.className='spd-grid';
+    groups.forEach(function(els,i){ els.forEach(function(e){ e.classList.add('spdk'); }); var jb=els.filter(function(e){ return e.classList.contains('jb'); })[0], cd=els.filter(function(e){ return e.classList.contains('cd')&&e.tagName==='FIGURE'; })[0];
+      var lb=''; if(jb){ var c=jb.cloneNode(true); q('small',c).forEach(function(x){ x.remove(); }); lb=c.textContent.split(String.fromCharCode(8203)).join('').trim(); }
+      var b=document.createElement('button'); b.type='button'; b.innerHTML='<span class="th"></span><span class="lb">'+lb+'</span>'; var sv=cd&&cd.querySelector('svg'); if(sv) b.querySelector('.th').appendChild(sv.cloneNode(true));
+      b.addEventListener('click',function(){ go(i); }); grid.appendChild(b); });
+    g.parentNode.insertBefore(grid,g);
+    function go(i){ groups.forEach(function(els,k){ els.forEach(function(e){ e.classList.toggle('spon',k===i); }); }); q('button',grid).forEach(function(b,k){ b.classList.toggle('on',k===i); }); }
+    go(0); })();
+})();
+/* 2026-11-11 回や図を押したときの「ダブつき」：押したところを画面の同じ位置に保ち、ほかの自動スクロール（なめらかに送る動き）を止める */
+(function(){ if(innerWidth>760) return;
+  window.cdcScrollBy=function(){};
+  var hold=null, sb=window.scrollBy.bind(window);
+  window.scrollBy=function(a){ if(hold&&a&&typeof a==='object'&&a.behavior==='smooth') return; return sb.apply(window,arguments); };
+  var y0=0;
+  document.addEventListener('click',function(e){ var b=e.target.closest('.fl.t1 .steps button.st, .spd-row button, .spd-grid button'); if(!b) return; y0=b.getBoundingClientRect().top; hold=b; },true);
+  /* ボタンの処理が終わったあと、画面に描く前に、開く場所を決めて位置を戻す（同じ瞬間に済ませるので、途中の形は見えない） */
+  document.addEventListener('click',function(e){ var b=hold; if(!b) return; if(b.matches('.fl.t1 .steps button.st')&&window.__spdPlace) window.__spdPlace();
+    var dy=b.getBoundingClientRect().top-y0; if(Math.abs(dy)>1) sb(0,dy); setTimeout(function(){ hold=null; },400); });
+  document.documentElement.style.overflowAnchor='none'; })();
+/* 2026-11-11 15:48 石倉さん：思いの章の見出しと本文の間・料金の下の空き（ほかの処理が直接書く余白を上書き） */
+(function(){ if(innerWidth>760) return;
+  function fix(){ var S=function(sel,p,v){ var e=document.querySelector(sel); if(e) e.style.setProperty(p,v,'important'); };
+    S('#price','padding-bottom','24px'); S('.psec.pband','padding-top','40px'); S('.psec.pband','padding-bottom','40px');
+    S('.psec .pshead','margin-bottom','28px'); S('.psec .omoi-sub','margin-top','0'); }
+  fix(); addEventListener('load',function(){ setTimeout(fix,300); }); addEventListener('resize',function(){ setTimeout(fix,400); }); })();
+/* 札の文字を「・」の区切りで折る */
+(function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('.spd-grid button .lb'),function(l){ var t=l.textContent; l.innerHTML=t.split('・').map(function(w){ return '<span class="w">'+w+'</span>'; }).join(''); }); })();
+
+/* 各回：横一列の段で切り替える。中身は段の下の同じ場所で入れ替わるので、押しても画面は動かない。中身の下の「次へ」でも送れる */
+(function(){ if(innerWidth>760) return; var fl=document.querySelector('.fl.t1'); if(!fl) return; var steps=fl.querySelector('.steps'), det=fl.querySelector('.detail'); if(!steps||!det) return;
+  var B=[].slice.call(steps.querySelectorAll('button.st')); var L=B.map(function(b){ var e=b.querySelector('.en'); var t=e?e.textContent.trim():''; return t==='ENTRANCE'?'相談':t==='AFTER'?'入社後':t.replace('DAY','DAY'); });
+  var bar=document.createElement('div'); bar.className='spd-step'; steps.parentNode.insertBefore(bar,steps);
+  B.forEach(function(b,i){ var x=document.createElement('button'); x.type='button'; x.innerHTML='<i></i><span>'+L[i]+'</span>'; x.addEventListener('click',function(){ go(i); }); bar.appendChild(x); });
+  window.__spdPlace=function(){ if(bar.nextSibling!==det) bar.parentNode.insertBefore(det,bar.nextSibling); };
+  window.__spdPlace();
+  var nav=document.createElement('div'); nav.className='spd-nav'; nav.innerHTML='<button type="button" class="pv"></button><button type="button" class="nx"></button>';
+  function cur(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); return k<0?0:k; }
+  function draw(){ var k=cur(); [].forEach.call(bar.children,function(x,i){ x.classList.toggle('on',i===k); }); var pv=nav.querySelector('.pv'), nx=nav.querySelector('.nx');
+    pv.disabled=k===0; nx.disabled=k===B.length-1; pv.textContent=k>0?'← '+L[k-1]:''; nx.textContent=k<B.length-1?L[k+1]+' →':''; if(nav.parentNode!==det) det.appendChild(nav); window.__spdPlace(); }
+  function go(i,fromNav){ B[i].click(); draw(); if(fromNav){ var r=bar.getBoundingClientRect(); if(r.top<50||r.top>innerHeight*.4) window.scrollBy(0,r.top-56); } }
+  nav.addEventListener('click',function(e){ var k=cur(); if(e.target.closest('.pv')&&k>0) go(k-1,true); if(e.target.closest('.nx')&&k<B.length-1) go(k+1,true); });
+  var x0=null; det.addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; },{passive:true}); det.addEventListener('touchend',function(e){ if(x0==null) return; var dx=e.changedTouches[0].clientX-x0; x0=null; var k=cur(); if(dx<-60&&k<B.length-1) go(k+1); if(dx>60&&k>0) go(k-1); });
+  draw(); })();
+/* 2026-11-11 意味の単位で折る：区切りの入っていない文に、助詞・句読点のあとで区切りを入れる。句読点の前の区切りは消す（「。」だけが次の行に落ちないように） */
+(function(){ if(innerWidth>760) return; var Z='​', root=document.querySelector('.cdc'); if(!root) return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT), n, list=[];
+  while(n=w.nextNode()){ var e=n.parentElement; if(!e||e.closest('svg,#top,script,style')) continue; list.push(n); }
+  list.forEach(function(n){ var t=n.textContent; if(!/[぀-ヿ一-鿿]/.test(t)) return;
+    t=t.replace(/​+(?=[。、，．」』）\)！？…・ー])/g,'');
+    var blk=n.parentElement.closest('p,td,th,figcaption,h2,h3,dd,li,summary,b,span,button')||n.parentElement;
+    if(blk.textContent.indexOf(Z)<0&&t.length>7){ t=t.replace(/([をはがにでとものやへ]|から|まで|ため|より|、|。)(?=[぀-ヿ一-鿿A-Za-z0-9「（])/g,'$1'+Z); }
+    if(t!==n.textContent) n.textContent=t; }); })();
+/* 各回：送った向きに中身がすべって入れ替わる／何枚目かと、横に送れることを見せる */
+(function(){ if(innerWidth>760) return; var fl=document.querySelector('.fl.t1'); if(!fl) return; var bar=fl.querySelector('.spd-step'), det=fl.querySelector('.detail'), nav=fl.querySelector('.spd-nav'); if(!bar||!det) return;
+  var B=[].slice.call(fl.querySelectorAll('.steps button.st')); function cur(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); return k<0?0:k; }
+  var hint=document.createElement('p'); hint.className='spd-swipe'; hint.innerHTML='<i class="l"></i>左右になぞって送れます<i class="r"></i><span class="zm">図は押すと拡大</span>'; bar.parentNode.insertBefore(hint,bar.nextSibling);
+  if(nav){ var pg=document.createElement('span'); pg.className='pg'; nav.insertBefore(pg,nav.children[1]); }
+  var last=cur();
+  function after(){ if(bar.nextSibling!==hint) bar.parentNode.insertBefore(hint,bar.nextSibling); var k=cur(); if(nav) nav.querySelector('.pg').textContent=(k+1)+' / '+B.length; if(k!==last){ det.classList.remove('spd-in-l','spd-in-r'); void det.offsetWidth; det.classList.add(k>last?'spd-in-l':'spd-in-r');  } last=k; }
+  ['click','touchend'].forEach(function(ev){ fl.addEventListener(ev,function(){ setTimeout(after,0); }); });
+  after(); })();
+/* アプローチの説明は 13px にそろえる（もとの文に直接書かれた大きさを外す） */
+(function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); })();
+/* 文字の大きさをそろえる処理（読み込みの1.2秒後にも動く）のあとに、アプローチのひとこと・説明の大きさを外し直す */
+(function(){ if(innerWidth>760) return; function rm(){ [].forEach.call(document.querySelectorAll('#journey .scg figure.sc figcaption, #journey .scg figure.sc figcaption *, #journey .scg figure.sc .sq, #journey .scg figure.sc .sq *'),function(e){ e.style.removeProperty('font-size'); }); }
+  var rm0=rm; rm=function(){ rm0(); [].forEach.call(document.querySelectorAll('.fl.t1 .detail .dw, .fl.t1 .detail .dw *, .fl.t1 .detail .dfhint, .fl.t1 .detail .dfhint *, .spd-nav button'),function(e){ e.style.removeProperty('font-size'); }); };
+  document.addEventListener('click',function(){ setTimeout(rm,0); }); rm(); setTimeout(rm,1500); setTimeout(rm,3000); addEventListener('load',function(){ setTimeout(rm,1600); }); })();
+/* 2026-11-11 16:41 石倉さん「文字量を要約して同じレベル感に」：スマホでは各回の説明を3行前後にそろえた要約にする（PC はもとの文のまま） */
+(function(){ if(innerWidth>760) return;
+  var DB=['いまのモヤモヤを、|あるがままに伺います。|求人の紹介はしません。|CDCが合うかを|一緒に確かめます。',
+    'モヤモヤを図にして、|感情・思考・行動のパターンを客観視。|その奥にある|「本来体験したい世界」を|描きます。',
+    'ルーツや好奇心、|成功・失敗、|死生観から|「欲求の欠片」を集め、|一つの言葉に|凝縮します。',
+    'うまくいった出来事から|「得意の発現メカニズム」を|図にし、|仕事で活躍できる条件を|明らかにします。',
+    'これまでの図を統合し、|“未来の人生”と|キャリアパスを|一枚のTO\u00a0BEマップに|まとめます。',
+    '羅針盤をもとに、|その先を二人で描きます。|転職も選択肢の一つとして、|自分で試せる|現実の一歩を用意します。',
+    '入社後半年は、|立ち上がりの大事な時期。|3回のコーチングで、|羅針盤と照らして|振り返ります。'];
+  var DW=[null,'担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1','担当　石倉 達也｜約2時間・オンライン・1対1',null,'担当　石倉 達也｜入社後1・3・6か月（別料金）'];
+  var fl=document.querySelector('.fl.t1'); if(!fl) return; var B=[].slice.call(fl.querySelectorAll('.steps button.st'));
+  function apply(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); if(k<0) return; var d=fl.querySelector('.detail'); var db=d.querySelector('.db'), dw=d.querySelector('.dw');
+    var T=DB[k]&&DB[k].split('|').join('\u200b');
+    if(db&&T&&db.textContent!==T) db.textContent=T; if(dw&&DW[k]&&dw.textContent!==DW[k]) dw.textContent=DW[k]; }
+  apply(); fl.addEventListener('click',function(){ setTimeout(apply,0); }); fl.addEventListener('touchend',function(){ setTimeout(apply,0); });
+  /* アプローチ：内定後の説明を2行に／下の「次へ」の印を4場面同じ見た目に */
+  var c=document.querySelector('#journey figure.sc.cd.k4 figcaption'); if(c){ var t=c.querySelector('b')||c; t.textContent='入社後1・3・6か月に、\u200bコーチングで\u200b振り返る。'; }
+  [].forEach.call(document.querySelectorAll('#journey button.br.o'),function(b){ b.classList.remove('o'); }); })();
+
+/* 2026-11-11 17:10 各回のカードが画面にある間は、右下の「無料相談」を引っ込める（「次へ」と重ならないように） */
+(function(){ if(innerWidth>760) return; var fab=document.querySelector('a.fab'), det=document.querySelector('.fl.t1 .detail'); if(!fab||!det||!window.IntersectionObserver) return;
+  new IntersectionObserver(function(es){ es.forEach(function(e){ fab.classList.toggle('spd-fab-off',e.isIntersecting); }); },{threshold:0.15}).observe(det); })();
+/* 2026-11-11 18:33 石倉さん「拡大で縦（横倒し）にするのは困る」：スマホの拡大は図を回さず、そのままの向きで大きく出す。画面より広いときは左右に動かして見る */
+(function(){ if(innerWidth>760) return;
+  function fix(zm){ var c=zm.querySelector('.fzb svg'), b=zm.querySelector('.fzb'); if(!c||!b||c.__spdfix) return; c.__spdfix=1;
+    var vb=c.viewBox.baseVal, mn=99; [].forEach.call(c.querySelectorAll('text'),function(t){ var f=parseFloat(t.getAttribute('font-size')); if(f&&f<mn) mn=f; });
+    var w=Math.round(Math.min(innerWidth-32,(innerHeight-160)*vb.width/vb.height)); /* 18:36 石倉さん「画面の幅に合わせて」 */
+    c.style.position=''; c.style.left=''; c.style.top=''; c.style.transform='none'; c.style.setProperty('width',w+'px','important'); c.style.height='auto';
+    b.style.cssText='width:'+w+'px;margin:auto'; zm.classList.remove('spd-wide'); zm.scrollLeft=0;
+    var h=zm.querySelector('.spd-zh'); if(!h){ h=document.createElement('p'); h.className='spd-zh'; h.textContent='← 左右に動かして見られます →'; zm.appendChild(h); } }
+  new MutationObserver(function(){ var zm=document.querySelector('.fzoom.on'); if(zm) fix(zm); else { var z=document.querySelector('.fzoom svg'); if(z) z.__spdfix=0; } }).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}); })();
+
 </script>
+<style id="spd">/* スマホ版D（2026-11-11 石倉さん承認・ほかの指定より後に置く） */
+/* 2026-11-11 石倉さんがカタログから選んだ 3・5・7・8・9（スマホだけ）
+   3 章の頭を「細い線＋小さな札」でそろえる／5 各回の内容は縦線の一覧で、押した回の中身がその場に開く／7 料金は1枚の札に
+   8 比較は6段を一覧に（一般は薄く・CDC は太く左に線）／9 三つの段とアプローチは小さな図を並べ、押すと下に開く */
+@media (max-width:760px){
+  /* 3 章の札 */
+  .cdc .lblbig{width:auto !important;max-width:none !important;display:flex !important;align-items:center;gap:10px;justify-content:flex-start !important;margin:0 -20px 22px !important;padding:6px 20px !important;border-top:1px solid #1f2a48;border-bottom:1px solid #1f2a48;text-align:left !important}
+  .cdc .lblbig:before{content:"";width:10px;height:18px;background:#e09e5e;flex:none}
+  .cdc .lblbig .lbe{font-size:15px !important;letter-spacing:.1em !important}
+  .cdc .lblbig .lbj{font-size:13px !important}
+  .cdc .center:has(>.lblbig){text-align:left !important}
+  /* 5 各回の内容：中身が押した回の下に開く */
+  section.alt .stg,section.alt .sstg.sfin{display:none !important}
+  .fl.t1 .flsub{display:none !important}
+  .fl.t1 .steps .detail{position:relative;z-index:2;background:#fbf8f2;border-radius:12px;margin:6px 0 12px 0 !important;padding:14px 16px 10px !important;box-shadow:0 8px 22px -16px rgba(31,42,72,.4);animation:spdop .5s cubic-bezier(.16,1,.3,1)}
+  @keyframes spdop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .fl.t1 .steps .detail .dfig svg{max-height:110px}
+  .fl.t1 .steps .detail .dfhint{display:none !important}
+  .fl.t1 .steps button.st{min-height:0 !important;padding-top:6px !important;padding-bottom:6px !important}
+  .fl.t1 .steps .detail .dn{display:none !important}
+  .fl.t1 .steps .detail .db{font-size:15px !important;line-height:1.8 !important}
+  .fl.t1 .steps .detail .dmain>*{margin-left:0 !important;padding-left:0 !important}
+  /* 7 料金を1枚の札に */
+  #price .prtext{background:#fbf8f2;border-radius:16px;padding:22px 20px !important;box-shadow:0 10px 26px -18px rgba(31,42,72,.45)}
+  #price .prdg{margin-top:14px !important}
+  #price{padding-top:44px !important}
+  #price .prbars{border:0 !important;background:none !important;box-shadow:none !important;padding:0 !important;margin:10px 0 0 !important;height:auto !important}
+  #price .prbar{position:static !important;left:auto !important;width:100% !important;margin:0 !important;background:transparent !important;background-image:none !important;color:#1f2a48 !important;border:1px solid #1f2a48;box-shadow:none !important}
+  /* 8 比較：6段を一覧に */
+  table.cmp,table.cmp tbody{display:block}
+  table.cmp tr:not(:has(>td)){display:flex !important;gap:14px;margin-bottom:6px;padding:0 0 12px !important;border-bottom:1px solid rgba(31,42,72,.2)}
+  table.cmp tr:not(:has(>td)) th{display:flex !important;align-items:center;gap:6px;width:auto !important;border:0 !important;padding:0 !important;font-size:13px !important}
+  table.cmp tr:not(:has(>td)) th:first-child{display:none !important}
+  table.cmp tr:not(:has(>td)) th:nth-child(2):before,table.cmp tr:not(:has(>td)) th:nth-child(3):before{content:"";width:12px;height:2px;background:#b2b1ae}
+  table.cmp tr:not(:has(>td)) th:nth-child(3):before{background:#e09e5e;height:2px}
+  table.cmp tr:not(:has(>td)) th:nth-child(3){color:#1f2a48 !important}
+  table.cmp tr:has(>td){display:grid !important;grid-template-columns:1fr;row-gap:4px;padding:12px 0 !important;border-bottom:1px dashed #d9d4ca !important}
+  table.cmp tr:has(>td) th{display:block !important;padding:0 !important;font-size:15px !important;text-align:left !important;border:0 !important}
+  table.cmp tr:has(>td) th small{font-size:13px !important;margin-left:6px}
+  table.cmp td{display:block !important;padding:0 !important;border:0 !important;width:auto !important}
+  table.cmp td:before{display:none !important;content:none !important}
+  table.cmp td:nth-of-type(1),table.cmp td:nth-of-type(1) *{color:#8a91a1 !important;font-size:13px !important;line-height:1.6 !important}
+  table.cmp td:nth-of-type(2){border-left:2px solid #e09e5e !important;padding-left:10px !important}
+  table.cmp td:nth-of-type(2),table.cmp td:nth-of-type(2) *{font-size:15px !important;font-weight:700;line-height:1.6 !important}
+  table.cmp td:nth-of-type(2)>:not(:first-child){display:none !important}
+  /* 9 三つの段：小さな図を3つ横に、押したものの説明が下に */
+  #program .rgrid{display:block !important;margin-top:0 !important}
+  .spd-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 18px}
+  .spd-row button{font:inherit;color:#1f2a48;background:transparent;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+  .spd-row .ic{width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid transparent;transition:border-color .35s,transform .35s;overflow:hidden}
+  .spd-row .ic>*{transform:scale(.42);transform-origin:center;flex:none}
+  .spd-row .nm{font-family:Jost,sans-serif;font-size:13px;letter-spacing:.08em;padding-bottom:3px;border-bottom:2px solid transparent}
+  .spd-row button.on .ic{border-color:#1f2a48}
+  .spd-row button.on .nm{border-bottom-color:#e09e5e}
+  #program .rstep:not(.spon){display:none !important}
+  #program .rstep.spon{display:block !important;animation:spdop .5s cubic-bezier(.16,1,.3,1);padding:0 !important;border:0 !important}
+  #program .rstep.spon>.ricon{display:none !important}
+  /* 9 アプローチ：CDC の絵を2×2の札に、押した場面を下に開いて一般と比べる */
+  #journey .arr,#journey .gband,#journey .gaxis{display:none !important}
+  .spd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 16px}
+  .spd-grid button{font:inherit;color:#1f2a48;background:#fbf8f2;border:1px solid #d9d4ca;border-radius:12px;padding:8px 8px 10px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;transition:border-color .35s,box-shadow .35s}
+  .spd-grid button .th{height:70px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .spd-grid button .th svg{max-height:70px;width:auto !important;max-width:100%}
+  .spd-grid button .lb{font-size:13px;line-height:1.4}
+  .spd-grid button.on{border-color:#1f2a48;box-shadow:inset 0 0 0 1px #1f2a48}
+  #journey .scg{display:grid !important;grid-template-columns:1fr 1fr !important;column-gap:12px;row-gap:8px;align-items:start}
+  #journey .scg>*{grid-row:auto !important;grid-column:auto !important;position:relative !important;left:auto !important;top:auto !important;width:auto !important;margin:0 !important}
+  #journey .scg>p.rl:not(.ag):not(.cdc){display:none !important}
+  #journey .scg>p.rl{display:block !important;font-size:13px !important;margin:0 !important;grid-row:1 !important}
+  #journey .scg>p.rl.ag{grid-column:1 !important}#journey .scg>p.rl.cdc{grid-column:2 !important;color:#e09e5e;background:transparent !important}
+  #journey .scg>p.jb{display:none !important}
+  #journey .scg figure.sc.ag{grid-column:1 !important;grid-row:2 !important;opacity:.85}
+  #journey .scg figure.sc.cd{grid-column:2 !important;grid-row:2 !important}
+  #journey .scg button.br{grid-column:1/-1 !important;grid-row:3 !important;justify-self:start}
+  #journey .scg>.spdk:not(.spon){display:none !important}
+  #journey .scg>.spdk.spon{animation:spdop .5s cubic-bezier(.16,1,.3,1)}
+}
+
+/* 2026-11-11 実機（iPhone）での直し */
+@media (max-width:760px){
+  /* 動きを静かに：出てくるときは、ずらさずに薄く出すだけ */
+  .js .rise,.js .h,.js .place,.js .tiltin,.js .draw,.js .framein,.js .mframe,.js .drift,.js .rollby{transform:none !important;animation:none !important;transition:opacity .6s ease !important}
+  /* アプローチの札の絵（Safari で幅が 0 になっていた） */
+  .spd-grid button .th svg{display:block;width:100% !important;height:70px !important;max-width:none}
+  /* 料金の札：項目名を上、中身を下に */
+  #price .prrows>div{display:block !important}
+  #price .prrows dt{display:block !important;width:auto !important;margin:0 0 2px !important;font-size:13px !important}
+  #price .prrows dd{display:block !important;margin:0 0 14px !important;text-align:left !important;width:auto !important}
+  #price .prrows dd *{text-align:left !important}
+  #price .prcaps{text-align:center}
+  /* 比較：線は1本、間を広く */
+  table.cmp tr,table.cmp td,table.cmp th{background-image:none !important}
+  table.cmp tr:has(>td){padding:20px 0 !important;row-gap:8px !important;border-bottom:1px solid rgba(31,42,72,.12) !important}
+  table.cmp td:nth-of-type(2){padding:4px 0 4px 14px !important}
+  table.cmp td:nth-of-type(2),table.cmp td:nth-of-type(2) *{line-height:1.75 !important}
+  /* 「あなたを、／当たり前に大切にしたい。」 */
+  .psec .pshead{font-size:24px !important;letter-spacing:.04em !important}
+  .psec .pshead .spbr{display:block;height:0}
+  .psec .pshead,.psec .pshead *{white-space:nowrap}
+  /* 各回の内容：開いている回をはっきり、押せることを示す */
+  .fl.t1 .steps button.st{position:relative}
+  .fl.t1 .steps button.st:after{content:"＋";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:15px;color:#8a91a1}
+  .fl.t1 .steps button.st.on:after{content:"－";color:#e09e5e}
+  .fl.t1 .steps button.st:not(.on) .nm{font-weight:500 !important;color:#3a4560 !important}
+}
+@media (max-width:760px){
+  .cdc .center:has(>.lblbig){display:block !important;width:auto !important;max-width:none !important}
+  #price .prrows>div{padding:0 !important;margin:0 0 4px !important;min-height:0 !important}
+  #price .prrows dd{margin-bottom:10px !important;line-height:1.75 !important}
+  #price .prrows dd *{line-height:1.75 !important}
+}
+@media (max-width:760px){
+  #journey .lblbig,#profile .lblbig,#program .lblbig{width:100vw !important;margin-left:-20px !important;margin-right:0 !important}
+  .fl.t1 .steps button.st .nm{padding-right:22px !important}
+}
+/* 2026-11-11 石倉さん（実機）「章が切り替わるときの段差が変」「Reflect・Re-Sketch・Realize が右に寄りすぎ」 */
+@media (max-width:760px){
+  /* 章の境目の屋根の形と、章ごとの地の色の切り替えをやめる（章の頭は札で区切る） */
+  .cdc>svg.roof,.cdc>section>svg.roof{display:none !important}
+  .cdc>section.alt:has(>svg.roof:only-child){display:none !important}
+  .cdc>section.alt{background:transparent !important}
+  .cdc>section.alt:before,.cdc>section.alt:after{display:none !important}
+  /* 料金の札：札の線を枠の角に当てない */
+  #price .prtext .lblbig{margin:0 0 18px !important;width:auto !important;border-top:0 !important;padding:0 0 10px !important}
+  /* Program の見出し：画面に収める */
+  #program h2.rrr{font-size:22px !important;letter-spacing:.04em !important;line-height:1.6 !important;white-space:normal !important}
+}
+/* 2026-11-11 石倉さん（実機 15:43）：配置のバランス・各回の体験・アプローチを1画面に */
+@media (max-width:760px){
+  /* 思いの章：見出しも本文と同じ左そろえに、上下の間を詰める */
+  .psec.pband{padding-top:48px !important;padding-bottom:40px !important}
+  .psec .pshead{text-align:left !important;font-size:22px !important;margin-bottom:20px !important}
+  .psec .omoi-sub{text-align:left !important;margin-top:0 !important}
+  /* 料金：札と同じことを言う「165,000円」の帯と DAY1〜5 は外し、流れの図だけを札の下に */
+  #price .prbars,#price .prcaps{display:none !important}
+  #price .prdg{margin-top:22px !important;padding-bottom:0 !important}
+  #price{padding-bottom:32px !important}
+  /* 各回の内容：回の行は1行にそろえ、開いた中身を短く */
+  .fl.t1 .steps button.st{display:grid !important;grid-template-columns:72px 18px minmax(0,1fr) 18px;align-items:center;column-gap:8px;min-height:40px !important;padding:0 !important;text-align:left}
+  .fl.t1 .steps button.st .en{font-size:13px !important;width:auto !important;text-align:left !important}
+  .fl.t1 .steps button.st .nm{font-size:15px !important;white-space:nowrap !important;overflow:hidden;text-overflow:ellipsis;padding-right:0 !important}
+  .fl.t1 .steps button.st .nm *{white-space:nowrap !important}
+  .fl.t1 .steps button.st:after{position:static !important;transform:none !important;justify-self:end}
+  .fl.t1 .steps .detail{padding:14px 16px 12px !important;margin:4px 0 10px !important}
+  .fl.t1 .steps .detail .dq{font-size:17px !important;line-height:1.6 !important;margin:0 0 6px !important;text-wrap:balance}
+  .fl.t1 .steps .detail .dgt{font-size:15px !important;margin:0 0 8px !important;padding-bottom:8px !important}
+  .fl.t1 .steps .detail .dw,.fl.t1 .steps .detail .dw *{font-size:13px !important;line-height:1.6 !important;margin:0 0 6px !important;color:#5b6478}
+  .fl.t1 .steps .detail .db,.fl.t1 .steps .detail .db *{font-size:15px !important;line-height:1.75 !important}
+  .fl.t1 .steps .detail .dfig{margin-top:8px !important}
+  .fl.t1 .steps .detail .dfig svg{max-height:96px}
+  /* アプローチ：場面は4つ横一列の小さな札に。比べる中身を1画面に */
+  .spd-grid{grid-template-columns:repeat(4,1fr) !important;gap:6px !important;margin:0 0 14px !important}
+  .spd-grid button{padding:6px 4px 6px !important;border-radius:10px !important;align-items:center;text-align:center !important;gap:4px !important}
+  .spd-grid button .th{height:40px !important}
+  .spd-grid button .th svg{height:40px !important}
+  .spd-grid button .lb{font-size:13px !important;line-height:1.35 !important}
+  #journey h2{margin-bottom:18px !important}
+  #journey .scg figure.sc{margin:0 !important}
+  #journey .scg figure.sc svg{max-height:96px;width:100% !important;height:auto}
+  #journey .scg .sq,#journey .scg .sq *{font-size:15px !important;line-height:1.6 !important}
+  #journey .scg figure.sc.ag .sq,#journey .scg figure.sc.ag .sq *,#journey .scg figure.sc.ag figcaption,#journey .scg figure.sc.ag figcaption *{font-size:13px !important;color:#5b6478 !important}
+  #journey .scg figcaption,#journey .scg figcaption *{font-size:15px !important;line-height:1.6 !important}
+  #journey .scg>p.rl.ag,#journey .scg>p.rl.ag *{font-size:13px !important;line-height:1.5 !important}
+}
+@media (max-width:760px){
+  .fl.t1 .steps .detail .dfig svg{max-height:110px !important;width:auto !important;max-width:100% !important;height:auto !important;display:block;margin:0 auto}
+  .fl.t1 .steps .detail .dfig .dfs,.fl.t1 .steps .detail .dfig .dg{height:auto !important;min-height:0 !important}
+  .fl.t1 .steps .detail .dn{display:block !important;font-size:13px !important;color:#5b6478;margin:0 0 4px !important;letter-spacing:.04em}
+  .fl.t1 .steps .detail .dq{order:-1}
+}
+/* 2026-11-11 15:48：押したものと出てくるものを一つの札につなぐ／アプローチの左右をそろえる */
+@media (max-width:760px){
+  /* 各回：開いた回の行と中身を、一枚の札にする */
+  .fl.t1 .steps button.st.on{background:#fbf8f2 !important;border-radius:12px 12px 0 0 !important;padding:8px 12px !important;margin-top:6px !important;box-shadow:0 -1px 0 #e6dfd2 inset;position:relative;z-index:3;grid-template-columns:64px 18px minmax(0,1fr) 18px}
+  .fl.t1 .steps button.st.on .nm{white-space:normal !important;overflow:visible}
+  .fl.t1 .steps button.st.on .nm *{white-space:normal !important}
+  .fl.t1 .steps .detail{margin:0 0 12px !important;border-radius:0 0 12px 12px !important;border-top:1px dashed #d9d4ca}
+  .fl.t1 .steps .detail .dn{display:none !important}
+  /* Program：選んだ丸の下に小さな三角、説明は同じ地の札に */
+  .spd-row button{position:relative}
+  .spd-row button.on:after{content:"";position:absolute;bottom:-19px;left:50%;margin-left:-9px;border:9px solid transparent;border-bottom-color:#fbf8f2}
+  #program .rstep.spon{background:#fbf8f2 !important;border-radius:12px;padding:16px 16px 12px !important}
+  #program .rstep.spon>p:first-of-type{display:none !important}
+  /* アプローチ：札の文字を言葉の途中で折らない */
+  .spd-grid button .lb{word-break:keep-all;overflow-wrap:anywhere}
+  .spd-grid button.on{position:relative}
+  .spd-grid button.on:after{content:"";position:absolute;bottom:-15px;left:50%;margin-left:-7px;border:7px solid transparent;border-top-color:#1f2a48}
+  /* アプローチ：左右の見出し・ひとこと・絵・説明の高さをそろえる */
+  #journey .scg>p.rl.ag,#journey .scg>p.rl.ag *{white-space:nowrap !important}
+  #journey .scg>p.rl{align-self:end;padding-bottom:6px !important;border-bottom:1px dashed #d9d4ca !important;margin:0 !important}
+  #journey .scg figure.sc{display:flex !important;flex-direction:column;gap:8px}
+  #journey .scg figure.sc .sq{min-height:4.8em;margin:0 !important;padding:0 !important}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *{font-size:15px !important;line-height:1.6 !important}
+  #journey .scg figure.sc>svg{width:100% !important;height:96px !important;max-height:none;margin:0 !important}
+  #journey .scg figure.sc.ag>svg{opacity:.85}
+  #journey .scg figure.sc figcaption{margin:0 !important}
+  #journey .scg button.br{margin-top:10px !important}
+  #journey{padding-bottom:28px !important}
+}
+@media (max-width:760px){
+  #journey .scg>p.rl br{display:none !important}
+  #journey .scg>p.rl{min-height:0 !important;height:auto !important;line-height:1.5 !important}
+  #journey .scg>p.rl.ag *{display:inline !important}
+  #journey .scg figure.sc.ag,#journey .scg figure.sc.cd{padding:0 !important;margin:0 !important;width:100% !important}
+}
+@media (max-width:760px){
+  #journey .scg>p.rl.ag{font-size:0 !important}
+  #journey .scg>p.rl.ag>*{display:none !important}
+  #journey .scg>p.rl.ag:before{content:"一般的な転職エージェント";font-size:13px;line-height:1.5;color:#5b6478;letter-spacing:.04em;white-space:nowrap}
+  #journey .scg>p.rl.cdc{font-size:13px !important;line-height:1.5 !important}
+}
+/* 2026-11-11 15:52 石倉さん：アプローチのひとことを左右2行に／札の文字を言葉で折る／各回の図を見やすく／ENTRANCE と点の重なり／級数をそろえる（スマホは 13・15・17・22 と、一番上と金額だけ大きく） */
+@media (max-width:760px){
+  #journey .scg figure.sc .sq br{display:none !important}
+  #journey .scg figure.sc .sq{min-height:3.3em !important}
+  .spd-grid button .lb .w{display:inline-block;white-space:nowrap}
+  .fl.t1 .steps button.st{grid-template-columns:88px 16px minmax(0,1fr) 16px !important;column-gap:6px !important}
+  .fl.t1 .steps button.st.on{grid-template-columns:76px 16px minmax(0,1fr) 16px !important}
+  .fl.t1 .steps:before{left:97px !important}
+  .fl.t1 .steps .detail .dfig{margin:12px -4px 0 !important}
+  .fl.t1 .steps .detail .dfig svg{max-height:220px !important;width:100% !important;height:auto !important}
+  .fl.t1 .steps .detail .dfhint{display:block !important;font-size:13px !important;color:#5b6478;text-align:center;margin-top:6px !important}
+  /* 級数 */
+  .cdc section h2,.cdc section .h,.cdc section h2 *{font-size:22px !important;line-height:1.6 !important}
+  .cdc section h3,.cdc section h3 *{font-size:17px !important}
+  .cdc section p:not(.en):not(.lblbig):not(.prbig),.cdc section dd,.cdc section li,.cdc section summary{font-size:15px !important}
+}
+/* 2026-11-11 15:54「題名が途切れてる」：回の名前を省略せず、折り返す（点と DAY は1行目にそろえる） */
+@media (max-width:760px){
+  .fl.t1 .steps button.st{align-items:start !important;padding-top:9px !important;padding-bottom:9px !important}
+  .fl.t1 .steps button.st .nm,.fl.t1 .steps button.st .nm *{white-space:normal !important;overflow:visible !important;text-overflow:clip !important;line-height:1.5 !important;word-break:keep-all;overflow-wrap:anywhere}
+  .fl.t1 .steps button.st .en,.fl.t1 .steps button.st:after{line-height:22px !important;margin-top:0 !important}
+  .fl.t1 .steps button.st .dot{margin-top:5px !important}
+  .fl.t1 .steps button.st:after{align-self:start}
+}
+
+/* 2026-11-11 15:56：一番上の見出しが切れる／特徴の見出しと文の折り方／札の「・」／各回は横の段で切り替え（押しても位置が動かない） */
+@media (max-width:760px){
+  #top .kvc .kl i{font-size:24px !important}
+  section.feat .fth,section.feat .fth *{font-size:22px !important;line-height:1.6 !important}
+  section.feat .ftd br{display:none}
+  .spd-grid button .lb .w{display:block}
+  /* 各回：縦の一覧をやめ、横一列の段（点と線）に。中身は段のすぐ下で入れ替わるだけ */
+  .fl.t1 .steps{display:none !important}
+  .spd-step{display:grid;grid-template-columns:repeat(7,1fr);position:relative;margin:4px 0 14px}
+  .spd-step:before{content:"";position:absolute;left:7%;right:7%;top:9px;height:1px;background:#b2b1ae}
+  .spd-step button{font:inherit;background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:#5b6478;cursor:pointer;position:relative}
+  .spd-step button i{width:12px;height:12px;border-radius:50%;background:#b2b1ae;margin-top:3px;transition:transform .3s,background .3s}
+  .spd-step button span{font-family:Jost,sans-serif;font-size:13px;letter-spacing:.02em;line-height:1.2}
+  .spd-step button.on i{background:#e09e5e;transform:scale(1.5)}
+  .spd-step button.on span{color:#1f2a48;font-weight:500}
+  .fl.t1 .detail{margin:0 !important;border-radius:12px !important;border-top:0 !important;padding:16px 16px 12px !important;background:#fbf8f2;box-shadow:0 8px 22px -16px rgba(31,42,72,.4)}
+  .fl.t1 .detail .dn{display:block !important;font-size:13px !important;color:#e09e5e;margin:0 0 4px !important;font-weight:500;letter-spacing:.04em}
+  .fl.t1 .detail .dmain{display:flex;flex-direction:column}
+  .fl.t1 .detail .dn{order:-2}.fl.t1 .detail .dq{order:-1}
+  .spd-nav{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed #d9d4ca}
+  .spd-nav button{font:inherit;font-size:13px;color:#1f2a48;background:none;border:1px solid rgba(31,42,72,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .spd-nav button[disabled]{visibility:hidden}
+}
+/* 2026-11-11 15:58 石倉さん「意味の単位で改行されていない」：スマホでは文節（言葉のまとまり）でだけ折り、1〜2文字だけ次の行に落ちないようにする。見出し・ひとこと・比較の文は行の長さをそろえる */
+@media (max-width:760px){
+  .cdc p,.cdc p *,.cdc td,.cdc td *,.cdc th,.cdc dd,.cdc dd *,.cdc figcaption,.cdc figcaption *,.cdc li,.cdc summary,.cdc h2,.cdc h2 *,.cdc h3,.cdc h3 *{word-break:keep-all !important;overflow-wrap:anywhere !important;line-break:strict !important}
+  .cdc p,.cdc dd,.cdc li,.cdc summary{text-wrap:pretty}
+  .cdc h2,.cdc h3,.cdc td,.cdc figcaption,#journey .sq,.fl.t1 .detail .dq,.fl.t1 .detail .dgt,section.feat .ftd{text-wrap:balance}
+  section.feat .ftd br{display:inline !important}
+  #journey .scg figure.sc .sq{min-height:4.9em !important}
+  /* 無料相談の札：見出しの上の線と文字の間をあけ、案内の文はボタンにそろえる */
+  #consult .ctag2{padding-top:36px !important}
+  #consult .ctah{padding-top:14px !important}
+  #consult .cbrow .ctabtn{width:100% !important;min-width:0 !important}
+  #consult .canote{text-align:center !important;margin:10px 0 0 !important;font-size:13px !important;width:100% !important}
+  .cta1 .canote{text-align:center !important}
+}
+@media (max-width:760px){
+  #consult .cbrow{width:100% !important;max-width:100% !important;margin-left:0 !important;margin-right:0 !important;padding:0 !important;box-sizing:border-box}
+  #consult .cbrow>*{max-width:100% !important;box-sizing:border-box}
+  #consult .cbchips{width:100% !important;margin:0 !important}
+  #consult .cbrow .ctabtn{width:100% !important;margin:0 !important;box-sizing:border-box}
+}
+/* 2026-11-11 16:28 石倉さん：アプローチの絵・文字の段を左右でぴったりそろえる（ひとこと2行・絵・説明2行の高さを固定）／各回は札の高さを一定に、横に送れることを見せる */
+@media (max-width:760px){
+  #journey .scg figure.sc{display:grid !important;grid-template-rows:52px 96px 44px;row-gap:10px;align-items:start}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *{font-size:15px !important;line-height:1.6 !important;min-height:0 !important}
+  #journey .scg figure.sc .sq{height:52px;overflow:visible;margin:0 !important;padding:0 !important}
+  #journey .scg figure.sc.ag .sq,#journey .scg figure.sc.ag .sq *{color:#5b6478 !important;font-weight:400 !important}
+  #journey .scg figure.sc>svg{height:96px !important;width:100% !important;margin:0 !important;display:block}
+  #journey .scg figure.sc figcaption,#journey .scg figure.sc figcaption *{font-size:13px !important;line-height:1.65 !important}
+  #journey .scg figure.sc figcaption{height:44px;margin:0 !important;padding:0 !important}
+  #journey .scg figure.sc.cd figcaption,#journey .scg figure.sc.cd figcaption *{font-weight:700 !important;color:#1f2a48 !important}
+  #journey .scg figure.sc.ag figcaption,#journey .scg figure.sc.ag figcaption *{color:#5b6478 !important;font-weight:400 !important}
+  /* 各回：札の高さをそろえ、図は残りの高さに収める */
+  .fl.t1 .detail{height:min(640px,calc(100svh - 190px));display:flex !important;flex-direction:column;overflow:hidden}
+  .fl.t1 .detail .dmain{flex:none}
+  .fl.t1 .detail .dfig{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin:10px 0 0 !important}
+  .fl.t1 .detail .dfig .dfs{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center}
+  .fl.t1 .detail .dfig .dfs>*,.fl.t1 .detail .dfig .dg{height:100% !important;width:100%;display:flex;align-items:center;justify-content:center}
+  .fl.t1 .detail .dfig svg{max-height:100% !important;max-width:100% !important;width:auto !important;height:100% !important}
+  .fl.t1 .detail .dfhint{flex:none}
+  .fl.t1 .detail .spd-nav{flex:none;margin-top:8px}
+  .spd-nav{align-items:center}
+  .spd-nav .pg{font-family:Jost,sans-serif;font-size:13px;color:#5b6478;letter-spacing:.06em}
+  .spd-swipe{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:#5b6478;margin:-8px 0 6px;transition:opacity .6s}
+  .spd-swipe i{display:inline-block;width:18px;height:1px;background:#b2b1ae;position:relative}
+  .spd-swipe i:after{content:"";position:absolute;top:-3px;width:6px;height:6px;border-top:1px solid #b2b1ae;border-right:1px solid #b2b1ae}
+  .spd-swipe i.l:after{left:0;transform:rotate(-135deg)}.spd-swipe i.r:after{right:0;transform:rotate(45deg)}
+  .spd-swipe.gone{opacity:0}
+  .fl.t1 .detail.spd-in-l>*{animation:spdl .42s cubic-bezier(.16,1,.3,1)}
+  .fl.t1 .detail.spd-in-r>*{animation:spdr .42s cubic-bezier(.16,1,.3,1)}
+  @keyframes spdl{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+  @keyframes spdr{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+}
+@media (max-width:760px){
+  .cdc p,.cdc p *,.cdc td,.cdc td *,.cdc th,.cdc dd,.cdc dd *,.cdc figcaption,.cdc figcaption *,.cdc li,.cdc summary,.cdc h2,.cdc h2 *,.cdc h3,.cdc h3 *{overflow-wrap:break-word !important}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *,#journey .scg figure.sc figcaption,#journey .scg figure.sc figcaption *{letter-spacing:.02em !important}
+  .spd-nav{display:grid !important;grid-template-columns:1fr auto 1fr}
+  .spd-nav .pv{justify-self:start}.spd-nav .nx{justify-self:end}
+}
+@media (max-width:760px){
+  #journey .scg{column-gap:10px !important}
+  #journey .scg figure.sc{grid-template-rows:auto 96px auto !important}
+  #journey .scg figure.sc .sq{height:auto !important;min-height:52px !important}
+  #journey .scg figure.sc figcaption{height:auto !important;min-height:44px}
+}
+/* 2026-11-11 16:37 石倉さん「図を小さくしたら意味がわからない」「文字が途切れる」「面談がまた3行」：札の高さを固定するのをやめ、図は幅いっぱいの大きさに戻す。アプローチのひとことは 13px にして2行に収める */
+@media (max-width:760px){
+  .fl.t1 .detail{height:auto !important;overflow:visible !important}
+  .fl.t1 .detail .dfig{flex:none !important;display:block !important;margin:12px -4px 0 !important}
+  .fl.t1 .detail .dfig .dfs,.fl.t1 .detail .dfig .dfs>*,.fl.t1 .detail .dfig .dg{height:auto !important;display:block !important}
+  .fl.t1 .detail .dfig svg{width:100% !important;height:auto !important;max-height:none !important;display:block}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *{font-size:13px !important;line-height:1.65 !important}
+  #journey .scg figure.sc.cd .sq,#journey .scg figure.sc.cd .sq *{font-weight:700 !important}
+  #journey .scg figure.sc .sq{min-height:44px !important}
+}
+@media (max-width:760px){
+  .fl.t1 .detail .dw,.fl.t1 .detail .dw *{white-space:nowrap !important;overflow:hidden;text-overflow:clip}
+  .spd-nav{grid-template-columns:96px 1fr 96px !important;column-gap:8px}
+  .spd-nav button{width:96px;height:36px;padding:0 !important;display:flex;align-items:center;justify-content:center;font-family:Jost,"Noto Sans JP",sans-serif !important;font-size:13px !important;border:1px solid rgba(31,42,72,.3) !important;background:transparent !important;color:#1f2a48 !important;border-radius:999px}
+  .spd-nav .pg{text-align:center;justify-self:center}
+  .spd-step button span{white-space:nowrap}
+}
+@media (max-width:760px){ .fl.t1 .detail .spd-nav{width:100% !important;box-sizing:border-box;align-self:stretch;margin-left:0 !important;margin-right:0 !important} }
+/* 2026-11-11 17:00 iPhone 指摘：アプローチのひとことを上そろえに／各回の札がカードからはみ出さない／1画面に収める */
+@media (max-width:760px){
+  #journey .scg figure.sc .sq{display:block !important;align-items:normal !important;border:0 !important}
+  #journey .scg figure.sc{border:0 !important;box-shadow:none !important}
+  #journey .scg>p.rl{border-top:0 !important}
+  .fl.t1 .detail,.fl.t1 .detail .dmain,.fl.t1 .detail .dfig{min-width:0 !important;max-width:100% !important;box-sizing:border-box}
+  .fl.t1 .detail .dmain>*,.fl.t1 .detail .dfig>*{min-width:0 !important;max-width:100% !important}
+  .fl.t1 .detail .dmain{width:100% !important}
+  .fl.t1 .detail .dw{white-space:normal !important;word-break:keep-all !important}
+  .cdc section .fl.t1 .detail p.dw.dw,.cdc section .fl.t1 .detail p.dw *{font-size:13px !important;margin:0 0 6px !important}
+  .cdc section .fl.t1 .detail p.dgt.dgt{margin-bottom:8px !important}
+  .fl.t1 .detail .dfig{margin:12px 0 0 !important;position:relative}
+  .cdc section .fl.t1 .detail p.dfhint.dfhint{display:none !important}
+  .cdc section .fl.t1 .detail p.dfhint *{font-size:11px !important}
+  .fl.t1 .detail .spd-nav{margin-top:12px !important;padding-top:10px !important}
+  .spd-nav button,.spd-nav button *{font-size:13px !important}
+  .cdc section .fl.t1 .detail p.db.db,.cdc section .fl.t1 .detail p.db *{line-height:1.7 !important}
+  .fl.t1 .detail .dfig svg{max-height:170px !important}
+  .fl.t1 .detail .spd-nav{margin-top:10px !important;padding-top:8px !important}
+  a.fab{transition:opacity .3s,transform .3s}
+  a.fab.spd-fab-off{opacity:0 !important;transform:translateY(16px) !important;pointer-events:none !important}
+  .spd-swipe .zm{margin-left:10px;padding-left:10px;border-left:1px solid #d9d4ca}
+  .cdc section .fl.t1 p.spd-swipe.spd-swipe,.cdc section .fl.t1 p.spd-swipe *{font-size:13px !important;line-height:1.5 !important}
+  .cdc section .fl.t1 .detail p.db.db{text-wrap:wrap !important}
+  .fzoom.on{justify-content:center !important;overflow:hidden !important;padding:72px 16px 40px !important;background:#f4f1eb !important}
+  .fzoom .fzb{flex:none}
+  .fzoom .spd-zh{display:none;position:fixed;left:0;right:0;bottom:24px;text-align:center;font-size:13px !important;color:#5b6478;margin:0}
+  .fzoom.spd-wide .spd-zh{display:block}
+  /* アプローチ：Safari で長い一行が列を押し広げないよう、列の最小幅を0に */
+  #journey .scg{grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important}
+  #journey .scg>*,#journey .scg figure.sc,#journey .scg figure.sc>*{min-width:0 !important;max-width:100% !important}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc figcaption{overflow-wrap:anywhere}
+}
+
+</style>
 </body>
 </html>
