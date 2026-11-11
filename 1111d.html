@@ -2749,6 +2749,14 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .spd-swipe .zm{margin-left:10px;padding-left:10px;border-left:1px solid #d9d4ca}
   .cdc section .fl.t1 p.spd-swipe.spd-swipe,.cdc section .fl.t1 p.spd-swipe *{font-size:13px !important;line-height:1.5 !important}
   .cdc section .fl.t1 .detail p.db.db{text-wrap:wrap !important}
+  .fzoom.on{justify-content:flex-start !important;overflow-x:auto !important;overflow-y:hidden !important;padding:72px 0 56px !important;-webkit-overflow-scrolling:touch}
+  .fzoom .fzb{flex:none}
+  .fzoom .spd-zh{display:none;position:fixed;left:0;right:0;bottom:24px;text-align:center;font-size:13px !important;color:#5b6478;margin:0}
+  .fzoom.spd-wide .spd-zh{display:block}
+  /* アプローチ：Safari で長い一行が列を押し広げないよう、列の最小幅を0に */
+  #journey .scg{grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important}
+  #journey .scg>*,#journey .scg figure.sc,#journey .scg figure.sc>*{min-width:0 !important;max-width:100% !important}
+  #journey .scg figure.sc .sq,#journey .scg figure.sc figcaption{overflow-wrap:anywhere}
 }
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
@@ -2852,11 +2860,20 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
     if(db&&T&&db.textContent!==T) db.textContent=T; if(dw&&DW[k]&&dw.textContent!==DW[k]) dw.textContent=DW[k]; }
   apply(); fl.addEventListener('click',function(){ setTimeout(apply,0); }); fl.addEventListener('touchend',function(){ setTimeout(apply,0); });
   /* アプローチ：内定後の説明を2行に／下の「次へ」の印を4場面同じ見た目に */
-  var c=document.querySelector('#journey figure.sc.cd.k4 figcaption'); if(c){ var t=c.querySelector('b')||c; t.textContent='入社後1・3・6か月に、コーチングで振り返る。'; }
+  var c=document.querySelector('#journey figure.sc.cd.k4 figcaption'); if(c){ var t=c.querySelector('b')||c; t.textContent='入社後1・3・6か月に、\u200bコーチングで\u200b振り返る。'; }
   [].forEach.call(document.querySelectorAll('#journey button.br.o'),function(b){ b.classList.remove('o'); }); })();
 
 /* 2026-11-11 17:10 各回のカードが画面にある間は、右下の「無料相談」を引っ込める（「次へ」と重ならないように） */
 (function(){ if(innerWidth>760) return; var fab=document.querySelector('a.fab'), det=document.querySelector('.fl.t1 .detail'); if(!fab||!det||!window.IntersectionObserver) return;
   new IntersectionObserver(function(es){ es.forEach(function(e){ fab.classList.toggle('spd-fab-off',e.isIntersecting); }); },{threshold:0.15}).observe(det); })();
+/* 2026-11-11 18:33 石倉さん「拡大で縦（横倒し）にするのは困る」：スマホの拡大は図を回さず、そのままの向きで大きく出す。画面より広いときは左右に動かして見る */
+(function(){ if(innerWidth>760) return;
+  function fix(zm){ var c=zm.querySelector('.fzb svg'), b=zm.querySelector('.fzb'); if(!c||!b||c.__spdfix) return; c.__spdfix=1;
+    var vb=c.viewBox.baseVal, mn=99; [].forEach.call(c.querySelectorAll('text'),function(t){ var f=parseFloat(t.getAttribute('font-size')); if(f&&f<mn) mn=f; });
+    var w=Math.round(Math.max(innerWidth-32, Math.min(vb.width*12/mn, (innerHeight-160)*vb.width/vb.height, innerWidth*2.4)));
+    c.style.position=''; c.style.left=''; c.style.top=''; c.style.transform='none'; c.style.setProperty('width',w+'px','important'); c.style.height='auto';
+    b.style.cssText='width:'+w+'px;margin:auto 16px'; zm.classList.toggle('spd-wide',w>innerWidth-32); zm.scrollLeft=0;
+    var h=zm.querySelector('.spd-zh'); if(!h){ h=document.createElement('p'); h.className='spd-zh'; h.textContent='← 左右に動かして見られます →'; zm.appendChild(h); } }
+  new MutationObserver(function(){ var zm=document.querySelector('.fzoom.on'); if(zm) fix(zm); else { var z=document.querySelector('.fzoom svg'); if(z) z.__spdfix=0; } }).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']}); })();
 </script></body>
 </html>
