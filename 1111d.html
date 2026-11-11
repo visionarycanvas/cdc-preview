@@ -535,7 +535,7 @@ table.cmp small.fe{display:block;margin-top:6px;font-size:13px;color:#8a93a6}
 @media (max-width:760px){.scwrap{overflow:visible;width:auto;left:0;transform:none}.scg{min-width:0;grid-template-columns:1fr 1fr;gap:10px 12px}.scg .rl.mid{display:none}.scg .rl.ag,.scg .rl.cdc{grid-row:1;align-self:end;font-size:15px}.scg .rl.ag{grid-column:1}.scg .rl.cdc{grid-column:2}.scg .sq{font-size:15px;min-height:0}.scg figcaption{font-size:13px}.scg .jb,.scg .br{grid-column:1/-1}.scg .jb.k1{grid-row:2}.scg .ag.k1{grid-row:3;grid-column:1}.scg .cd.k1{grid-row:3;grid-column:2}.scg .br.k1{grid-row:4}.scg .jb.k2{grid-row:5}.scg .ag.k2{grid-row:6;grid-column:1}.scg .cd.k2{grid-row:6;grid-column:2}.scg .br.k2{grid-row:7}.scg .jb.k3{grid-row:8}.scg .ag.k3{grid-row:9;grid-column:1}.scg .cd.k3{grid-row:9;grid-column:2}.scg .br.k3{grid-row:10}.scg .jb.k4{grid-row:11}.scg .ag.k4{grid-row:12;grid-column:1}.scg .cd.k4{grid-row:12;grid-column:2}.scg .br.k4{grid-row:13}.scg .jb{margin-top:18px}.scg .br{margin-bottom:6px}}
 @media (max-width:900px){.fl.t1 .detail.wfig{grid-template-columns:1fr;gap:20px}.fl.t1 .dfig{order:-1}.fl.t1 .dfig svg{max-height:none}.fl.t1 .dq{font-size:22px}.fl.t1 .dgt{font-size:17px !important}}
 </style>
-<script>/* 2026-11-08 最初の画面の流れ：描く前に隠しておく（intro.js が動かす） */(function(d){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash){d.classList.add('kvi');}}catch(e){}})(document.documentElement);</script>
+<script>/* 2026-11-11 スマホ：アドレスバーの出入りで高さだけ変わったときは、組み直さない（下地がずれる原因） */(function(){try{if(!matchMedia('(pointer: coarse)').matches)return;var ae=window.addEventListener;window.addEventListener=function(t,f,o){if(t==='resize'&&typeof f==='function'){var w=innerWidth;var g=function(e){if(innerWidth===w)return;w=innerWidth;return f.call(this,e)};return ae.call(window,t,g,o)}return ae.call(window,t,f,o)}}catch(e){}})();</script><script>/* 2026-11-08 最初の画面の流れ：描く前に隠しておく（intro.js が動かす） */(function(d){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash){d.classList.add('kvi');}}catch(e){}})(document.documentElement);</script>
 </head>
 <body>
 
@@ -1745,7 +1745,7 @@ window.CDCFIELD=(function(){ var T0=performance.now();
     var gr=document.createElement('div'); gr.style.cssText='position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;opacity:.9;background-size:180px 180px;background-image:'+grain();
     host.appendChild(out); host.appendChild(gr); var og=out.getContext('2d'), last=0, vis=true;
     if('IntersectionObserver' in window) new IntersectionObserver(function(es){ vis=es[0].isIntersecting; },{}).observe(host);
-    function loop(t){ if(vis&&t-last>33&&!(window.__kvAnimMax&&ext&&scrollY>window.__kvAnimMax)){ last=t; F.draw(t); og.drawImage(F.cv,0,0); } if(!reduce) requestAnimationFrame(loop); }
+    function loop(t){ /* 2026-11-11 スマホでは色の帯を止めた絵にする（下地がずれて見えるため） */ if(innerWidth<=760) return; if(vis&&t-last>33&&!(window.__kvAnimMax&&ext&&scrollY>window.__kvAnimMax)){ last=t; F.draw(t); og.drawImage(F.cv,0,0); } if(!reduce) requestAnimationFrame(loop); }
     F.draw(0,still); og.drawImage(F.cv,0,0); if(!reduce) requestAnimationFrame(loop); }
   return {mount:mount, PAL:PAL, VI:VI};
 })();
@@ -2075,7 +2075,8 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #price .prtext{background:#fbf8f2;border-radius:16px;padding:22px 20px !important;box-shadow:0 10px 26px -18px rgba(31,42,72,.45)}
   #price .prdg{margin-top:14px !important}
   #price{padding-top:44px !important}
-  #price .prdg [class*="pill"],#price .prdg [class*="prbar"]{background:transparent !important;background-image:none !important;color:#1f2a48 !important;border:1px solid #1f2a48;box-shadow:none !important}
+  #price .prbars{border:0 !important;background:none !important;box-shadow:none !important;padding:0 !important;margin:10px 0 0 !important;height:auto !important}
+  #price .prbar{position:static !important;left:auto !important;width:100% !important;margin:0 !important;background:transparent !important;background-image:none !important;color:#1f2a48 !important;border:1px solid #1f2a48;box-shadow:none !important}
   /* 8 比較：6段を一覧に */
   table.cmp,table.cmp tbody{display:block}
   table.cmp tr:not(:has(>td)){display:flex !important;gap:14px;margin-bottom:6px;padding:0 0 12px !important;border-bottom:1px solid rgba(31,42,72,.2)}
@@ -2125,8 +2126,47 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #journey .scg>.spdk:not(.spon){display:none !important}
   #journey .scg>.spdk.spon{animation:spdop .5s cubic-bezier(.16,1,.3,1)}
 }
+
+/* 2026-11-11 実機（iPhone）での直し */
+@media (max-width:760px){
+  /* 動きを静かに：出てくるときは、ずらさずに薄く出すだけ */
+  .js .rise,.js .h,.js .place,.js .tiltin,.js .draw,.js .framein,.js .mframe,.js .drift,.js .rollby{transform:none !important;animation:none !important;transition:opacity .6s ease !important}
+  /* アプローチの札の絵（Safari で幅が 0 になっていた） */
+  .spd-grid button .th svg{display:block;width:100% !important;height:70px !important;max-width:none}
+  /* 料金の札：項目名を上、中身を下に */
+  #price .prrows>div{display:block !important}
+  #price .prrows dt{display:block !important;width:auto !important;margin:0 0 2px !important;font-size:13px !important}
+  #price .prrows dd{display:block !important;margin:0 0 14px !important;text-align:left !important;width:auto !important}
+  #price .prrows dd *{text-align:left !important}
+  #price .prcaps{text-align:center}
+  /* 比較：線は1本、間を広く */
+  table.cmp tr,table.cmp td,table.cmp th{background-image:none !important}
+  table.cmp tr:has(>td){padding:20px 0 !important;row-gap:8px !important;border-bottom:1px solid rgba(31,42,72,.12) !important}
+  table.cmp td:nth-of-type(2){padding:4px 0 4px 14px !important}
+  table.cmp td:nth-of-type(2),table.cmp td:nth-of-type(2) *{line-height:1.75 !important}
+  /* 「あなたを、／当たり前に大切にしたい。」 */
+  .psec .pshead{font-size:24px !important;letter-spacing:.04em !important}
+  .psec .pshead .spbr{display:block;height:0}
+  .psec .pshead,.psec .pshead *{white-space:nowrap}
+  /* 各回の内容：開いている回をはっきり、押せることを示す */
+  .fl.t1 .steps button.st{position:relative}
+  .fl.t1 .steps button.st:after{content:"＋";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:15px;color:#8a91a1}
+  .fl.t1 .steps button.st.on:after{content:"－";color:#e09e5e}
+  .fl.t1 .steps button.st:not(.on) .nm{font-weight:500 !important;color:#3a4560 !important}
+}
+@media (max-width:760px){
+  .cdc .center:has(>.lblbig){display:block !important;width:auto !important;max-width:none !important}
+  #price .prrows>div{padding:0 !important;margin:0 0 4px !important;min-height:0 !important}
+  #price .prrows dd{margin-bottom:10px !important;line-height:1.75 !important}
+  #price .prrows dd *{line-height:1.75 !important}
+}
+@media (max-width:760px){
+  #journey .lblbig,#profile .lblbig,#program .lblbig{width:100vw !important;margin-left:-20px !important;margin-right:0 !important}
+  .fl.t1 .steps button.st .nm{padding-right:22px !important}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
+  /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
   function q(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
   /* 5 各回の内容：中身を押した回のすぐ下へ移す */
   (function(){ var fl=document.querySelector('.fl.t1'); if(!fl) return; var det=fl.querySelector('.detail'), steps=fl.querySelector('.steps'); if(!det||!steps) return;
