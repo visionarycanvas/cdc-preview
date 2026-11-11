@@ -536,7 +536,7 @@ table.cmp small.fe{display:block;margin-top:6px;font-size:13px;color:#8a93a6}
 @media (max-width:900px){.fl.t1 .detail.wfig{grid-template-columns:1fr;gap:20px}.fl.t1 .dfig{order:-1}.fl.t1 .dfig svg{max-height:none}.fl.t1 .dq{font-size:22px}.fl.t1 .dgt{font-size:17px !important}}
 </style>
 <script>/* 2026-11-11 スマホ：アドレスバーの出入りで高さだけ変わったときは、組み直さない（下地がずれる原因） */(function(){try{if(!matchMedia('(pointer: coarse)').matches)return;var ae=window.addEventListener;window.addEventListener=function(t,f,o){if(t==='resize'&&typeof f==='function'){var w=innerWidth;var g=function(e){if(innerWidth===w)return;w=innerWidth;return f.call(this,e)};return ae.call(window,t,g,o)}return ae.call(window,t,f,o)}}catch(e){}})();</script><script>/* 2026-11-08 最初の画面の流れ：描く前に隠しておく（intro.js が動かす） */(function(d){try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!location.hash){d.classList.add('kvi');}}catch(e){}})(document.documentElement);</script>
-<script>/* スマホ用のトップ */if(innerWidth<=760)document.documentElement.classList.add("sp-hero");</script></head>
+<script>/* スマホ用のトップ（?old=1 で前の形）／切り分け用 ?nf=1 で図の粒子を止める */(function(d){try{if(innerWidth>760)return;var q=location.search;if(!/[?&]old=1/.test(q))d.classList.add('sp-hero');if(/[?&]nf=1/.test(q))d.classList.add('nf');}catch(e){}})(document.documentElement);</script></head>
 <body>
 
 
@@ -2912,26 +2912,26 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
 <style>/* 2026-11-11 20:39 齋藤さん（LINE）「スマホは全体的に余白が気になる」「全体的に級数を上げつつ、見出しは本文との違いを見せるために級数を上げて差異を」「スマホ用のトップを作ると良い」（参考：PARADOX 採用サイトのスマホ） */
 @media (max-width:760px){
   /* スマホ用のトップ：一枚目の画面いっぱいに色の帯。見出しは大きく下寄せ */
-  #top .kvcl{top:0 !important;height:100% !important}
-  #top .kvband{top:0 !important;left:-8px !important;width:calc(100% + 16px) !important;height:100% !important}
-  #top .kvband>div{top:0 !important;height:100% !important;width:100% !important}
-  #top .kvfr{top:0 !important;height:100% !important}
-  #top>.kvfr>.kvcl{background:#1f2a48 !important}
-  #top .kvband{overflow:hidden !important;visibility:visible !important}
-  #top .kvband canvas{visibility:visible !important}
+  html.sp-hero #top .kvcl{top:0 !important;height:100% !important}
+  html.sp-hero #top .kvband{top:0 !important;left:-8px !important;width:calc(100% + 16px) !important;height:100% !important}
+  html.sp-hero #top .kvband>div{top:0 !important;height:100% !important;width:100% !important}
+  html.sp-hero #top .kvfr{top:0 !important;height:100% !important}
+  html.sp-hero #top>.kvfr>.kvcl{background:#1f2a48 !important}
+  html.sp-hero #top .kvband{overflow:hidden !important;visibility:visible !important}
+  html.sp-hero #top .kvband canvas{visibility:visible !important}
   /* 帯の絵を90度回して、上から「夜明けの色 → 青 → 紺」に。見出しは紺の上に白で */
-  #top .kvband canvas{position:absolute !important;left:50% !important;top:50% !important;width:var(--kvH,844px) !important;height:var(--kvW,406px) !important;transform:translate(-50%,-50%) rotate(90deg) !important;-webkit-mask-image:none !important;mask-image:none !important}
-  .kvext{display:none !important}
-  #top .kvc{top:auto !important;bottom:132px !important;left:20px !important;right:20px !important;width:auto !important}
-  #top .kvc .kl i{font-size:27px !important;color:#ffffff !important;width:auto !important;letter-spacing:.02em !important}
-  #top .kvc .kl{line-height:1.55 !important}
-  #top .kvmeta{top:auto !important;bottom:40px !important;left:20px !important;right:20px !important;width:auto !important}
-  #top .kvmeta,#top .kvmeta *{color:#ffffff !important}
-  #top .kvmeta{font-size:16px !important}
-  #top .kvmeta b{font-size:14px !important;opacity:.85}
-  .hdr .logo,.hdr .logo *{transition:color .3s}
-  html:not(.spd-past) .hdr{background:transparent !important;box-shadow:none !important;border-color:transparent !important}
-  .hdr:not(.on):not(.scrolled){background:transparent !important}
+  html.sp-hero #top .kvband canvas{position:absolute !important;left:50% !important;top:50% !important;width:var(--kvH,844px) !important;height:var(--kvW,406px) !important;transform:translate(-50%,-50%) rotate(90deg) !important;-webkit-mask-image:none !important;mask-image:none !important}
+  html.sp-hero .kvext{display:none !important}
+  html.sp-hero #top .kvc{top:auto !important;bottom:132px !important;left:20px !important;right:20px !important;width:auto !important}
+  html.sp-hero #top .kvc .kl i{font-size:27px !important;color:#ffffff !important;width:auto !important;letter-spacing:.02em !important}
+  html.sp-hero #top .kvc .kl{line-height:1.55 !important}
+  html.sp-hero #top .kvmeta{top:auto !important;bottom:40px !important;left:20px !important;right:20px !important;width:auto !important}
+  html.sp-hero #top .kvmeta,html.sp-hero #top .kvmeta *{color:#ffffff !important}
+  html.sp-hero #top .kvmeta{font-size:16px !important}
+  html.sp-hero #top .kvmeta b{font-size:14px !important;opacity:.85}
+  html.sp-hero .hdr .logo,html.sp-hero .hdr .logo *{transition:color .3s}
+  html.sp-hero:not(.spd-past) .hdr{background:transparent !important;box-shadow:none !important;border-color:transparent !important}
+  html.sp-hero .hdr:not(.on):not(.scrolled){background:transparent !important}
   /* 級数：本文 16、見出し 26、小見出し 19（特徴の見出し 22）。補足 13 はそのまま */
   .cdc section p:not(.en):not(.lblbig):not(.prbig):not(.spd-swipe),.cdc section dd,.cdc section li,.cdc section summary{font-size:16px !important;line-height:1.9 !important}
   .cdc section h2,.cdc section .h,.cdc section h2 *{font-size:26px !important;line-height:1.55 !important;letter-spacing:.04em !important}
@@ -2965,6 +2965,11 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .js .rise,.js .h,.js .place,.js .tiltin,.js .draw,.js .framein,.js .mframe,.js .drift,.js .rollby,.js .vt{opacity:1 !important;transform:none !important;animation:none !important;transition:none !important;clip-path:none !important}
   a.fab{transition:none !important}
   a.fab.spd-fab-off{transition:opacity .25s !important}
+  /* 2026-11-11 21:55 引っぱったときに上に出る白いすき間：ページの地を紙の色にし、引っぱりの跳ね返りを止める */
+  html{background:#f5f2ec !important;overscroll-behavior-y:none}
+  body{overscroll-behavior-y:none}
+  /* 切り分け用（?nf=1）：図の粒子（SVG のフィルター・乗算）を止める */
+  html.nf svg *{filter:none !important;mix-blend-mode:normal !important}
 }
 </style><script>/* 2026-11-11 齋藤さん「スマホは余白が気になる」：章の上下の余白（mobile_fit.js が直接書く 56/64px）を 44/48px に。特徴の図は描いてある範囲だけを見せる */
 (function(){ if(innerWidth>760) return;
@@ -2974,7 +2979,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   crop(); })();
 
 /* トップの帯の大きさ（回した絵の縦横）と、トップを過ぎたらヘッダーの地を戻す */
-(function(){ if(innerWidth>760) return; var top=document.getElementById('top'); if(!top) return;
+(function(){ if(innerWidth>760||!document.documentElement.classList.contains('sp-hero')) return; var top=document.getElementById('top'); if(!top) return;
   function sz(){ var r=top.getBoundingClientRect(); top.style.setProperty('--kvH',Math.ceil(r.height+2)+'px'); top.style.setProperty('--kvW',Math.ceil(r.width+16)+'px'); }
   sz(); addEventListener('load',sz); addEventListener('orientationchange',function(){ setTimeout(sz,400); }); if(window.ResizeObserver) new ResizeObserver(sz).observe(top);
   function hd(){ document.documentElement.classList.toggle('spd-past',scrollY>40); } hd(); addEventListener('scroll',hd,{passive:true}); })();
