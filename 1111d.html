@@ -2595,6 +2595,24 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   #journey .scg>p.rl.ag:before{content:"一般的な転職エージェント";font-size:13px;line-height:1.5;color:#5b6478;letter-spacing:.04em;white-space:nowrap}
   #journey .scg>p.rl.cdc{font-size:13px !important;line-height:1.5 !important}
 }
+/* 2026-11-11 15:52 石倉さん：アプローチのひとことを左右2行に／札の文字を言葉で折る／各回の図を見やすく／ENTRANCE と点の重なり／級数をそろえる（スマホは 13・15・17・22 と、一番上と金額だけ大きく） */
+@media (max-width:760px){
+  #journey .scg figure.sc .sq,#journey .scg figure.sc .sq *{word-break:normal !important;line-break:strict;overflow-wrap:anywhere}
+  #journey .scg figure.sc .sq br{display:none !important}
+  #journey .scg figure.sc .sq{min-height:3.3em !important}
+  .spd-grid button .lb .w{display:inline-block;white-space:nowrap}
+  .fl.t1 .steps button.st{grid-template-columns:88px 16px minmax(0,1fr) 16px !important;column-gap:6px !important}
+  .fl.t1 .steps button.st.on{grid-template-columns:76px 16px minmax(0,1fr) 16px !important}
+  .fl.t1 .steps:before{left:97px !important}
+  .fl.t1 .steps .detail .dfig{margin:12px -4px 0 !important}
+  .fl.t1 .steps .detail .dfig svg{max-height:220px !important;width:100% !important;height:auto !important}
+  .fl.t1 .steps .detail .dfhint{display:block !important;font-size:13px !important;color:#5b6478;text-align:center;margin-top:6px !important}
+  /* 級数 */
+  .cdc section h2,.cdc section .h,.cdc section h2 *{font-size:22px !important;line-height:1.6 !important}
+  .cdc section h3,.cdc section h3 *{font-size:17px !important}
+  .cdc section p:not(.en):not(.lblbig):not(.prbig),.cdc section dd,.cdc section li,.cdc section summary{font-size:15px !important}
+  #top .kvc,#top .kvc *{font-size:revert-layer}
+}
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
   /* 「あなたを、」で改行 */ (function(){ var h=document.querySelector('.psec .pshead span')||document.querySelector('.psec .pshead'); if(!h) return; var w=document.createTreeWalker(h,NodeFilter.SHOW_TEXT),n; while(n=w.nextNode()){ var i=n.textContent.indexOf('あなたを、'); if(i>=0){ var r=n.splitText(i+5); var b=document.createElement('span'); b.className='spbr'; r.parentNode.insertBefore(b,r); break; } } })();
@@ -2639,5 +2657,7 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
     S('#price','padding-bottom','24px'); S('.psec.pband','padding-top','40px'); S('.psec.pband','padding-bottom','40px');
     S('.psec .pshead','margin-bottom','28px'); S('.psec .omoi-sub','margin-top','0'); }
   fix(); addEventListener('load',function(){ setTimeout(fix,300); }); addEventListener('resize',function(){ setTimeout(fix,400); }); })();
+/* 札の文字を「・」の区切りで折る */
+(function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('.spd-grid button .lb'),function(l){ var t=l.textContent; l.innerHTML=t.split('・').map(function(w,i,a){ return '<span class="w">'+w+(i<a.length-1?'・':'')+'</span>'; }).join(''); }); })();
 </script></body>
 </html>
