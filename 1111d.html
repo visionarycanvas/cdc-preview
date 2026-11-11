@@ -2611,7 +2611,6 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .cdc section h2,.cdc section .h,.cdc section h2 *{font-size:22px !important;line-height:1.6 !important}
   .cdc section h3,.cdc section h3 *{font-size:17px !important}
   .cdc section p:not(.en):not(.lblbig):not(.prbig),.cdc section dd,.cdc section li,.cdc section summary{font-size:15px !important}
-  #top .kvc,#top .kvc *{font-size:revert-layer}
 }
 /* 2026-11-11 15:54「題名が途切れてる」：回の名前を省略せず、折り返す（点と DAY は1行目にそろえる） */
 @media (max-width:760px){
@@ -2620,6 +2619,31 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
   .fl.t1 .steps button.st .en,.fl.t1 .steps button.st:after{line-height:22px !important;margin-top:0 !important}
   .fl.t1 .steps button.st .dot{margin-top:5px !important}
   .fl.t1 .steps button.st:after{align-self:start}
+}
+
+/* 2026-11-11 15:56：一番上の見出しが切れる／特徴の見出しと文の折り方／札の「・」／各回は横の段で切り替え（押しても位置が動かない） */
+@media (max-width:760px){
+  #top .kvc .kl i{font-size:24px !important}
+  section.feat .fth,section.feat .fth *{font-size:22px !important;line-height:1.6 !important}
+  section.feat .ftd,section.feat .ftd *{word-break:normal !important;overflow-wrap:anywhere;line-break:strict}
+  section.feat .ftd br{display:none}
+  .spd-grid button .lb .w{display:block}
+  /* 各回：縦の一覧をやめ、横一列の段（点と線）に。中身は段のすぐ下で入れ替わるだけ */
+  .fl.t1 .steps{display:none !important}
+  .spd-step{display:grid;grid-template-columns:repeat(7,1fr);position:relative;margin:4px 0 14px}
+  .spd-step:before{content:"";position:absolute;left:7%;right:7%;top:9px;height:1px;background:#b2b1ae}
+  .spd-step button{font:inherit;background:none;border:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:#5b6478;cursor:pointer;position:relative}
+  .spd-step button i{width:12px;height:12px;border-radius:50%;background:#b2b1ae;margin-top:3px;transition:transform .3s,background .3s}
+  .spd-step button span{font-family:Jost,sans-serif;font-size:13px;letter-spacing:.02em;line-height:1.2}
+  .spd-step button.on i{background:#e09e5e;transform:scale(1.5)}
+  .spd-step button.on span{color:#1f2a48;font-weight:500}
+  .fl.t1 .detail{margin:0 !important;border-radius:12px !important;border-top:0 !important;padding:16px 16px 12px !important;background:#fbf8f2;box-shadow:0 8px 22px -16px rgba(31,42,72,.4)}
+  .fl.t1 .detail .dn{display:block !important;font-size:13px !important;color:#e09e5e;margin:0 0 4px !important;font-weight:500;letter-spacing:.04em}
+  .fl.t1 .detail .dmain{display:flex;flex-direction:column}
+  .fl.t1 .detail .dn{order:-2}.fl.t1 .detail .dq{order:-1}
+  .spd-nav{display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed #d9d4ca}
+  .spd-nav button{font:inherit;font-size:13px;color:#1f2a48;background:none;border:1px solid rgba(31,42,72,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .spd-nav button[disabled]{visibility:hidden}
 }
 </style><script>/* spd.css と対（スマホだけ） */
 (function(){ if(innerWidth>760) return;
@@ -2666,6 +2690,22 @@ document.querySelectorAll('svg.fmini').forEach(function(s,i){ if(F.mini[i]){ var
     S('.psec .pshead','margin-bottom','28px'); S('.psec .omoi-sub','margin-top','0'); }
   fix(); addEventListener('load',function(){ setTimeout(fix,300); }); addEventListener('resize',function(){ setTimeout(fix,400); }); })();
 /* 札の文字を「・」の区切りで折る */
-(function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('.spd-grid button .lb'),function(l){ var t=l.textContent; l.innerHTML=t.split('・').map(function(w,i,a){ return '<span class="w">'+w+(i<a.length-1?'・':'')+'</span>'; }).join(''); }); })();
+(function(){ if(innerWidth>760) return; [].forEach.call(document.querySelectorAll('.spd-grid button .lb'),function(l){ var t=l.textContent; l.innerHTML=t.split('・').map(function(w){ return '<span class="w">'+w+'</span>'; }).join(''); }); })();
+
+/* 各回：横一列の段で切り替える。中身は段の下の同じ場所で入れ替わるので、押しても画面は動かない。中身の下の「次へ」でも送れる */
+(function(){ if(innerWidth>760) return; var fl=document.querySelector('.fl.t1'); if(!fl) return; var steps=fl.querySelector('.steps'), det=fl.querySelector('.detail'); if(!steps||!det) return;
+  var B=[].slice.call(steps.querySelectorAll('button.st')); var L=B.map(function(b){ var e=b.querySelector('.en'); var t=e?e.textContent.trim():''; return t==='ENTRANCE'?'相談':t==='AFTER'?'入社後':t.replace('DAY','DAY'); });
+  var bar=document.createElement('div'); bar.className='spd-step'; steps.parentNode.insertBefore(bar,steps);
+  B.forEach(function(b,i){ var x=document.createElement('button'); x.type='button'; x.innerHTML='<i></i><span>'+L[i]+'</span>'; x.addEventListener('click',function(){ go(i); }); bar.appendChild(x); });
+  window.__spdPlace=function(){ if(bar.nextSibling!==det) bar.parentNode.insertBefore(det,bar.nextSibling); };
+  window.__spdPlace();
+  var nav=document.createElement('div'); nav.className='spd-nav'; nav.innerHTML='<button type="button" class="pv"></button><button type="button" class="nx"></button>';
+  function cur(){ var k=B.findIndex(function(b){ return b.classList.contains('on'); }); return k<0?0:k; }
+  function draw(){ var k=cur(); [].forEach.call(bar.children,function(x,i){ x.classList.toggle('on',i===k); }); var pv=nav.querySelector('.pv'), nx=nav.querySelector('.nx');
+    pv.disabled=k===0; nx.disabled=k===B.length-1; pv.textContent=k>0?'← '+L[k-1]:''; nx.textContent=k<B.length-1?L[k+1]+' →':''; if(nav.parentNode!==det) det.appendChild(nav); window.__spdPlace(); }
+  function go(i,fromNav){ B[i].click(); draw(); if(fromNav){ var r=bar.getBoundingClientRect(); if(r.top<60||r.top>innerHeight*.5) window.scrollBy(0,r.top-72); } }
+  nav.addEventListener('click',function(e){ var k=cur(); if(e.target.closest('.pv')&&k>0) go(k-1,true); if(e.target.closest('.nx')&&k<B.length-1) go(k+1,true); });
+  var x0=null; det.addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; },{passive:true}); det.addEventListener('touchend',function(e){ if(x0==null) return; var dx=e.changedTouches[0].clientX-x0; x0=null; var k=cur(); if(dx<-60&&k<B.length-1) go(k+1); if(dx>60&&k>0) go(k-1); });
+  draw(); })();
 </script></body>
 </html>
