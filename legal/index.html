@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>職業紹介・特商法・プライバシー（確認用の下書き）｜Career Design Canvas</title>
+<style>
+@font-face{font-family:"Noto Sans JP";font-weight:400;font-display:swap;src:url(../fonts/noto-sans-jp-japanese-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:500;font-display:swap;src:url(../fonts/noto-sans-jp-japanese-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Noto Sans JP";font-weight:700;font-display:swap;src:url(../fonts/noto-sans-jp-japanese-700-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:400;font-display:swap;src:url(../fonts/jost-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Jost;font-weight:500;font-display:swap;src:url(../fonts/jost-latin-500-normal.woff2) format("woff2")}
+:root{--n:#1f2a48;--paper:#f5f2ec;--ink:#1f2a48;--sub:#1f2a48;--line:#b2b1ae;--o:#e09e5e;--mark:#f9e1c5;--markline:#e09e5e;--b:#6b92ac}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans JP",sans-serif;font-size:17px;line-height:1.9;-webkit-text-size-adjust:100%;text-wrap:pretty}
+@media (max-width:760px){body{font-size:16px}section.lg h3{font-size:19px !important}ol.pp>li>b{font-size:16px !important}}
+a{color:var(--n)}
+.en{font-family:Jost,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+@media (max-width:760px){.wrap{padding:0 16px}}
+
+/* 確認用の帯（公開時は外す） */
+.review{background:#fff;border-bottom:1px solid var(--line)}
+.review .wrap{padding-top:28px;padding-bottom:28px}
+.review .tag{display:inline-block;font-size:13px;letter-spacing:.08em;color:#fff;background:var(--markline);padding:2px 10px;border-radius:3px}
+.review h1{font-size:22px;line-height:1.6;margin:12px 0 8px;color:var(--n)}
+.review p{margin:0 0 12px;font-size:15px;color:var(--sub)}
+.review ol{margin:8px 0 0;padding-left:1.4em;font-size:15px}
+.review li{margin:4px 0}
+.review .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--sub);margin-top:14px}
+.review .legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:2px}
+
+/* ヘッダー */
+.hdr{background:var(--n);color:#fff}
+.hdr .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.hdr .logo{font-family:Jost,sans-serif;font-size:17px;letter-spacing:.04em;color:#fff;text-decoration:none}
+.hdr .logo b{font-weight:500}
+.hdr .back{color:#c9d2df;font-size:13px;text-decoration:none}
+
+/* 本文 */
+main .wrap{padding-top:56px;padding-bottom:40px}
+.pt{font-size:13px;letter-spacing:.14em;color:var(--sub);margin:0}
+.ph{font-size:26px;line-height:1.5;color:var(--n);margin:4px 0 20px}
+.toc{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 48px;padding:0;list-style:none}
+.toc a{display:block;padding:8px 14px;border:1px solid var(--n);border-radius:999px;font-size:15px;text-decoration:none}
+section.lg{padding-top:24px;margin-bottom:64px}
+section.lg h2{font-size:26px;line-height:1.5;color:var(--n);margin:0 0 8px}
+section.lg .lead{color:var(--sub);font-size:15px;margin:0 0 24px}
+section.lg h3{font-size:22px;color:var(--n);margin:36px 0 8px}
+section.lg p{margin:0 0 14px}
+dl.tb{margin:0;border-top:1px solid var(--line)}
+dl.tb>div{display:grid;grid-template-columns:200px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+dl.tb dt{font-weight:500;color:var(--n);font-size:15px}
+dl.tb dd{margin:0}
+@media (max-width:760px){dl.tb>div{grid-template-columns:1fr;gap:2px}}
+ol.pp{padding-left:1.4em;margin:0}
+ol.pp>li{margin:0 0 18px}
+ol.pp>li>b{display:block;color:var(--n);font-size:17px}
+ul.dot{margin:4px 0 0;padding-left:1.2em}
+.fixed{font-size:15px;color:var(--sub);margin-top:20px}
+
+/* 要確認のしるし */
+.q{display:block;width:fit-content;max-width:100%;margin:6px 0 2px;background:var(--mark);border-left:3px solid var(--markline);padding:4px 10px;border-radius:2px;font-size:15px;line-height:1.7}
+.q::before{content:"【要確認】";font-weight:700}
+.q[data-n]::before{content:"【要確認 " attr(data-n) "】"}
+.qn{display:inline-block;min-width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--markline);color:#fff;font-size:13px;font-weight:700;margin-right:4px;vertical-align:1px;font-family:Jost,sans-serif}
+.known{border-bottom:2px solid #6b92ac}
+.memo{margin:14px 0 0;padding:12px 16px;background:#fff;border-left:3px solid var(--line);font-size:13px;color:var(--sub);line-height:1.8}
+
+/* Q10 の確認 */
+.q10{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px;margin-top:8px}
+.q10 h3{margin-top:0}
+.q10 blockquote{margin:12px 0;padding:12px 16px;background:var(--paper);border-left:3px solid var(--n);font-size:15px}
+.q10 blockquote small{display:block;color:var(--sub);font-size:13px}
+
+footer{background:var(--n);color:#c9d2df;font-size:13px;line-height:1.9;margin-top:40px}
+footer .wrap{padding-top:40px;padding-bottom:40px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:#c9d2df}
+footer p{margin:0}
+</style>
+</head>
+<body>
+
+<div class="review" id="review">
+<div class="wrap">
+<span class="tag">確認用の下書き　11/12 整理</span>
+<h1>先日お願いした法令まわりのページを、こちらで下書きにまとめました</h1>
+<p>ご依頼をお送りしたあと、ヒロさんのご負担を減らせるよう、分かっている情報で埋められるところは埋めて、サイトに載せる形にしてみました。ゼロから書いていただく必要はありません。オレンジの<b>【要確認】</b>のところだけ、合っているか・何を入れるかを教えてください。</p>
+<p>確認していただきたいのは、次の番号のところです（ページの中の同じ番号に対応しています）。</p>
+<ol>
+<li>職業紹介責任者のお名前と、苦情・相談の窓口（メールまたは電話）</li>
+<li>労働局に届け出た<b>手数料表</b>と<b>返戻金制度</b>の書面（PDF などをそのまま1つお送りください）</li>
+<li>業務の運営に関する規程（掲示しているものがあればそのまま）</li>
+<li>特商法の表記に出す住所・電話・メール（番地まで出すか、「請求があれば開示」とするか）</li>
+<li>途中解約・返金の決まり（いまサイトには「受けたセッションの分で精算」と書いています）</li>
+<li>プライバシーポリシー：HotSpring のものを土台にしてよいか、CDC で足した項目でよいか</li>
+<li>料金と職業紹介の関係（Q10）：ページの一番下に、いまのサイトの文面を抜き出しています</li>
+</ol>
+<div class="legend">
+<span><i class="sw" style="background:var(--mark);border-bottom:2px solid var(--markline)"></i>【要確認】ヒロさんに教えてほしいところ</span>
+<span><i class="sw" style="border-bottom:2px solid #6b92ac"></i>許可証・会社サイトで確かめて入れた情報</span>
+</div>
+<p style="margin-top:14px;font-size:13px">※ この帯と【要確認】の色は確認用です。公開するときは外します。法令上これで足りるかの最終判断は、ヒロさん（必要に応じて労働局・社労士）にお願いします。</p>
+</div>
+</div>
+
+<header class="hdr" id="top"><div class="wrap">
+<a class="logo" href="../">Career Design <b>Canvas</b></a>
+<a class="back" href="../">トップへ戻る</a>
+</div></header>
+
+<main><div class="wrap">
+<p class="pt en">LEGAL</p>
+<p class="ph">運営者と、お約束について</p>
+<ul class="toc">
+<li><a href="#shokai">職業紹介について</a></li>
+<li><a href="#tokusho">特定商取引法に基づく表記</a></li>
+<li><a href="#privacy">プライバシーポリシー</a></li>
+</ul>
+
+<!-- 1 職業紹介について -->
+<section class="lg" id="shokai">
+<h2>職業紹介について</h2>
+<p class="lead">Career Design Canvas は、厚生労働大臣の許可を受けた有料職業紹介事業者である株式会社HotSpring が運営しています。会社につなぐ支援は、ご希望の方にだけ行います。</p>
+<dl class="tb">
+<div><dt>事業者</dt><dd><span class="known">株式会社HotSpring</span></dd></div>
+<div><dt>許可番号</dt><dd><span class="known">有料職業紹介事業　11-ユ-301496</span></dd></div>
+<div><dt>許可年月日</dt><dd><span class="known">令和8年10月1日（有効期間　令和11年9月30日まで）</span></dd></div>
+<div><dt>事業所</dt><dd><span class="known">埼玉県ふじみ野市西原一丁目3番地21</span></dd></div>
+<div><dt>取扱職種の範囲</dt><dd><span class="known">全職種（国内）</span></dd></div>
+<div><dt>職業紹介責任者</dt><dd><span class="q" data-n="1">お名前</span></dd></div>
+<div><dt>手数料</dt><dd>求職者の方から、職業紹介の手数料はいただきません。<span class="q" data-n="7">この一文を書いてよいか（Q10）</span><br>求人者（企業）からいただく手数料は、手数料表のとおりです。<br><span class="q" data-n="2">手数料表（届出のもの）を PDF で掲載</span></dd></div>
+<div><dt>返戻金制度</dt><dd><span class="q" data-n="2">制度の有無と内容（届出のもの）。制度がない場合も「なし」と書きます</span></dd></div>
+<div><dt>業務の運営に関する規程</dt><dd><span class="q" data-n="3">規程を PDF で掲載</span></dd></div>
+<div><dt>個人情報の取扱い</dt><dd>下の<a href="#privacy">プライバシーポリシー</a>のとおりです。</dd></div>
+<div><dt>苦情・相談の窓口</dt><dd><span class="q" data-n="1">担当・メールまたは電話・受付時間</span></dd></div>
+</dl>
+<p class="memo">メモ（確認用）：2024年4月の改正で、手数料表・返戻金制度の書面・業務の運営に関する規程は、事業所での掲示に加えて、インターネットなどでも情報を提供することになりました（職業安定法施行規則 第24条の5第4項）。取扱職種の範囲・苦情の窓口・個人情報の取扱いは、求職の申し込みを受けたときに書面かメールでもお伝えするものです。就職者数・離職者数などは厚生労働省の「人材サービス総合サイト」で公開します（自社サイトへの掲載は任意）。</p>
+</section>
+
+<!-- 2 特商法 -->
+<section class="lg" id="tokusho">
+<h2>特定商取引法に基づく表記</h2>
+<dl class="tb">
+<div><dt>販売事業者</dt><dd><span class="known">株式会社HotSpring</span></dd></div>
+<div><dt>運営責任者</dt><dd><span class="known">宮﨑 洋</span> <span class="q">役職名（代表取締役など）</span></dd></div>
+<div><dt>所在地</dt><dd><span class="known">〒356-0028 埼玉県ふじみ野市</span> <span class="q" data-n="4">番地まで書くか（上の事業所と同じか）</span></dd></div>
+<div><dt>電話番号</dt><dd><span class="q" data-n="4">番号、または「ご請求があれば遅滞なく開示します」</span></dd></div>
+<div><dt>メールアドレス</dt><dd><span class="q" data-n="4">CDC のお問い合わせ用アドレス</span></dd></div>
+<div><dt>販売価格</dt><dd><span class="known">165,000円（税込）</span>　DAY1〜5 の料金です。無料相談（60分）は無料です。<br>入社後の継続コーチング（3回）は別料金です。<span class="q">金額</span></dd></div>
+<div><dt>価格のほかに必要な費用</dt><dd>お振込みの手数料、オンラインでご参加いただくための通信費はお客様のご負担となります。<span class="q">振込手数料の負担</span></dd></div>
+<div><dt>お支払い方法</dt><dd><span class="known">銀行振込（一括または2回払い）</span></dd></div>
+<div><dt>お支払いの時期</dt><dd><span class="known">DAY1 の当日まで</span> <span class="q">2回払いのときの2回目の時期</span></dd></div>
+<div><dt>サービスの提供時期</dt><dd>お申し込みのあと、日程をご相談のうえ DAY1 を行います。DAY1〜4 は約1か月で進み、そのあと DAY5 を行います。</dd></div>
+<div><dt>提供方法</dt><dd>オンライン（Zoom）・1対1</dd></div>
+<div><dt>お申し込みの取り消し・途中解約</dt><dd>途中でおやめになる場合は、受けたセッションの分で精算します。<br><span class="q" data-n="5">DAY1 前の取り消しはどうするか／精算の計算（1回あたりの金額）／返金の方法と時期</span></dd></div>
+</dl>
+<p class="memo">メモ（確認用）：インボイスの登録番号（T6030001155454）は、サイトに出す義務はないもの（請求書・領収書に書くもの）として、ここには入れていません。出したい場合は足します。</p>
+</section>
+
+<!-- 3 プライバシー -->
+<section class="lg" id="privacy">
+<h2>プライバシーポリシー</h2>
+<p class="lead">株式会社HotSpring（以下「当社」）は、Career Design Canvas（以下「CDC」）でお預かりする個人情報を、次のとおり大切に扱います。<span class="q" data-n="6">HotSpring のサイトのポリシー（8項目）を土台にし、CDC と職業紹介に関わるところを足しました</span></p>
+<ol class="pp">
+<li><b>取得する情報</b>お名前、メールアドレス、無料相談の日程、お申し込みのときにいただくご相談の内容、セッションの中で伺うお話と、一緒に描いた図など。</li>
+<li><b>利用の目的</b>
+<ul class="dot">
+<li>無料相談・プログラムの日程のご連絡と、ご案内</li>
+<li>CDC のプログラムの提供と準備</li>
+<li>ご希望の方への職業紹介（会社につなぐ支援）</li>
+<li>お問い合わせへの回答</li>
+<li>サービスをよくするための振り返り（お名前が分からない形で）</li>
+</ul></li>
+<li><b>第三者への提供</b>ご本人の同意がある場合、業務の委託先に必要な範囲で預ける場合、法令にもとづく場合を除き、第三者に提供しません。職業紹介で応募先の会社にお伝えする情報は、その都度ご本人に確認し、同意をいただいてからお伝えします。<span class="q">職業紹介での実際の運用と合っているか</span></li>
+<li><b>共同で取り組む事業者</b>CDC のプログラムは、VISIONARY CANVAS（石倉 達也）と一緒に行います。プログラムの提供に必要な範囲で、VISIONARY CANVAS とお名前・日程・セッションの内容を共有します。<span class="q">「共同利用」として書くか「委託」として書くか</span></li>
+<li><b>安全の管理</b>不正なアクセス、紛失、漏えいなどを防ぐため、必要な安全対策を行います。</li>
+<li><b>アクセス解析</b>このサイトでは、利用状況を知るために Google アナリティクスを使っています。Cookie を使って、個人を特定しない形で閲覧の情報を集めます。ブラウザの設定で Cookie を止めることができます。</li>
+<li><b>ご本人からのお問い合わせ</b>ご本人であることを確かめたうえで、開示・訂正・削除・利用の停止のご請求にお応えします。</li>
+<li><b>見直し</b>法令を守り、このポリシーを必要に応じて見直します。変更したときは、このページでお知らせします。</li>
+<li><b>お問い合わせの窓口</b><span class="q" data-n="1">個人情報の窓口（職業紹介の苦情窓口と同じでよいか）</span></li>
+</ol>
+<p class="fixed"><span class="q">制定日</span></p>
+<p class="memo">メモ（確認用）：職業紹介の事業では、個人情報の適正な管理についての規程を定めることが求められています。HotSpring で定めている規程があれば、その内容とずれないようにそろえます。</p>
+</section>
+
+<!-- Q10 -->
+<section class="lg" id="q10">
+<div class="q10">
+<h3>【要確認 7】料金と職業紹介の関係（Q10）の確認</h3>
+<p>いまのサイトでは、料金の説明と、職業紹介（会社につなぐ支援）の説明を、別々の場所に分けて書いています。該当する文を抜き出しました。この書き方で問題がないか、ご確認をお願いします。</p>
+<blockquote>あなたから対価をいただき、あなたの方を向く。<small>トップ「転職エージェントと、ここが違う」の表・仕組みの行（一般的な転職エージェント側は「企業から報酬を受け取る」）</small></blockquote>
+<blockquote>165,000円（税込）　DAY1〜5 の料金です。無料相談（60分）は無料です。<small>トップ「料金」</small></blockquote>
+<blockquote>いまのモヤモヤを、あるがままに伺います。求人を紹介する場ではありません。<small>トップ「無料相談」</small></blockquote>
+<blockquote>求職者の方から、職業紹介の手数料はいただきません。会社につなぐ支援は、ご希望の方にだけ行います。<small>このページ「職業紹介について」（新しく足した文）</small></blockquote>
+<p style="font-size:15px;margin:0">気になる点：会社につなぐかどうかで料金が変わらないこと、企業から手数料を受け取ることを、サイトでどこまで書くか。必要なら、この抜き出しをそのまま労働局や社労士に見せていただけます。</p>
+</div>
+</section>
+
+</div></main>
+
+<footer><div class="wrap">
+<p>運営　株式会社HotSpring<br>有料職業紹介事業 許可番号　11-ユ-301496<br>企画・プログラム　VISIONARY CANVAS</p>
+<p class="en" style="align-self:flex-end;letter-spacing:.14em">© 2026 CAREER DESIGN CANVAS</p>
+</div></footer>
+</body>
+</html>
